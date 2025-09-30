@@ -1,0 +1,94 @@
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AnyQuizQuestion } from "@/types";
+
+type QuizState = {
+  questions: AnyQuizQuestion[];
+  status: "idle" | "loading" | "succeeded" | "failed";
+  error?: string;
+  userAnswers: Record<string, number | string | string[]>; // id -> answer
+  result?: {
+    correct: number;
+    total: number;
+    details: Array<{
+      id: string;
+      correct: boolean;
+      explanation: string;
+    }>;
+  };
+};
+
+const initialState: QuizState = {
+  questions: [],
+  status: "idle",
+  userAnswers: {},
+};
+
+export const loadQuizzes = createAsyncThunk("quiz/load", async () => {
+  const res = await fetch("/mock/quizzes.json");
+  if (!res.ok) throw new Error("Failed to load quizzes");
+  return (await res.json()) as AnyQuizQuestion[];
+});
+
+const quizSlice = createSlice({
+  name: "quiz",
+  initialState,
+  reducers: {
+    answerQuestion(
+      state,
+      action: PayloadAction<{ id: string; answer: number | string | string[] }>
+    ) {
+      const { id, answer } = action.payload;
+      state.userAnswers[id] = answer;
+    },
+    submit(state: QuizState) {
+      let correct = 0;
+      const details: Array<{
+        id: string;
+        correct: boolean;
+        explanation: string;
+      }> = [];
+      for (const q of state.questions) {
+        let isCorrect = false;
+        if (q.type === "vocab-mcq" || q.type === "grammar-mcq") {
+          const a = state.userAnswers[q.id];
+          isCorrect = typeof a === "number" && a === q.answerIndex;
+        } else if (q.type === "sentence-order") {
+          const a = state.userAnswers[q.id];
+          const text = Array.isArray(a)
+            ? (a as string[]).join(" ")
+            : String(a || "");
+          isCorrect = text.trim() === q.answer.trim();
+        }
+        if (isCorrect) correct++;
+        details.push({
+          id: q.id,
+          correct: isCorrect,
+          explanation: q.explanation,
+        });
+      }
+      state.result = { correct, total: state.questions.length, details };
+    },
+    reset(state: QuizState) {
+      state.userAnswers = {};
+      state.result = undefined;
+    },
+  },
+  extraReducers: (builder: any) => {
+    builder
+      .addCase(loadQuizzes.pending, (state: QuizState) => {
+        state.status = "loading";
+        state.error = undefined;
+      })
+      .addCase(loadQuizzes.fulfilled, (state: QuizState, action: any) => {
+        state.status = "succeeded";
+        state.questions = action.payload as AnyQuizQuestion[];
+      })
+      .addCase(loadQuizzes.rejected, (state: QuizState, action: any) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      });
+  },
+});
+
+export const { answerQuestion, submit, reset } = quizSlice.actions;
+export default quizSlice.reducer;

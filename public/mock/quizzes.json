@@ -1,0 +1,118 @@
+[
+  {
+    "id": "q1",
+    "type": "vocab-mcq",
+    "difficulty": "easy",
+    "prompt": "Nghĩa tiếng Việt của từ 'book' là gì?",
+    "options": ["sách", "bút", "bàn", "cửa sổ"],
+    "answerIndex": 0,
+    "explanation": "'book' nghĩa là 'sách'."
+  },
+  {
+    "id": "q2",
+    "type": "vocab-mcq",
+    "difficulty": "easy",
+    "prompt": "Từ nào nghĩa là 'ngôi nhà'?",
+    "options": ["house", "family", "food", "travel"],
+    "answerIndex": 0,
+    "explanation": "'house' = ngôi nhà."
+  },
+  {
+    "id": "q3",
+    "type": "vocab-mcq",
+    "difficulty": "easy",
+    "prompt": "Chọn phiên âm đúng của 'family'",
+    "options": ["/ˈfæməli/", "/ˈfeɪməli/", "/fəˈmɪli/", "/fæmˈlaɪ/"],
+    "answerIndex": 0,
+    "explanation": "Phiên âm chuẩn: /ˈfæməli/."
+  },
+  {
+    "id": "q4",
+    "type": "vocab-mcq",
+    "difficulty": "easy",
+    "prompt": "Nghĩa của từ 'work' là gì?",
+    "options": ["làm việc; công việc", "nghỉ ngơi", "chơi", "ăn"],
+    "answerIndex": 0,
+    "explanation": "'work' vừa là động từ 'làm việc' vừa là danh từ 'công việc'."
+  },
+  {
+    "id": "q5",
+    "type": "vocab-mcq",
+    "difficulty": "easy",
+    "prompt": "Từ nào thuộc chủ đề Du lịch?",
+    "options": ["travel", "book", "food", "weather"],
+    "answerIndex": 0,
+    "explanation": "'travel' nằm trong chủ đề Du lịch."
+  },
+  {
+    "id": "q6",
+    "type": "vocab-mcq",
+    "difficulty": "easy",
+    "prompt": "'health' nghĩa là gì?",
+    "options": ["sức khỏe", "giàu có", "bệnh viện", "thuốc"],
+    "answerIndex": 0,
+    "explanation": "'health' = sức khỏe."
+  },
+  {
+    "id": "q7",
+    "type": "vocab-mcq",
+    "difficulty": "easy",
+    "prompt": "Chọn câu tiếng Anh đúng: 'Đồ ăn rất ngon.'",
+    "options": [
+      "The food tastes delicious.",
+      "The foods taste delicious.",
+      "The food is deliciouss.",
+      "Food the tastes delicious."
+    ],
+    "answerIndex": 0,
+    "explanation": "Danh từ 'food' không đếm được trong ngữ cảnh chung; 'tastes' hòa hợp với 'food'."
+  },
+  {
+    "id": "q8",
+    "type": "vocab-mcq",
+    "difficulty": "easy",
+    "prompt": "Ví dụ nào dùng từ 'learn' đúng nghĩa?",
+    "options": [
+      "We learn from our mistakes.",
+      "We learn a coffee.",
+      "We learn to home.",
+      "We learn weather."
+    ],
+    "answerIndex": 0,
+    "explanation": "'learn from mistakes' là cụm dùng tự nhiên và đúng."
+  },
+  {
+    "id": "q9",
+    "type": "vocab-mcq",
+    "difficulty": "easy",
+    "prompt": "'friend' nghĩa là gì?",
+    "options": ["bạn; người bạn", "kẻ thù", "hàng xóm", "đồng nghiệp"],
+    "answerIndex": 0,
+    "explanation": "'friend' = bạn; người bạn."
+  },
+  {
+    "id": "q10",
+    "type": "vocab-mcq",
+    "difficulty": "easy",
+    "prompt": "Chọn nghĩa đúng của 'weather'",
+    "options": ["thời tiết", "khí hậu", "mùa", "nhiệt độ"],
+    "answerIndex": 0,
+    "explanation": "'weather' = thời tiết (khái quát)."
+  },
+  {
+    "id": "q11",
+    "type": "sentence-order",
+    "difficulty": "medium",
+    "tokens": ["I", "read", "a", "book", "every", "night"],
+    "answer": "I read a book every night",
+    "explanation": "Trật tự cơ bản: S + V + O + trạng ngữ thời gian."
+  },
+  {
+    "id": "q12",
+    "type": "sentence-order",
+    "difficulty": "medium",
+    "tokens": ["My", "house", "is", "near", "the", "park"],
+    "answer": "My house is near the park",
+    "explanation": "Cấu trúc be + giới từ chỉ vị trí: be near ..."
+  }
+]

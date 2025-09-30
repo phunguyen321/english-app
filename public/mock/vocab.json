@@ -1,0 +1,619 @@
+{
+  "topics": [
+    { "id": "daily", "name": "Sinh hoạt hằng ngày", "level": "A1" },
+    { "id": "travel", "name": "Du lịch", "level": "A2" },
+    { "id": "study", "name": "Học tập & Công việc", "level": "A2" },
+    { "id": "personality", "name": "Tính cách", "level": "B1" }
+  ],
+  "entries": [
+    {
+      "id": "1",
+      "word": "book",
+      "phonetic": "/bʊk/",
+      "meaningVi": "sách",
+      "topicId": "study",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "This book is very interesting.",
+          "vi": "Cuốn sách này rất thú vị."
+        },
+        {
+          "en": "I read a book every night.",
+          "vi": "Tôi đọc một cuốn sách mỗi tối."
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "word": "house",
+      "phonetic": "/haʊs/",
+      "meaningVi": "ngôi nhà",
+      "topicId": "daily",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "My house is near the park.",
+          "vi": "Nhà tôi ở gần công viên."
+        },
+        { "en": "They built a new house.", "vi": "Họ xây một ngôi nhà mới." }
+      ]
+    },
+    {
+      "id": "3",
+      "word": "family",
+      "phonetic": "/ˈfæməli/",
+      "meaningVi": "gia đình",
+      "topicId": "daily",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Family is important to me.",
+          "vi": "Gia đình rất quan trọng với tôi."
+        },
+        {
+          "en": "We have a big family dinner.",
+          "vi": "Chúng tôi có một bữa tối gia đình lớn."
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "word": "work",
+      "phonetic": "/wɜːk/",
+      "meaningVi": "làm việc; công việc",
+      "topicId": "study",
+      "level": "A2",
+      "examples": [
+        {
+          "en": "I work from Monday to Friday.",
+          "vi": "Tôi làm việc từ thứ Hai đến thứ Sáu."
+        },
+        {
+          "en": "Her work is very demanding.",
+          "vi": "Công việc của cô ấy rất áp lực."
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "word": "travel",
+      "phonetic": "/ˈtræv.əl/",
+      "meaningVi": "du lịch",
+      "topicId": "travel",
+      "level": "A2",
+      "examples": [
+        {
+          "en": "I love to travel abroad.",
+          "vi": "Tôi thích đi du lịch nước ngoài."
+        },
+        {
+          "en": "They plan to travel next month.",
+          "vi": "Họ dự định đi du lịch tháng sau."
+        }
+      ]
+    },
+    {
+      "id": "6",
+      "word": "health",
+      "phonetic": "/hɛlθ/",
+      "meaningVi": "sức khỏe",
+      "topicId": "daily",
+      "level": "A2",
+      "examples": [
+        {
+          "en": "Health is more important than wealth.",
+          "vi": "Sức khỏe quan trọng hơn tiền bạc."
+        },
+        {
+          "en": "Exercise is good for your health.",
+          "vi": "Tập thể dục tốt cho sức khỏe."
+        }
+      ]
+    },
+    {
+      "id": "7",
+      "word": "food",
+      "phonetic": "/fuːd/",
+      "meaningVi": "thức ăn",
+      "topicId": "daily",
+      "level": "A1",
+      "examples": [
+        { "en": "The food tastes delicious.", "vi": "Đồ ăn rất ngon." },
+        {
+          "en": "We bought some food at the market.",
+          "vi": "Chúng tôi mua một ít đồ ăn ở chợ."
+        }
+      ]
+    },
+    {
+      "id": "8",
+      "word": "learn",
+      "phonetic": "/lɜːn/",
+      "meaningVi": "học",
+      "topicId": "study",
+      "level": "A2",
+      "examples": [
+        {
+          "en": "I learn English every day.",
+          "vi": "Tôi học tiếng Anh mỗi ngày."
+        },
+        {
+          "en": "We learn from our mistakes.",
+          "vi": "Chúng ta học từ những sai lầm."
+        }
+      ]
+    },
+    {
+      "id": "9",
+      "word": "friend",
+      "phonetic": "/frɛnd/",
+      "meaningVi": "bạn; người bạn",
+      "topicId": "daily",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "He is my best friend.",
+          "vi": "Anh ấy là bạn thân nhất của tôi."
+        },
+        {
+          "en": "We made new friends at school.",
+          "vi": "Chúng tôi kết bạn mới ở trường."
+        }
+      ]
+    },
+    {
+      "id": "10",
+      "word": "weather",
+      "phonetic": "/ˈwɛð.ər/",
+      "meaningVi": "thời tiết",
+      "topicId": "daily",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "The weather is sunny today.",
+          "vi": "Hôm nay thời tiết nắng đẹp."
+        },
+        {
+          "en": "Bad weather can delay flights.",
+          "vi": "Thời tiết xấu có thể làm hoãn chuyến bay."
+        }
+      ]
+    },
+    {
+      "id": "11",
+      "word": "water",
+      "phonetic": "/ˈwɔː.tər/",
+      "meaningVi": "nước (uống)",
+      "topicId": "daily",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Drink plenty of water.",
+          "vi": "Hãy uống nhiều nước."
+        },
+        {
+          "en": "She poured water into the glass.",
+          "vi": "Cô ấy rót nước vào ly."
+        }
+      ]
+    },
+    {
+      "id": "12",
+      "word": "morning",
+      "phonetic": "/ˈmɔː.nɪŋ/",
+      "meaningVi": "buổi sáng",
+      "topicId": "daily",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Good morning, everyone!",
+          "vi": "Chào buổi sáng mọi người!"
+        },
+        {
+          "en": "I exercise in the morning.",
+          "vi": "Tôi tập thể dục vào buổi sáng."
+        }
+      ]
+    },
+    {
+      "id": "13",
+      "word": "bus",
+      "phonetic": "/bʌs/",
+      "meaningVi": "xe buýt",
+      "topicId": "travel",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "We took the bus to the city.",
+          "vi": "Chúng tôi đi xe buýt vào thành phố."
+        },
+        {
+          "en": "The bus stop is over there.",
+          "vi": "Trạm xe buýt ở đằng kia."
+        }
+      ]
+    },
+    {
+      "id": "14",
+      "word": "ticket",
+      "phonetic": "/ˈtɪk.ɪt/",
+      "meaningVi": "vé",
+      "topicId": "travel",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "I bought a train ticket.",
+          "vi": "Tôi đã mua vé tàu."
+        },
+        {
+          "en": "Please show your ticket.",
+          "vi": "Vui lòng xuất trình vé của bạn."
+        }
+      ]
+    },
+    {
+      "id": "15",
+      "word": "airport",
+      "phonetic": "/ˈeə.pɔːt/",
+      "meaningVi": "sân bay",
+      "topicId": "travel",
+      "level": "A2",
+      "examples": [
+        {
+          "en": "We arrived at the airport early.",
+          "vi": "Chúng tôi đến sân bay sớm."
+        },
+        {
+          "en": "The airport is very busy today.",
+          "vi": "Sân bay hôm nay rất đông."
+        }
+      ]
+    },
+    {
+      "id": "16",
+      "word": "teacher",
+      "phonetic": "/ˈtiː.tʃər/",
+      "meaningVi": "giáo viên",
+      "topicId": "study",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "The teacher explains the lesson.",
+          "vi": "Cô giáo giảng bài."
+        },
+        {
+          "en": "He is my English teacher.",
+          "vi": "Anh ấy là giáo viên tiếng Anh của tôi."
+        }
+      ]
+    },
+    {
+      "id": "17",
+      "word": "student",
+      "phonetic": "/ˈstjuː.dənt/",
+      "meaningVi": "học sinh; sinh viên",
+      "topicId": "study",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "She is a university student.",
+          "vi": "Cô ấy là sinh viên đại học."
+        },
+        {
+          "en": "Students have exams next week.",
+          "vi": "Sinh viên có kỳ thi tuần sau."
+        }
+      ]
+    },
+    {
+      "id": "18",
+      "word": "lesson",
+      "phonetic": "/ˈles.ən/",
+      "meaningVi": "bài học",
+      "topicId": "study",
+      "level": "A2",
+      "examples": [
+        {
+          "en": "Today's lesson is about verbs.",
+          "vi": "Bài học hôm nay về động từ."
+        },
+        {
+          "en": "I missed the lesson yesterday.",
+          "vi": "Tôi đã bỏ lỡ bài học hôm qua."
+        }
+      ]
+    },
+    {
+      "id": "19",
+      "word": "market",
+      "phonetic": "/ˈmɑː.kɪt/",
+      "meaningVi": "chợ",
+      "topicId": "daily",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "We went to the market.",
+          "vi": "Chúng tôi đi chợ."
+        },
+        {
+          "en": "The market sells fresh food.",
+          "vi": "Chợ bán đồ ăn tươi."
+        }
+      ]
+    },
+    {
+      "id": "20",
+      "word": "rain",
+      "phonetic": "/reɪn/",
+      "meaningVi": "mưa",
+      "topicId": "daily",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "It may rain this afternoon.",
+          "vi": "Chiều nay có thể mưa."
+        },
+        {
+          "en": "I like the sound of rain.",
+          "vi": "Tôi thích âm thanh của mưa."
+        }
+      ]
+    },
+    {
+      "id": "21",
+      "word": "map",
+      "phonetic": "/mæp/",
+      "meaningVi": "bản đồ",
+      "topicId": "travel",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "He checked the map.",
+          "vi": "Anh ấy kiểm tra bản đồ."
+        },
+        {
+          "en": "Do you have a city map?",
+          "vi": "Bạn có bản đồ thành phố không?"
+        }
+      ]
+    },
+    {
+      "id": "22",
+      "word": "station",
+      "phonetic": "/ˈsteɪ.ʃən/",
+      "meaningVi": "nhà ga",
+      "topicId": "travel",
+      "level": "A2",
+      "examples": [
+        { "en": "Meet me at the station.", "vi": "Gặp tôi ở nhà ga." },
+        { "en": "The station is crowded.", "vi": "Nhà ga rất đông." }
+      ]
+    },
+    {
+      "id": "1001",
+      "word": "absent-minded",
+      "phonetic": "/ˌæbsənt ˈmaɪndɪd/",
+      "pos": "adj",
+      "meaningVi": "đãng trí",
+      "topicId": "personality",
+      "level": "B1",
+      "examples": [
+        {
+          "en": "My grandpa is very absent-minded and often forgets his glasses.",
+          "vi": "Ông tôi rất đãng trí và thường quên mất cặp kính của mình."
+        }
+      ]
+    },
+    {
+      "id": "1002",
+      "word": "adventurous",
+      "phonetic": "/ədˈventʃərəs/",
+      "pos": "adj",
+      "meaningVi": "thích phiêu lưu",
+      "topicId": "personality",
+      "level": "B1",
+      "examples": [
+        {
+          "en": "He is an adventurous person who loves to explore new places.",
+          "vi": "Anh ấy là một người thích phiêu lưu, yêu việc khám phá những vùng đất mới."
+        }
+      ]
+    },
+    {
+      "id": "1003",
+      "word": "aggressive",
+      "phonetic": "/əˈɡresɪv/",
+      "pos": "adj",
+      "meaningVi": "hùng hổ; hung hăng; hiếu chiến",
+      "topicId": "personality",
+      "level": "B1",
+      "examples": [
+        {
+          "en": "The dog was aggressive towards strangers.",
+          "vi": "Con chó tỏ ra hung hăng với người lạ."
+        }
+      ]
+    },
+    {
+      "id": "1004",
+      "word": "ambitious",
+      "phonetic": "/æmˈbɪʃəs/",
+      "pos": "adj",
+      "meaningVi": "đầy tham vọng",
+      "topicId": "personality",
+      "level": "B1",
+      "examples": [
+        {
+          "en": "She is a very ambitious student and wants to be a doctor.",
+          "vi": "Cô ấy là một học sinh rất tham vọng và muốn trở thành bác sĩ."
+        }
+      ]
+    },
+    {
+      "id": "1005",
+      "word": "amusing",
+      "phonetic": "/əˈmjuːzɪŋ/",
+      "pos": "adj",
+      "meaningVi": "làm cho buồn cười; vui nhộn",
+      "topicId": "personality",
+      "level": "B1",
+      "examples": [
+        {
+          "en": "He told us an amusing story about his childhood.",
+          "vi": "Anh ấy đã kể cho chúng tôi một câu chuyện vui nhộn về tuổi thơ của mình."
+        }
+      ]
+    },
+    {
+      "id": "1006",
+      "word": "arrogant",
+      "phonetic": "/ˈærəɡənt/",
+      "pos": "adj",
+      "meaningVi": "kiêu căng; kiêu ngạo",
+      "topicId": "personality",
+      "level": "B1",
+      "examples": [
+        {
+          "en": "His arrogant attitude makes him unpopular.",
+          "vi": "Thái độ kiêu ngạo khiến anh ta không được yêu mến."
+        }
+      ]
+    },
+    {
+      "id": "1007",
+      "word": "brave",
+      "phonetic": "/breɪv/",
+      "pos": "adj",
+      "meaningVi": "dũng cảm",
+      "topicId": "personality",
+      "level": "A2",
+      "examples": [
+        {
+          "en": "The brave firefighter rescued the cat from the tree.",
+          "vi": "Người lính cứu hỏa dũng cảm đã cứu con mèo khỏi cái cây."
+        }
+      ]
+    },
+    {
+      "id": "1008",
+      "word": "bright",
+      "phonetic": "/braɪt/",
+      "pos": "adj",
+      "meaningVi": "sáng dạ; thông minh",
+      "topicId": "personality",
+      "level": "A2",
+      "examples": [
+        {
+          "en": "She is a bright student who always gets high scores.",
+          "vi": "Cô ấy là một học sinh thông minh và luôn đạt điểm cao."
+        }
+      ]
+    },
+    {
+      "id": "1009",
+      "word": "careless",
+      "phonetic": "/ˈkeələs/",
+      "pos": "adj",
+      "meaningVi": "bất cẩn; cẩu thả",
+      "topicId": "personality",
+      "level": "A2",
+      "examples": [
+        {
+          "en": "He made a careless mistake on the test.",
+          "vi": "Anh ấy đã mắc một lỗi bất cẩn trong bài kiểm tra."
+        }
+      ]
+    },
+    {
+      "id": "1010",
+      "word": "cheeky",
+      "phonetic": "/ˈtʃiːki/",
+      "pos": "adj",
+      "meaningVi": "hỗn xược",
+      "topicId": "personality",
+      "level": "B1",
+      "examples": [
+        {
+          "en": "The cheeky child talked back to his mother.",
+          "vi": "Đứa trẻ hỗn xược đã cãi lại mẹ nó."
+        }
+      ]
+    },
+    {
+      "id": "1011",
+      "word": "clever",
+      "phonetic": "/ˈklevə(r)/",
+      "pos": "adj",
+      "meaningVi": "thông minh; lanh lợi",
+      "topicId": "personality",
+      "level": "A2",
+      "examples": [
+        {
+          "en": "The clever fox found a way to open the gate.",
+          "vi": "Con cáo thông minh đã tìm ra cách để mở cổng."
+        }
+      ]
+    },
+    {
+      "id": "1012",
+      "word": "confident",
+      "phonetic": "/ˈkɒnfɪdənt/",
+      "pos": "adj",
+      "meaningVi": "tự tin",
+      "topicId": "personality",
+      "level": "A2",
+      "examples": [
+        {
+          "en": "She is confident about her ability to win the competition.",
+          "vi": "Cô ấy tự tin về khả năng chiến thắng cuộc thi của mình."
+        }
+      ]
+    },
+    {
+      "id": "1013",
+      "word": "cowardly",
+      "phonetic": "/ˈkaʊədli/",
+      "pos": "adj",
+      "meaningVi": "nhát gan",
+      "topicId": "personality",
+      "level": "B1",
+      "examples": [
+        {
+          "en": "Running away was a cowardly thing to do.",
+          "vi": "Bỏ chạy là một hành động nhát gan."
+        }
+      ]
+    },
+    {
+      "id": "1014",
+      "word": "decisive",
+      "phonetic": "/dɪˈsaɪsɪv/",
+      "pos": "adj",
+      "meaningVi": "kiên quyết; dứt khoát; quyết đoán",
+      "topicId": "personality",
+      "level": "B1",
+      "examples": [
+        {
+          "en": "A good leader must be decisive.",
+          "vi": "Một nhà lãnh đạo giỏi phải quyết đoán."
+        }
+      ]
+    },
+    {
+      "id": "1015",
+      "word": "easy-going",
+      "phonetic": "/ˌiːzi ˈɡəʊɪŋ/",
+      "pos": "adj",
+      "meaningVi": "dịu dàng; dễ tính; dễ gần",
+      "topicId": "personality",
+      "level": "B1",
+      "examples": [
+        {
+          "en": "My new boss is very easy-going and friendly.",
+          "vi": "Sếp mới của tôi rất dễ gần và thân thiện."
+        }
+      ]
+    }
+  ]
+}
