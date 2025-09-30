@@ -91,16 +91,16 @@ const vocabSlice = createSlice({
       state.flashcard.showAnswer = !state.flashcard.showAnswer;
     },
   },
-  extraReducers: (builder: any) => {
+  extraReducers: (builder) => {
     builder
-      .addCase(loadVocab.pending, (state: VocabState) => {
+      .addCase(loadVocab.pending, (state) => {
         state.status = "loading";
         state.error = undefined;
       })
       .addCase(
         loadVocab.fulfilled,
         (
-          state: VocabState,
+          state,
           action: PayloadAction<{ topics: VocabTopic[]; entries: VocabEntry[] }>
         ) => {
           state.status = "succeeded";
@@ -117,9 +117,9 @@ const vocabSlice = createSlice({
           };
         }
       )
-      .addCase(loadVocab.rejected, (state: VocabState, action: any) => {
+      .addCase(loadVocab.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action?.error?.message;
+        state.error = action.error?.message;
       });
   },
 });

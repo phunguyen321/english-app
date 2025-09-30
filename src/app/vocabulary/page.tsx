@@ -21,18 +21,14 @@ import {
   Chip,
   LinearProgress,
   InputAdornment,
-  IconButton,
-  Tooltip,
   Divider,
   Switch,
   FormControlLabel,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import ShuffleIcon from "@mui/icons-material/Shuffle";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import StopIcon from "@mui/icons-material/Stop";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import LabelOutlinedIcon from "@mui/icons-material/LabelOutlined";
@@ -56,7 +52,7 @@ export default function VocabularyPage() {
   const [dragX, setDragX] = useState(0);
   const [dragging, setDragging] = useState(false);
   const cardRef = useRef<HTMLDivElement | null>(null);
-  const [cardW, setCardW] = useState(480);
+  const [cardW] = useState(480);
   const [anim, setAnim] = useState<
     | "idle"
     | "leaving-left"
@@ -508,7 +504,8 @@ export default function VocabularyPage() {
                 <Stack spacing={2}>
                   <Typography color="text.secondary">
                     Danh sách từ vựng theo bộ lọc hiện tại (chủ đề + phạm vi).
-                    Bấm "Bắt đầu học Flashcards" để chuyển sang chế độ thẻ.
+                    Bấm &quot;Bắt đầu học Flashcards&quot; để chuyển sang chế độ
+                    thẻ.
                   </Typography>
                   {filteredIndices.length === 0 ? (
                     <Typography>Hãy chọn ít nhất một chủ đề.</Typography>

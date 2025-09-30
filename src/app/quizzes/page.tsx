@@ -24,8 +24,9 @@ import {
 
 export default function QuizzesPage() {
   const dispatch = useAppDispatch();
-  const quizState = useAppSelector((s: RootState) => s.quiz);
-  const { questions, status, userAnswers, result } = quizState as any;
+  const { questions, status, userAnswers, result } = useAppSelector(
+    (s: RootState) => s.quiz
+  );
 
   useEffect(() => {
     if (status === "idle") dispatch(loadQuizzes());
@@ -38,7 +39,7 @@ export default function QuizzesPage() {
       </Typography>
       {status === "loading" && <LinearProgress />}
       <Stack spacing={2}>
-        {questions.map((q: any) => (
+        {questions.map((q) => (
           <Card key={q.id}>
             <CardContent>
               <Stack
@@ -112,17 +113,16 @@ export default function QuizzesPage() {
               {result && (
                 <Typography
                   color={
-                    result.details.find((d: any) => d.id === q.id)?.correct
+                    result.details.find((d) => d.id === q.id)?.correct
                       ? "success.main"
                       : "error.main"
                   }
                   sx={{ mt: 1 }}
                 >
-                  {result.details.find((d: any) => d.id === q.id)?.correct
+                  {result.details.find((d) => d.id === q.id)?.correct
                     ? "Đúng"
                     : "Sai"}{" "}
-                  —{" "}
-                  {result.details.find((d: any) => d.id === q.id)?.explanation}
+                  — {result.details.find((d) => d.id === q.id)?.explanation}
                 </Typography>
               )}
             </CardContent>

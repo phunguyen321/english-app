@@ -13,12 +13,11 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useAppDispatch, useAppSelector, type RootState } from "@/store";
 import { loadGrammar } from "@/store/slices/grammarSlice";
+import { GrammarTopic } from "@/types";
 
 export default function GrammarPage() {
   const dispatch = useAppDispatch();
-  const grammarState = useAppSelector((s: RootState) => s.grammar);
-  const { topics, status } =
-    grammarState || ({ topics: [], status: "idle" } as any);
+  const { topics, status } = useAppSelector((s: RootState) => s.grammar);
 
   useEffect(() => {
     if (status === "idle") dispatch(loadGrammar());
@@ -31,7 +30,7 @@ export default function GrammarPage() {
       </Typography>
       {status === "loading" && <LinearProgress />}
       <Stack spacing={1}>
-        {topics.map((g: any) => (
+        {topics.map((g: GrammarTopic) => (
           <Accordion key={g.id} disableGutters>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Stack direction="row" spacing={1} alignItems="center">
@@ -44,7 +43,7 @@ export default function GrammarPage() {
                 {g.brief}
               </Typography>
               <Stack spacing={1}>
-                {g.points.map((p: any, idx: number) => (
+                {g.points.map((p, idx: number) => (
                   <Box key={idx}>
                     <Typography>• {p.rule}</Typography>
                     <Typography color="text.secondary">

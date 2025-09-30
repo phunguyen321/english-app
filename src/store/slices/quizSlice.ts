@@ -73,17 +73,20 @@ const quizSlice = createSlice({
       state.result = undefined;
     },
   },
-  extraReducers: (builder: any) => {
+  extraReducers: (builder) => {
     builder
-      .addCase(loadQuizzes.pending, (state: QuizState) => {
+      .addCase(loadQuizzes.pending, (state) => {
         state.status = "loading";
         state.error = undefined;
       })
-      .addCase(loadQuizzes.fulfilled, (state: QuizState, action: any) => {
-        state.status = "succeeded";
-        state.questions = action.payload as AnyQuizQuestion[];
-      })
-      .addCase(loadQuizzes.rejected, (state: QuizState, action: any) => {
+      .addCase(
+        loadQuizzes.fulfilled,
+        (state, action: PayloadAction<AnyQuizQuestion[]>) => {
+          state.status = "succeeded";
+          state.questions = action.payload;
+        }
+      )
+      .addCase(loadQuizzes.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });
