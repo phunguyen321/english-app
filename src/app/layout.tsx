@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "English Learner",
   description: "Học tiếng Anh với Từ vựng, Ngữ pháp, Bài tập",
+  icons: {
+    icon: "/english-learn.svg",
+  },
 };
 
 export default function RootLayout({
