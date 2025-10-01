@@ -474,6 +474,9 @@ function ExampleList({
 }
 
 // Vocabulary list component
+import type { VocabEntry } from "@/types";
+type KnowledgeState = "unknown" | "learning" | "known";
+
 function VocabularyList({
   entries,
   order,
@@ -486,9 +489,9 @@ function VocabularyList({
   onMarkLearning,
   onMarkUnknown,
 }: {
-  entries: any[];
+  entries: VocabEntry[];
   order: number[];
-  knowledge: Record<string, string>;
+  knowledge: Record<string, KnowledgeState>;
   topicName: Record<string, string>;
   search: string;
   showExamples: boolean;
@@ -502,7 +505,7 @@ function VocabularyList({
       {order.map((idx, i) => {
         const e = entries[idx];
         if (!e) return null;
-        const k = (knowledge[e.id] as any) || "unknown";
+        const k: KnowledgeState = knowledge[e.id] || "unknown";
         if (compact) {
           return (
             <Box

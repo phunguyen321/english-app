@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
@@ -86,12 +87,13 @@ export default function Sidebar({ expanded, onClose, onToggle }: SidebarProps) {
         <Box
           sx={{ position: "relative", width: 32, height: 32, flexShrink: 0 }}
         >
-          <img
+          <Image
             src="/english-learn.svg"
             alt="Logo"
             width={32}
             height={32}
             style={{ borderRadius: 8, display: "block" }}
+            priority
           />
         </Box>
         <Typography

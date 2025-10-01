@@ -15,7 +15,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useAppDispatch, useAppSelector, type RootState } from "@/store";
 import { loadGrammar } from "@/store/slices/grammarSlice";
-import { GrammarTopic } from "@/types";
+// Removed unused GrammarTopic type import to satisfy no-unused-vars lint rule
 
 export default function GrammarPage() {
   const dispatch = useAppDispatch();
