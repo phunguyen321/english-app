@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import AppProviders from "@/providers";
+import RootLayoutClient from "./RootLayoutClient";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,22 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <AppProviders>{children}</AppProviders>
-        <footer
-          style={{
-            marginTop: 48,
-            padding: "20px 0 10px 0",
-            textAlign: "center",
-            color: "#888",
-            fontSize: 15,
-            fontStyle: "italic",
-            letterSpacing: 1,
-            background: "transparent",
-            lineHeight: 1.6,
-          }}
-        >
-          Phú Nguyễn © {new Date().getFullYear()}. All rights reserved.
-        </footer>
+        <RootLayoutClient>{children}</RootLayoutClient>
       </body>
     </html>
   );
