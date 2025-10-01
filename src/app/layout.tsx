@@ -16,9 +16,12 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "English Learner",
   description: "Học tiếng Anh với Từ vựng, Ngữ pháp, Bài tập",
-  icons: {
-    icon: "/english-learn.svg",
-  },
+  icons: [
+    { rel: "icon", url: "/english-learn.svg" },
+    { rel: "icon", url: "/english-learn.png", sizes: "192x192" },
+    { rel: "icon", url: "/english-learn.png", sizes: "512x512" },
+    { rel: "apple-touch-icon", url: "/apple-touch-icon.png" },
+  ],
 };
 
 export default function RootLayout({

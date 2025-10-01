@@ -75,30 +75,85 @@ export default function GrammarPage() {
           <Tab key={g.label} label={g.label} />
         ))}
       </Tabs>
-      <Stack spacing={1}>
+      <Stack spacing={2}>
         {tenses.map((group, idx) =>
           tab === idx
             ? tenseTopics
                 .filter((t) => group.ids.includes(t.id))
-                .map((g) => (
-                  <Accordion key={g.id} disableGutters>
+                .map((g, i) => (
+                  <Accordion
+                    key={g.id}
+                    disableGutters
+                    sx={{
+                      borderRadius: 2,
+                      boxShadow: 1,
+                      mb: 1,
+                      bgcolor:
+                        idx === 0
+                          ? "#e3f2fd"
+                          : idx === 1
+                          ? "#f3e5f5"
+                          : "#e8f5e9",
+                    }}
+                  >
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <Stack direction="row" spacing={1} alignItems="center">
-                        <Chip size="small" label={g.category} />
-                        <Typography variant="h6">{g.title}</Typography>
+                        <Chip size="small" label={g.category} color="primary" />
+                        <Typography variant="h6" fontWeight={700}>
+                          {`${i + 1}. ${g.title}`}
+                        </Typography>
                       </Stack>
                     </AccordionSummary>
                     <AccordionDetails>
-                      <Typography color="text.secondary" sx={{ mb: 1 }}>
+                      <Typography
+                        color="text.secondary"
+                        sx={{ mb: 1, fontStyle: "italic" }}
+                      >
                         {g.brief}
                       </Typography>
-                      <Stack spacing={1}>
-                        {g.points.map((p, idx: number) => (
-                          <Box key={idx}>
-                            <Typography>• {p.rule}</Typography>
-                            <Typography color="text.secondary">
-                              Ví dụ: {p.example.en} — {p.example.vi}
+                      <Stack spacing={2}>
+                        {g.points.map((p, idx2) => (
+                          <Box
+                            key={idx2}
+                            sx={{
+                              bgcolor: "#fff",
+                              borderRadius: 1,
+                              p: 2,
+                              boxShadow: 0,
+                              borderLeft: "4px solid #1976d2",
+                              mb: 1,
+                            }}
+                          >
+                            <Typography
+                              fontWeight={600}
+                              sx={{ color: "#1976d2", mb: 0.5 }}
+                            >
+                              {p.rule
+                                .replace(/^Khẳng định:/i, "✅")
+                                .replace(/^Phủ định:/i, "❌")
+                                .replace(/^Nghi vấn:/i, "❓")}
                             </Typography>
+                            <Stack
+                              direction="row"
+                              spacing={1}
+                              alignItems="center"
+                            >
+                              <Box
+                                sx={{ color: "#43a047", fontSize: 20, mr: 1 }}
+                              >
+                                💡
+                              </Box>
+                              <Typography>
+                                <b>Ví dụ:</b>{" "}
+                                <span style={{ color: "#1565c0" }}>
+                                  {p.example.en}
+                                </span>{" "}
+                                —{" "}
+                                <span style={{ color: "#6d4c41" }}>
+                                  {p.example.vi}
+                                </span>
+                              </Typography>
+                            </Stack>
                           </Box>
                         ))}
                       </Stack>
