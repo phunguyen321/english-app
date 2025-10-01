@@ -1,13 +1,17 @@
 "use client";
-import { useEffect, useMemo, useState, useRef } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector, type RootState } from "@/store";
 import {
   loadVocab,
-  nextCard,
-  prevCard,
   shuffleFlashcards,
   toggleAnswer,
   setFlashcardSubset,
+  nextCard,
+  prevCard,
+  markKnown,
+  markLearning,
+  markUnknown,
+  loadKnowledge,
 } from "@/store/slices/vocabSlice";
 import {
   Box,
@@ -21,27 +25,29 @@ import {
   Chip,
   LinearProgress,
   InputAdornment,
-  Divider,
   Switch,
   FormControlLabel,
+  ToggleButtonGroup,
+  ToggleButton,
+  Tooltip,
+  Divider,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ShuffleIcon from "@mui/icons-material/Shuffle";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import LabelOutlinedIcon from "@mui/icons-material/LabelOutlined";
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import FormatQuoteRoundedIcon from "@mui/icons-material/FormatQuoteRounded";
-import { alpha } from "@mui/material/styles";
+import FlashcardView from "./FlashcardView";
 
 export default function VocabularyPage() {
   const dispatch = useAppDispatch();
-  const { topics, entries, status, flashcard } = useAppSelector(
+  const { topics, entries, status, flashcard, knowledge } = useAppSelector(
     (s: RootState) => s.vocab
   );
 
+  // UI state
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [search, setSearch] = useState("");
   const [showExamples, setShowExamples] = useState(true);
@@ -49,194 +55,110 @@ export default function VocabularyPage() {
   const [end, setEnd] = useState(50);
   const [flashMode, setFlashMode] = useState(false);
   const [shuffleTopicMix, setShuffleTopicMix] = useState(false);
-  const [dragX, setDragX] = useState(0);
-  const [dragging, setDragging] = useState(false);
-  const cardRef = useRef<HTMLDivElement | null>(null);
-  const [cardW] = useState(480);
-  const [anim, setAnim] = useState<
-    | "idle"
-    | "leaving-left"
-    | "leaving-right"
-    | "entering-left"
-    | "entering-right"
-  >("idle");
-  // Pointer tracking refs for precision
-  const pDown = useRef(false);
-  const startXRef = useRef(0);
-  const startTRef = useRef(0);
-  const lastXRef = useRef(0);
-  const lastTRef = useRef(0);
-  const prevXRef = useRef(0);
-  const prevTRef = useRef(0);
+  const [filterLevels, setFilterLevels] = useState<string[]>([]);
+  const [knowledgeFilter, setKnowledgeFilter] = useState<
+    "all" | "unknown" | "learning" | "known"
+  >("all");
+  const [compact, setCompact] = useState(false);
 
-  // Fixed animation + cue (smooth + gradient + soft)
-  const transitionMs = 260;
-  const leaveMs = 220;
-  const enterMs = 280;
-  const easing = "cubic-bezier(.22,.61,.36,1)";
-  const enterOffsetFactor = 0.35;
-
-  // Dynamic thresholds based on card width
-  const SWIPE_DIST = Math.max(80, Math.round((cardW || 480) * 0.18));
-  const SWIPE_VEL = 0.4;
-
+  // Initial load
   useEffect(() => {
     if (status === "idle") dispatch(loadVocab());
   }, [status, dispatch]);
 
+  // Load persisted knowledge
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("vocabKnowledge");
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === "object")
+          dispatch(loadKnowledge(parsed));
+      }
+    } catch {}
+  }, [dispatch]);
+
+  // Persist knowledge
+  useEffect(() => {
+    try {
+      localStorage.setItem("vocabKnowledge", JSON.stringify(knowledge));
+    } catch {}
+  }, [knowledge]);
+
+  // Recompute subset order whenever filters change
   useEffect(() => {
     const n = entries.length;
-    if (n === 0) return;
+    if (!n) return;
     const s = Math.max(1, Math.min(start, n));
     const e = Math.max(s, Math.min(end, n));
-    const allIndices = Array.from({ length: e - s + 1 }, (_, i) => i + (s - 1));
-
-    const byTopic = selectedTopics.length
-      ? allIndices.filter((i) => selectedTopics.includes(entries[i].topicId))
-      : allIndices;
-
-    const bySearch = search.trim()
-      ? byTopic.filter((i) => {
-          const it = entries[i];
-          const needle = search.toLowerCase();
-          return (
-            it.word.toLowerCase().includes(needle) ||
-            it.meaningVi.toLowerCase().includes(needle) ||
-            (it.examples || []).some(
-              (ex) =>
-                ex.en.toLowerCase().includes(needle) ||
-                ex.vi.toLowerCase().includes(needle)
-            )
-          );
-        })
-      : byTopic;
-
-    const finalOrder = shuffleTopicMix ? shuffleSimple(bySearch) : bySearch;
+    let pipeline = Array.from({ length: e - s + 1 }, (_, i) => i + (s - 1));
+    if (selectedTopics.length)
+      pipeline = pipeline.filter((i) =>
+        selectedTopics.includes(entries[i].topicId)
+      );
+    if (filterLevels.length)
+      pipeline = pipeline.filter((i) =>
+        filterLevels.includes(entries[i].level)
+      );
+    // POS filter removed
+    if (knowledgeFilter !== "all")
+      pipeline = pipeline.filter(
+        (i) => (knowledge[entries[i].id] || "unknown") === knowledgeFilter
+      );
+    if (search.trim()) {
+      const needle = search.toLowerCase();
+      pipeline = pipeline.filter((i) => {
+        const it = entries[i];
+        return (
+          it.word.toLowerCase().includes(needle) ||
+          it.meaningVi.toLowerCase().includes(needle) ||
+          (it.examples || []).some(
+            (ex) =>
+              ex.en.toLowerCase().includes(needle) ||
+              ex.vi.toLowerCase().includes(needle)
+          )
+        );
+      });
+    }
+    const finalOrder = shuffleTopicMix ? shuffleSimple(pipeline) : pipeline;
     dispatch(setFlashcardSubset(finalOrder));
-  }, [entries, start, end, selectedTopics, search, shuffleTopicMix, dispatch]);
+  }, [
+    entries,
+    start,
+    end,
+    selectedTopics,
+    search,
+    shuffleTopicMix,
+    filterLevels,
+    knowledgeFilter,
+    knowledge,
+    dispatch,
+  ]);
 
-  const topicName: Record<string, string> = useMemo(() => {
+  const topicName = useMemo(() => {
     const map: Record<string, string> = {};
     for (const t of topics) map[t.id] = t.name;
     return map;
   }, [topics]);
 
-  const filteredIndices = flashcard.order;
-  const current = entries[filteredIndices[flashcard.index]];
+  const current = entries[flashcard.order[flashcard.index]];
 
   const startFlashcards = () => {
     setFlashMode(true);
     dispatch(shuffleFlashcards());
   };
 
-  const bounceToCenter = () => {
-    setDragging(false);
-    setAnim("idle");
-    setDragX(0);
-  };
-
-  const animateSwipe = (dir: "left" | "right") => {
-    const dist = (cardW || 480) + 80;
-    setDragging(false);
-    if (dir === "left") {
-      setAnim("leaving-left");
-      setDragX(-dist);
-      setTimeout(() => {
-        dispatch(nextCard());
-        setAnim("entering-right");
-        setDragX(dist * enterOffsetFactor);
-        requestAnimationFrame(() => {
-          setDragX(0);
-          setTimeout(() => setAnim("idle"), enterMs);
-        });
-      }, leaveMs);
-    } else {
-      setAnim("leaving-right");
-      setDragX(dist);
-      setTimeout(() => {
-        dispatch(prevCard());
-        setAnim("entering-left");
-        setDragX(-dist * enterOffsetFactor);
-        requestAnimationFrame(() => {
-          setDragX(0);
-          setTimeout(() => setAnim("idle"), enterMs);
-        });
-      }, leaveMs);
-    }
-  };
-
-  // Precise pointer-based drag (mouse + touch)
-  const TAP_SLOP = 6;
-  const TAP_MS = 250;
-  const onPointerDown = (e: React.PointerEvent) => {
-    const el = e.currentTarget as HTMLElement;
-    el.setPointerCapture?.(e.pointerId);
-    pDown.current = true;
-    setDragging(true);
-    startXRef.current = e.clientX;
-    startTRef.current = Date.now();
-    lastXRef.current = e.clientX;
-    lastTRef.current = startTRef.current;
-    prevXRef.current = e.clientX;
-    prevTRef.current = startTRef.current;
-  };
-  const onPointerMove = (e: React.PointerEvent) => {
-    if (!pDown.current) return;
-    const dx = e.clientX - startXRef.current;
-    const max = Math.round((cardW || 480) * 0.35);
-    setDragX(Math.max(-max, Math.min(max, dx)));
-    // track velocity using recent step
-    prevXRef.current = lastXRef.current;
-    prevTRef.current = lastTRef.current;
-    lastXRef.current = e.clientX;
-    lastTRef.current = Date.now();
-  };
-  const onPointerUp = (e: React.PointerEvent) => {
-    if (!pDown.current) return;
-    const dtRecent = Math.max(1, lastTRef.current - prevTRef.current);
-    const vxRecent = (lastXRef.current - prevXRef.current) / dtRecent; // px/ms
-    const vx = vxRecent * 1000; // px/s approx
-    const dx = dragX;
-    pDown.current = false;
-    const now = Date.now();
-    const tap = Math.abs(dx) < TAP_SLOP && now - startTRef.current < TAP_MS;
-    if (tap) {
-      dispatch(toggleAnswer());
-      bounceToCenter();
-      return;
-    }
-    if (vx < -SWIPE_VEL * 1000 || dx < -SWIPE_DIST) {
-      animateSwipe("left");
-    } else if (vx > SWIPE_VEL * 1000 || dx > SWIPE_DIST) {
-      animateSwipe("right");
-    } else {
-      bounceToCenter();
-    }
-  };
-
-  // Opacity for background color cues (soft)
-  const alphaCap = 0.22;
-  const leavingAlpha = 0.14;
-  const leftAlpha =
-    dragging && dragX < 0
-      ? Math.min(alphaCap, (Math.abs(dragX) / Math.max(120, cardW)) * 0.9)
-      : anim === "leaving-left"
-      ? leavingAlpha
-      : 0;
-  const rightAlpha =
-    dragging && dragX > 0
-      ? Math.min(alphaCap, (Math.abs(dragX) / Math.max(120, cardW)) * 0.9)
-      : anim === "leaving-right"
-      ? leavingAlpha
-      : 0;
-
   return (
     <Box>
       <Typography variant="h4" gutterBottom>
         Từ vựng thông dụng
       </Typography>
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+        Đã lọc: {flashcard.order.length} từ
+      </Typography>
       {status === "loading" && <LinearProgress />}
 
+      {/* Top controls */}
       <Card variant="outlined" sx={{ mb: 2 }}>
         <CardContent>
           <Stack
@@ -306,6 +228,15 @@ export default function VocabularyPage() {
                 </Stack>
               }
             />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={compact}
+                  onChange={(e) => setCompact(e.target.checked)}
+                />
+              }
+              label="Danh sách gọn"
+            />
             <Stack direction="row" spacing={1} sx={{ ml: { md: "auto" } }}>
               <Button
                 variant="contained"
@@ -325,268 +256,21 @@ export default function VocabularyPage() {
           </Stack>
         </CardContent>
       </Card>
+
       <Stack
-        direction={{ xs: "column", md: "row" }}
+        direction={{ xs: "column", lg: "row" }}
         spacing={2}
-        alignItems="stretch"
+        alignItems="flex-start"
       >
-        <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Card sx={{ p: 2, height: "100%" }}>
-            <CardContent>
-              {flashMode ? (
-                <Stack spacing={2} alignItems="center">
-                  <Typography variant="h6">Flash Card</Typography>
-                  <Box
-                    sx={{
-                      position: "relative",
-                      width: "100%",
-                      maxWidth: 560,
-                      minHeight: 160,
-                    }}
-                  >
-                    {/* Colored background overlays */}
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        inset: 0,
-                        overflow: "hidden",
-                        borderRadius: 2,
-                        zIndex: 0,
-                      }}
-                    >
-                      <>
-                        <Box
-                          sx={{
-                            position: "absolute",
-                            inset: "0 50% 0 0",
-                            transition: "opacity 160ms",
-                            opacity: leftAlpha ? 1 : 0,
-                            background: (t) =>
-                              `linear-gradient(to right, ${alpha(
-                                t.palette.error.main,
-                                leftAlpha
-                              )} 0%, ${alpha(
-                                t.palette.error.main,
-                                Math.max(0, leftAlpha - 0.12)
-                              )} 25%, transparent 85%)`,
-                          }}
-                        />
-                        <Box
-                          sx={{
-                            position: "absolute",
-                            inset: "0 0 0 50%",
-                            transition: "opacity 160ms",
-                            opacity: rightAlpha ? 1 : 0,
-                            background: (t) =>
-                              `linear-gradient(to left, ${alpha(
-                                t.palette.success.main,
-                                rightAlpha
-                              )} 0%, ${alpha(
-                                t.palette.success.main,
-                                Math.max(0, rightAlpha - 0.12)
-                              )} 25%, transparent 85%)`,
-                          }}
-                        />
-                      </>
-                    </Box>
-
-                    {/* Dragging card */}
-                    <Box
-                      ref={cardRef}
-                      sx={{
-                        position: "relative",
-                        zIndex: 1,
-                        borderRadius: 2,
-                        px: 2,
-                        py: 1,
-                        touchAction: "pan-y",
-                        transform: `translateX(${dragX}px) rotate(${
-                          dragX / 28
-                        }deg)`,
-                        transition: dragging
-                          ? "none"
-                          : `transform ${transitionMs}ms ${easing}, opacity ${transitionMs}ms ease`,
-                        opacity:
-                          anim.startsWith("leaving") ||
-                          anim.startsWith("entering")
-                            ? 0.98
-                            : 1,
-                        backgroundColor: "background.paper",
-                        boxShadow: (theme) => theme.shadows[2],
-                      }}
-                      onPointerDown={onPointerDown}
-                      onPointerMove={onPointerMove}
-                      onPointerUp={onPointerUp}
-                      onPointerCancel={onPointerUp}
-                    >
-                      <Typography variant="h3" textAlign="center">
-                        {current?.word}
-                      </Typography>
-                      <Typography color="text.secondary" textAlign="center">
-                        {current?.phonetic}
-                        {current?.pos ? ` • ${current.pos}` : ""}
-                      </Typography>
-                      {flashcard.showAnswer && (
-                        <Stack spacing={1} sx={{ width: "100%", mt: 1 }}>
-                          <Divider />
-                          <Typography
-                            variant="h6"
-                            textAlign="center"
-                            noWrap={false}
-                            sx={{
-                              whiteSpace: "normal",
-                              wordBreak: "break-word",
-                              overflow: "visible",
-                              textOverflow: "unset",
-                              fontSize: { xs: "1rem", sm: "1.125rem" },
-                              px: 1,
-                            }}
-                          >
-                            {current?.meaningVi}
-                          </Typography>
-                          {showExamples && (
-                            <ExampleList
-                              examples={current?.examples}
-                              max={2}
-                              alignCenter
-                            />
-                          )}
-                        </Stack>
-                      )}
-                    </Box>
-
-                    {/* Arrow overlays */}
-                    <Box
-                      sx={{
-                        pointerEvents: "none",
-                        position: "absolute",
-                        inset: 0,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        px: 1,
-                        zIndex: 2,
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          opacity:
-                            dragging && dragX < 0
-                              ? Math.min(1, Math.abs(dragX) / 80)
-                              : 0,
-                          transition: "opacity 120ms",
-                        }}
-                      >
-                        <ChevronLeftIcon
-                          sx={{ fontSize: 48, color: "text.secondary" }}
-                        />
-                      </Box>
-                      <Box
-                        sx={{
-                          opacity:
-                            dragging && dragX > 0
-                              ? Math.min(1, Math.abs(dragX) / 80)
-                              : 0,
-                          transition: "opacity 120ms",
-                        }}
-                      >
-                        <ChevronRightIcon
-                          sx={{ fontSize: 48, color: "text.secondary" }}
-                        />
-                      </Box>
-                    </Box>
-                  </Box>
-                  <Typography variant="caption" color="text.secondary">
-                    Vuốt trái/phải • Chạm để hiện nghĩa
-                  </Typography>
-                </Stack>
-              ) : (
-                <Stack spacing={2}>
-                  <Typography color="text.secondary">
-                    Danh sách từ vựng theo bộ lọc hiện tại (chủ đề + phạm vi).
-                    Bấm &quot;Bắt đầu học Flashcards&quot; để chuyển sang chế độ
-                    thẻ.
-                  </Typography>
-                  {filteredIndices.length === 0 ? (
-                    <Typography>Hãy chọn ít nhất một chủ đề.</Typography>
-                  ) : (
-                    <Stack spacing={2}>
-                      {filteredIndices.map((idx, i) => {
-                        const e = entries[idx];
-                        return (
-                          <Card key={`${idx}-${e.word}`} variant="outlined">
-                            <CardHeader
-                              title={e.word}
-                              subheader={
-                                e.phonetic
-                                  ? `${e.phonetic}${e.pos ? " • " + e.pos : ""}`
-                                  : e.pos || undefined
-                              }
-                              action={
-                                <Stack
-                                  direction="row"
-                                  spacing={1}
-                                  alignItems="center"
-                                >
-                                  <Chip
-                                    size="small"
-                                    icon={<LabelOutlinedIcon />}
-                                    variant="outlined"
-                                    label={topicName[e.topicId] || e.topicId}
-                                  />
-                                  <Chip
-                                    size="small"
-                                    icon={<SchoolOutlinedIcon />}
-                                    color="info"
-                                    label={e.level}
-                                  />
-                                </Stack>
-                              }
-                            />
-                            <CardContent>
-                              <Stack spacing={1}>
-                                <Typography
-                                  noWrap={false}
-                                  sx={{
-                                    whiteSpace: "normal",
-                                    wordBreak: "break-word",
-                                    overflow: "visible",
-                                    textOverflow: "unset",
-                                  }}
-                                >
-                                  {e.meaningVi}
-                                </Typography>
-                                {showExamples && e.examples?.length ? (
-                                  <ExampleList
-                                    examples={e.examples}
-                                    max={1}
-                                    dense
-                                  />
-                                ) : null}
-                                <Typography
-                                  variant="caption"
-                                  color="text.secondary"
-                                >
-                                  #{i + 1}
-                                </Typography>
-                              </Stack>
-                            </CardContent>
-                          </Card>
-                        );
-                      })}
-                    </Stack>
-                  )}
-                </Stack>
-              )}
-            </CardContent>
-          </Card>
-        </Box>
-
-        <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Card sx={{ p: 2, height: "100%" }}>
+        {/* Sidebar */}
+        <Box sx={{ width: { xs: "100%", lg: 320 }, flexShrink: 0 }}>
+          <Card
+            variant="outlined"
+            sx={{ position: { lg: "sticky" }, top: { lg: 16 } }}
+          >
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Chọn chủ đề để học
+                Chủ đề
               </Typography>
               <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mb: 1 }}>
                 {topics.map((t) => {
@@ -594,10 +278,11 @@ export default function VocabularyPage() {
                   return (
                     <Chip
                       key={t.id}
+                      size="small"
                       clickable
                       color={active ? "primary" : "default"}
                       variant={active ? "filled" : "outlined"}
-                      label={`${t.name} (${t.level})`}
+                      label={t.name}
                       onClick={() =>
                         setSelectedTopics((prev) =>
                           prev.includes(t.id)
@@ -609,17 +294,88 @@ export default function VocabularyPage() {
                   );
                 })}
               </Stack>
-              <Stack direction="row" spacing={1}>
+              <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
                 <Button
                   size="small"
                   onClick={() => setSelectedTopics(topics.map((t) => t.id))}
                 >
-                  Chọn tất cả
+                  Tất cả
                 </Button>
                 <Button size="small" onClick={() => setSelectedTopics([])}>
-                  Bỏ chọn
+                  Xóa
                 </Button>
               </Stack>
+              {/* POS filter removed */}
+              <Divider sx={{ my: 1 }} />
+              <Typography variant="subtitle2" gutterBottom>
+                Trạng thái học
+              </Typography>
+              <ToggleButtonGroup
+                size="small"
+                value={knowledgeFilter}
+                exclusive
+                onChange={(_, val) => val && setKnowledgeFilter(val)}
+              >
+                <ToggleButton value="all">Tất cả</ToggleButton>
+                <ToggleButton value="unknown">Chưa thuộc</ToggleButton>
+                <ToggleButton value="learning">Chưa chắc</ToggleButton>
+                <ToggleButton value="known">Đã thuộc</ToggleButton>
+              </ToggleButtonGroup>
+              <Divider sx={{ my: 1 }} />
+              <Tooltip title="Reset mọi lọc">
+                <Button
+                  size="small"
+                  onClick={() => {
+                    setSelectedTopics([]);
+                    setFilterLevels([]);
+                    setKnowledgeFilter("all");
+                  }}
+                >
+                  Reset lọc
+                </Button>
+              </Tooltip>
+            </CardContent>
+          </Card>
+        </Box>
+
+        {/* Main content */}
+        <Box sx={{ flex: 1, minWidth: 0 }}>
+          <Card sx={{ p: 2 }}>
+            <CardContent>
+              {flashMode ? (
+                <FlashcardView
+                  entry={current}
+                  showAnswer={flashcard.showAnswer}
+                  showExamples={showExamples}
+                  index={flashcard.index}
+                  total={flashcard.order.length}
+                  onToggleAnswer={() => dispatch(toggleAnswer())}
+                  onNext={() => dispatch(nextCard())}
+                  onPrev={() => dispatch(prevCard())}
+                  onExit={() => setFlashMode(false)}
+                  knowledgeState={current ? knowledge[current.id] : undefined}
+                  onMarkKnown={() => current && dispatch(markKnown(current.id))}
+                  onMarkLearning={() =>
+                    current && dispatch(markLearning(current.id))
+                  }
+                  onMarkUnknown={() =>
+                    current && dispatch(markUnknown(current.id))
+                  }
+                />
+              ) : (
+                <VocabularyList
+                  entries={entries}
+                  order={flashcard.order}
+                  knowledge={knowledge}
+                  topicName={topicName}
+                  search={search}
+                  showExamples={showExamples}
+                  compact={compact}
+                  onMarkKnown={(id) => dispatch(markKnown(id))}
+                  onMarkLearning={(id) => dispatch(markLearning(id))}
+                  onMarkUnknown={(id) => dispatch(markUnknown(id))}
+                />
+              )}
             </CardContent>
           </Card>
         </Box>
@@ -628,6 +384,7 @@ export default function VocabularyPage() {
   );
 }
 
+// Simple shuffle
 function shuffleSimple(indices: number[]) {
   const arr = [...indices];
   for (let i = arr.length - 1; i > 0; i--) {
@@ -637,18 +394,46 @@ function shuffleSimple(indices: number[]) {
   return arr;
 }
 
-type ExampleItem = { en: string; vi: string };
+// Highlight component
+const Highlighted: React.FC<{ text: string; query: string }> = ({
+  text,
+  query,
+}) => {
+  if (!query.trim()) return <>{text}</>;
+  const safe = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const re = new RegExp(safe, "ig");
+  const out: React.ReactNode[] = [];
+  let last = 0;
+  let m: RegExpExecArray | null;
+  let key = 0;
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last)
+      out.push(<span key={key++}>{text.slice(last, m.index)}</span>);
+    out.push(
+      <Box
+        key={key++}
+        component="mark"
+        sx={{ px: 0.25, borderRadius: 0.5, backgroundColor: "warning.light" }}
+      >
+        {m[0]}
+      </Box>
+    );
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) out.push(<span key={key++}>{text.slice(last)}</span>);
+  return <>{out}</>;
+};
 
+// Example list reused
+type ExampleItem = { en: string; vi: string };
 function ExampleList({
   examples,
-  max = 2,
+  max = 1,
   dense = false,
-  alignCenter = false,
 }: {
   examples?: ExampleItem[];
   max?: number;
   dense?: boolean;
-  alignCenter?: boolean;
 }) {
   const items = (examples || []).slice(0, max);
   if (!items.length) return null;
@@ -664,40 +449,186 @@ function ExampleList({
             alignItems: "start",
           }}
         >
-          {/* quote icon */}
           <Box sx={{ pt: 0.25, color: "text.disabled" }}>
             <FormatQuoteRoundedIcon fontSize="small" />
           </Box>
-          <Stack
-            spacing={0.25}
-            sx={{
-              ...(alignCenter
-                ? { alignItems: "center", textAlign: "center" }
-                : {}),
-            }}
-          >
+          <Stack spacing={0.25}>
             <Typography
               variant={dense ? "body2" : "body1"}
-              sx={{
-                whiteSpace: "normal",
-                wordBreak: "break-word",
-              }}
+              sx={{ whiteSpace: "normal", wordBreak: "break-word" }}
             >
               {ex.en}
             </Typography>
             <Typography
               variant="body2"
               color="text.secondary"
-              sx={{
-                whiteSpace: "normal",
-                wordBreak: "break-word",
-              }}
+              sx={{ whiteSpace: "normal", wordBreak: "break-word" }}
             >
               {ex.vi}
             </Typography>
           </Stack>
         </Box>
       ))}
+    </Stack>
+  );
+}
+
+// Vocabulary list component
+function VocabularyList({
+  entries,
+  order,
+  knowledge,
+  topicName,
+  search,
+  showExamples,
+  compact,
+  onMarkKnown,
+  onMarkLearning,
+  onMarkUnknown,
+}: {
+  entries: any[];
+  order: number[];
+  knowledge: Record<string, string>;
+  topicName: Record<string, string>;
+  search: string;
+  showExamples: boolean;
+  compact: boolean;
+  onMarkKnown: (id: string) => void;
+  onMarkLearning: (id: string) => void;
+  onMarkUnknown: (id: string) => void;
+}) {
+  return (
+    <Stack spacing={compact ? 0.75 : 2}>
+      {order.map((idx, i) => {
+        const e = entries[idx];
+        if (!e) return null;
+        const k = (knowledge[e.id] as any) || "unknown";
+        if (compact) {
+          return (
+            <Box
+              key={e.id}
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "minmax(120px,160px) 1fr auto auto",
+                gap: 1,
+                p: 1,
+                border: "1px solid",
+                borderColor: "divider",
+                borderRadius: 1,
+              }}
+            >
+              <Typography fontWeight={600}>{e.word}</Typography>
+              <Typography
+                variant="body2"
+                sx={{ whiteSpace: "normal", wordBreak: "break-word" }}
+              >
+                <Highlighted text={e.meaningVi} query={search} />
+              </Typography>
+              <Chip
+                size="small"
+                label={e.level}
+                color="info"
+                variant="outlined"
+              />
+              <Chip
+                size="small"
+                label={
+                  k === "known"
+                    ? "Đã thuộc"
+                    : k === "learning"
+                    ? "Chưa chắc"
+                    : "Chưa thuộc"
+                }
+                color={
+                  k === "known"
+                    ? "success"
+                    : k === "learning"
+                    ? "warning"
+                    : "default"
+                }
+                variant={k === "unknown" ? "outlined" : "filled"}
+              />
+            </Box>
+          );
+        }
+        return (
+          <Card key={e.id} variant="outlined">
+            <CardHeader
+              title={e.word}
+              subheader={
+                e.phonetic
+                  ? `${e.phonetic}${e.pos ? " • " + e.pos : ""}`
+                  : e.pos || undefined
+              }
+              action={
+                <Stack direction="row" spacing={1} alignItems="center">
+                  <Chip
+                    size="small"
+                    icon={<LabelOutlinedIcon />}
+                    variant="outlined"
+                    label={topicName[e.topicId] || e.topicId}
+                  />
+                  <Chip
+                    size="small"
+                    icon={<SchoolOutlinedIcon />}
+                    color="info"
+                    label={e.level}
+                  />
+                </Stack>
+              }
+            />
+            <CardContent>
+              <Stack spacing={1}>
+                <Typography
+                  sx={{ whiteSpace: "normal", wordBreak: "break-word" }}
+                >
+                  <Highlighted text={e.meaningVi} query={search} />
+                </Typography>
+                {showExamples && e.examples?.length ? (
+                  <ExampleList examples={e.examples} max={1} dense />
+                ) : null}
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  alignItems="center"
+                  flexWrap="wrap"
+                >
+                  <Typography variant="caption" color="text.secondary">
+                    #{i + 1}
+                  </Typography>
+                  <Chip
+                    size="small"
+                    label={
+                      k === "known"
+                        ? "Đã thuộc"
+                        : k === "learning"
+                        ? "Chưa chắc"
+                        : "Chưa thuộc"
+                    }
+                    color={
+                      k === "known"
+                        ? "success"
+                        : k === "learning"
+                        ? "warning"
+                        : "default"
+                    }
+                    variant={k === "unknown" ? "outlined" : "filled"}
+                  />
+                  <Button size="small" onClick={() => onMarkKnown(e.id)}>
+                    Thuộc
+                  </Button>
+                  <Button size="small" onClick={() => onMarkLearning(e.id)}>
+                    Chưa chắc
+                  </Button>
+                  <Button size="small" onClick={() => onMarkUnknown(e.id)}>
+                    Chưa thuộc
+                  </Button>
+                </Stack>
+              </Stack>
+            </CardContent>
+          </Card>
+        );
+      })}
     </Stack>
   );
 }

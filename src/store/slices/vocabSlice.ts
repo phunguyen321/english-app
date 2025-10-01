@@ -13,6 +13,8 @@ export type VocabState = {
     order: number[];
     showAnswer: boolean;
   };
+  // track user's familiarity with a vocab entry: "unknown" | "learning" | "known"
+  knowledge: Record<string, "unknown" | "learning" | "known">;
 };
 
 const initialState: VocabState = {
@@ -20,6 +22,7 @@ const initialState: VocabState = {
   entries: [],
   status: "idle",
   flashcard: { start: 0, end: 49, index: 0, order: [], showAnswer: false },
+  knowledge: {},
 };
 
 export const loadVocab = createAsyncThunk("vocab/load", async () => {
@@ -90,6 +93,21 @@ const vocabSlice = createSlice({
     toggleAnswer(state: VocabState) {
       state.flashcard.showAnswer = !state.flashcard.showAnswer;
     },
+    markKnown(state: VocabState, action: PayloadAction<string>) {
+      state.knowledge[action.payload] = "known";
+    },
+    markLearning(state: VocabState, action: PayloadAction<string>) {
+      state.knowledge[action.payload] = "learning";
+    },
+    markUnknown(state: VocabState, action: PayloadAction<string>) {
+      state.knowledge[action.payload] = "unknown";
+    },
+    loadKnowledge(
+      state: VocabState,
+      action: PayloadAction<Record<string, "unknown" | "learning" | "known">>
+    ) {
+      state.knowledge = action.payload || {};
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -106,6 +124,10 @@ const vocabSlice = createSlice({
           state.status = "succeeded";
           state.topics = action.payload.topics;
           state.entries = action.payload.entries;
+          // Initialize knowledge map entries if missing
+          for (const e of state.entries) {
+            if (!state.knowledge[e.id]) state.knowledge[e.id] = "unknown";
+          }
           const end = Math.min(49, Math.max(0, state.entries.length - 1));
           const arr = Array.from({ length: end + 1 }, (_, i) => i);
           state.flashcard = {
@@ -131,5 +153,9 @@ export const {
   nextCard,
   prevCard,
   toggleAnswer,
+  markKnown,
+  markLearning,
+  markUnknown,
+  loadKnowledge,
 } = vocabSlice.actions;
 export default vocabSlice.reducer;
