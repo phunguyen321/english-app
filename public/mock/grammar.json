@@ -3,20 +3,31 @@
     "id": "present-simple",
     "title": "Thì hiện tại đơn (Present Simple)",
     "category": "Tenses",
-    "brief": "Dùng để diễn tả thói quen, sự thật hiển nhiên.",
+    "brief": "Diễn tả thói quen, sự thật hiển nhiên, lịch trình cố định.",
     "points": [
       {
-        "rule": "S + V(s/es) (He/She/It)",
+        "rule": "Khẳng định: S + V(s/es) (He/She/It); S + V (I/You/We/They)",
         "example": {
-          "en": "She works every day.",
-          "vi": "Cô ấy làm việc mỗi ngày."
+          "en": "She gets up at 6 a.m.",
+          "vi": "Cô ấy dậy lúc 6 giờ sáng."
         }
       },
       {
-        "rule": "S + V (I/You/We/They)",
+        "rule": "Phủ định: S + do/does + not + V (doesn't cho He/She/It)",
         "example": {
-          "en": "They play football.",
-          "vi": "Họ chơi bóng đá."
+          "en": "He doesn't like coffee.",
+          "vi": "Anh ấy không thích cà phê."
+        }
+      },
+      {
+        "rule": "Nghi vấn: Do/Does + S + V?",
+        "example": { "en": "Do they live here?", "vi": "Họ sống ở đây à?" }
+      },
+      {
+        "rule": "Trạng từ tần suất đứng trước động từ thường: always, usually, often, sometimes, rarely, never",
+        "example": {
+          "en": "I often read before sleeping.",
+          "vi": "Tôi thường đọc sách trước khi ngủ."
         }
       }
     ]
@@ -25,13 +36,31 @@
     "id": "present-continuous",
     "title": "Thì hiện tại tiếp diễn (Present Continuous)",
     "category": "Tenses",
-    "brief": "Hành động đang xảy ra tại thời điểm nói.",
+    "brief": "Diễn tả hành động đang xảy ra ngay lúc nói hoặc tạm thời xung quanh hiện tại.",
     "points": [
       {
-        "rule": "S + am/is/are + V-ing",
+        "rule": "Khẳng định: S + am/is/are + V-ing",
         "example": {
-          "en": "I am studying now.",
-          "vi": "Tôi đang học bây giờ."
+          "en": "We are having dinner.",
+          "vi": "Chúng tôi đang ăn tối."
+        }
+      },
+      {
+        "rule": "Phủ định: S + am/is/are + not + V-ing",
+        "example": {
+          "en": "She isn't working today.",
+          "vi": "Hôm nay cô ấy không làm việc."
+        }
+      },
+      {
+        "rule": "Nghi vấn: Am/Is/Are + S + V-ing?",
+        "example": { "en": "Are you listening?", "vi": "Bạn đang nghe à?" }
+      },
+      {
+        "rule": "State verbs (know, like, want, believe...) thường không dùng dạng -ing",
+        "example": {
+          "en": "I know the answer (NOT: I am knowing).",
+          "vi": "Tôi biết câu trả lời."
         }
       }
     ]
@@ -40,13 +69,355 @@
     "id": "present-perfect",
     "title": "Thì hiện tại hoàn thành (Present Perfect)",
     "category": "Tenses",
-    "brief": "Hành động đã xảy ra và còn ảnh hưởng hiện tại.",
+    "brief": "Nối quá khứ với hiện tại: đã xảy ra và còn kết quả / kinh nghiệm tới hiện tại.",
     "points": [
       {
-        "rule": "S + have/has + V3",
+        "rule": "Khẳng định: S + have/has + V3 (Past Participle)",
         "example": {
-          "en": "I have finished my work.",
-          "vi": "Tôi đã hoàn thành công việc."
+          "en": "I have visited France twice.",
+          "vi": "Tôi đã tới Pháp hai lần."
+        }
+      },
+      {
+        "rule": "Phủ định: S + have/has + not + V3",
+        "example": {
+          "en": "She hasn't finished the report.",
+          "vi": "Cô ấy chưa hoàn thành báo cáo."
+        }
+      },
+      {
+        "rule": "Nghi vấn: Have/Has + S + V3?",
+        "example": { "en": "Have you eaten yet?", "vi": "Bạn ăn rồi chưa?" }
+      },
+      {
+        "rule": "Dấu hiệu: already, yet, just, ever, never, so far, recently, for + khoảng, since + mốc",
+        "example": {
+          "en": "They have lived here for 5 years.",
+          "vi": "Họ sống ở đây được 5 năm rồi."
+        }
+      }
+    ]
+  },
+  {
+    "id": "present-perfect-continuous",
+    "title": "Thì hiện tại hoàn thành tiếp diễn (Present Perfect Continuous)",
+    "category": "Tenses",
+    "brief": "Nhấn mạnh độ dài/tiến trình của hành động bắt đầu trong quá khứ và còn tiếp diễn (hoặc vừa dừng).",
+    "points": [
+      {
+        "rule": "Khẳng định: S + have/has + been + V-ing",
+        "example": {
+          "en": "She has been studying for three hours.",
+          "vi": "Cô ấy đã học được ba giờ rồi."
+        }
+      },
+      {
+        "rule": "Phủ định: S + have/has + not + been + V-ing",
+        "example": {
+          "en": "I haven't been sleeping well.",
+          "vi": "Tôi ngủ không ngon dạo này."
+        }
+      },
+      {
+        "rule": "Nghi vấn: Have/Has + S + been + V-ing?",
+        "example": {
+          "en": "Have they been waiting long?",
+          "vi": "Họ đợi lâu chưa?"
+        }
+      },
+      {
+        "rule": "FOR/SINCE dùng nhiều; dùng để giải thích 'dấu vết' hiện tại (mệt, bẩn, ướt...)",
+        "example": {
+          "en": "He's tired because he has been working out.",
+          "vi": "Anh ấy mệt vì vừa tập luyện."
+        }
+      }
+    ]
+  },
+  {
+    "id": "past-simple",
+    "title": "Thì quá khứ đơn (Past Simple)",
+    "category": "Tenses",
+    "brief": "Hành động đã xảy ra và kết thúc tại một thời điểm xác định trong quá khứ.",
+    "points": [
+      {
+        "rule": "Khẳng định: S + V2/ed",
+        "example": {
+          "en": "We watched a movie yesterday.",
+          "vi": "Hôm qua chúng tôi xem một bộ phim."
+        }
+      },
+      {
+        "rule": "Phủ định: S + did not (didn't) + V",
+        "example": {
+          "en": "He didn't go to the meeting.",
+          "vi": "Anh ấy đã không đi họp."
+        }
+      },
+      {
+        "rule": "Nghi vấn: Did + S + V?",
+        "example": {
+          "en": "Did you call her?",
+          "vi": "Bạn đã gọi cho cô ấy chưa?"
+        }
+      },
+      {
+        "rule": "Dấu hiệu: yesterday, ago, last (week/year/night), in 2019...",
+        "example": {
+          "en": "I met him last week.",
+          "vi": "Tôi gặp anh ấy tuần trước."
+        }
+      }
+    ]
+  },
+  {
+    "id": "past-continuous",
+    "title": "Thì quá khứ tiếp diễn (Past Continuous)",
+    "category": "Tenses",
+    "brief": "Hành động đang diễn ra tại một thời điểm/ giai đoạn trong quá khứ hoặc bị hành động khác xen vào.",
+    "points": [
+      {
+        "rule": "Khẳng định: S + was/were + V-ing",
+        "example": {
+          "en": "They were playing at 5 p.m.",
+          "vi": "Lúc 5 giờ họ đang chơi."
+        }
+      },
+      {
+        "rule": "Phủ định: S + was/were + not + V-ing",
+        "example": {
+          "en": "She wasn't sleeping then.",
+          "vi": "Khi đó cô ấy không ngủ."
+        }
+      },
+      {
+        "rule": "Nghi vấn: Was/Were + S + V-ing?",
+        "example": {
+          "en": "Were you listening?",
+          "vi": "Bạn có đang nghe không?"
+        }
+      },
+      {
+        "rule": "Hành động bị xen: Past Continuous + when + Past Simple",
+        "example": {
+          "en": "I was cooking when he arrived.",
+          "vi": "Tôi đang nấu thì anh ấy tới."
+        }
+      }
+    ]
+  },
+  {
+    "id": "past-perfect",
+    "title": "Thì quá khứ hoàn thành (Past Perfect)",
+    "category": "Tenses",
+    "brief": "Hành động đã hoàn tất trước một mốc/ hành động khác trong quá khứ.",
+    "points": [
+      {
+        "rule": "Khẳng định: S + had + V3",
+        "example": {
+          "en": "She had left before we arrived.",
+          "vi": "Cô ấy rời đi trước khi chúng tôi tới."
+        }
+      },
+      {
+        "rule": "Phủ định: S + had not (hadn't) + V3",
+        "example": {
+          "en": "I hadn't finished when he called.",
+          "vi": "Tôi chưa hoàn thành khi anh ấy gọi."
+        }
+      },
+      {
+        "rule": "Nghi vấn: Had + S + V3?",
+        "example": {
+          "en": "Had they eaten before 7 p.m.?",
+          "vi": "Họ đã ăn trước 7 giờ tối chưa?"
+        }
+      },
+      {
+        "rule": "Dùng với by, before, after, when, already, just",
+        "example": {
+          "en": "By 2000 he had written three books.",
+          "vi": "Đến năm 2000 anh ấy đã viết ba cuốn sách."
+        }
+      }
+    ]
+  },
+  {
+    "id": "past-perfect-continuous",
+    "title": "Thì quá khứ hoàn thành tiếp diễn (Past Perfect Continuous)",
+    "category": "Tenses",
+    "brief": "Nhấn mạnh độ dài hành động diễn ra trước một mốc trong quá khứ và thường vẫn còn ảnh hưởng vào thời điểm đó.",
+    "points": [
+      {
+        "rule": "Khẳng định: S + had + been + V-ing",
+        "example": {
+          "en": "They had been waiting for an hour when the bus came.",
+          "vi": "Họ đã đợi một giờ khi xe buýt đến."
+        }
+      },
+      {
+        "rule": "Phủ định: S + had + not + been + V-ing",
+        "example": {
+          "en": "He hadn't been sleeping well.",
+          "vi": "Anh ấy ngủ không ngon."
+        }
+      },
+      {
+        "rule": "Nghi vấn: Had + S + been + V-ing?",
+        "example": {
+          "en": "Had she been working there long?",
+          "vi": "Cô ấy làm ở đó lâu chưa?"
+        }
+      },
+      {
+        "rule": "Dùng để giải thích nguyên nhân (tired, dirty...) trong quá khứ",
+        "example": {
+          "en": "She was exhausted because she had been running.",
+          "vi": "Cô ấy kiệt sức vì đã chạy."
+        }
+      }
+    ]
+  },
+  {
+    "id": "future-simple",
+    "title": "Thì tương lai đơn (Future Simple)",
+    "category": "Tenses",
+    "brief": "Quyết định ngay lúc nói, dự đoán không chắc, lời hứa, đề nghị.",
+    "points": [
+      {
+        "rule": "Khẳng định: S + will + V",
+        "example": {
+          "en": "I will call you tonight.",
+          "vi": "Tối nay tôi sẽ gọi cho bạn."
+        }
+      },
+      {
+        "rule": "Phủ định: S + will not (won't) + V",
+        "example": {
+          "en": "He won't join us.",
+          "vi": "Anh ấy sẽ không tham gia với chúng ta."
+        }
+      },
+      {
+        "rule": "Nghi vấn: Will + S + V?",
+        "example": {
+          "en": "Will it rain tomorrow?",
+          "vi": "Ngày mai trời sẽ mưa chứ?"
+        }
+      },
+      {
+        "rule": "Thường đi với maybe, I think, probably...",
+        "example": {
+          "en": "I think they will win.",
+          "vi": "Tôi nghĩ họ sẽ thắng."
+        }
+      }
+    ]
+  },
+  {
+    "id": "future-continuous",
+    "title": "Thì tương lai tiếp diễn (Future Continuous)",
+    "category": "Tenses",
+    "brief": "Hành động sẽ đang diễn ra tại một thời điểm xác định trong tương lai hoặc lịch trình cố định dài.",
+    "points": [
+      {
+        "rule": "Khẳng định: S + will be + V-ing",
+        "example": {
+          "en": "This time tomorrow I will be flying to Tokyo.",
+          "vi": "Giờ này ngày mai tôi sẽ đang bay tới Tokyo."
+        }
+      },
+      {
+        "rule": "Phủ định: S + will not be + V-ing",
+        "example": {
+          "en": "She won't be working at 9 p.m.",
+          "vi": "9 giờ tối cô ấy sẽ không làm việc."
+        }
+      },
+      {
+        "rule": "Nghi vấn: Will + S + be + V-ing?",
+        "example": {
+          "en": "Will you be using the car tonight?",
+          "vi": "Tối nay bạn có dùng xe không?"
+        }
+      },
+      {
+        "rule": "Diễn tả lịch sự hỏi kế hoạch của người khác",
+        "example": {
+          "en": "Will you be staying long?",
+          "vi": "Bạn sẽ ở lại lâu chứ?"
+        }
+      }
+    ]
+  },
+  {
+    "id": "future-perfect",
+    "title": "Thì tương lai hoàn thành (Future Perfect)",
+    "category": "Tenses",
+    "brief": "Hành động sẽ hoàn tất trước một thời điểm/mốc trong tương lai.",
+    "points": [
+      {
+        "rule": "Khẳng định: S + will have + V3",
+        "example": {
+          "en": "I will have finished by 6 p.m.",
+          "vi": "Tôi sẽ hoàn thành trước 6 giờ tối."
+        }
+      },
+      {
+        "rule": "Phủ định: S + will not have + V3",
+        "example": {
+          "en": "He won't have arrived by then.",
+          "vi": "Anh ấy sẽ chưa tới vào lúc đó."
+        }
+      },
+      {
+        "rule": "Nghi vấn: Will + S + have + V3?",
+        "example": {
+          "en": "Will they have left before noon?",
+          "vi": "Họ sẽ rời đi trước trưa chứ?"
+        }
+      },
+      {
+        "rule": "Dùng với by, by the time, before, when",
+        "example": {
+          "en": "By next year she will have graduated.",
+          "vi": "Đến năm sau cô ấy sẽ tốt nghiệp."
+        }
+      }
+    ]
+  },
+  {
+    "id": "future-perfect-continuous",
+    "title": "Thì tương lai hoàn thành tiếp diễn (Future Perfect Continuous)",
+    "category": "Tenses",
+    "brief": "Nhấn mạnh độ dài hành động sẽ diễn ra tới một mốc trong tương lai.",
+    "points": [
+      {
+        "rule": "Khẳng định: S + will have been + V-ing",
+        "example": {
+          "en": "By noon I will have been working for 6 hours.",
+          "vi": "Đến trưa tôi sẽ đã làm việc được 6 giờ."
+        }
+      },
+      {
+        "rule": "Phủ định: S + will not have been + V-ing",
+        "example": {
+          "en": "She won't have been living here long.",
+          "vi": "Cô ấy sẽ chưa sống ở đây lâu."
+        }
+      },
+      {
+        "rule": "Nghi vấn: Will + S + have been + V-ing?",
+        "example": {
+          "en": "Will they have been traveling for a month by then?",
+          "vi": "Lúc đó họ sẽ đã đi du lịch một tháng chưa?"
+        }
+      },
+      {
+        "rule": "Nhấn mạnh tính liên tục + kết quả/độ dài",
+        "example": {
+          "en": "He will have been studying all night, so he'll be tired.",
+          "vi": "Anh ấy sẽ đã học cả đêm nên sẽ mệt."
         }
       }
     ]

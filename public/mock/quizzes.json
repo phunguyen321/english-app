@@ -114,5 +114,197 @@
     "tokens": ["My", "house", "is", "near", "the", "park"],
     "answer": "My house is near the park",
     "explanation": "Cấu trúc be + giới từ chỉ vị trí: be near ..."
+  },
+  {
+    "id": "q13",
+    "type": "grammar-mcq",
+    "difficulty": "easy",
+    "prompt": "Chọn câu đúng thì hiện tại đơn:",
+    "options": [
+      "She goes to school every day.",
+      "She is go to school every day.",
+      "She going to school every day.",
+      "She gone to school every day."
+    ],
+    "answerIndex": 0,
+    "explanation": "Thì hiện tại đơn: S + V(s/es) với He/She/It."
+  },
+  {
+    "id": "q14",
+    "type": "grammar-mcq",
+    "difficulty": "easy",
+    "prompt": "Câu nào dùng thì hiện tại tiếp diễn?",
+    "options": [
+      "I am reading a book now.",
+      "I read a book now.",
+      "I was reading a book now.",
+      "I have read a book now."
+    ],
+    "answerIndex": 0,
+    "explanation": "am/is/are + V-ing là hiện tại tiếp diễn."
+  },
+  {
+    "id": "q15",
+    "type": "grammar-mcq",
+    "difficulty": "easy",
+    "prompt": "Chọn câu đúng thì hiện tại hoàn thành:",
+    "options": [
+      "She has finished her homework.",
+      "She is finish her homework.",
+      "She finished her homework now.",
+      "She has finish her homework."
+    ],
+    "answerIndex": 0,
+    "explanation": "have/has + V3 là hiện tại hoàn thành."
+  },
+  {
+    "id": "q16",
+    "type": "grammar-mcq",
+    "difficulty": "medium",
+    "prompt": "Câu nào dùng thì hiện tại hoàn thành tiếp diễn?",
+    "options": [
+      "I have been waiting for you for an hour.",
+      "I am wait for you for an hour.",
+      "I have waited for you for an hour.",
+      "I was waiting for you for an hour."
+    ],
+    "answerIndex": 0,
+    "explanation": "have/has + been + V-ing là hiện tại hoàn thành tiếp diễn."
+  },
+  {
+    "id": "q17",
+    "type": "grammar-mcq",
+    "difficulty": "easy",
+    "prompt": "Chọn câu đúng thì quá khứ đơn:",
+    "options": [
+      "He visited his grandparents last week.",
+      "He visit his grandparents last week.",
+      "He was visiting his grandparents last week.",
+      "He has visited his grandparents last week."
+    ],
+    "answerIndex": 0,
+    "explanation": "S + V2/ed là quá khứ đơn."
+  },
+  {
+    "id": "q18",
+    "type": "grammar-mcq",
+    "difficulty": "medium",
+    "prompt": "Câu nào dùng thì quá khứ tiếp diễn?",
+    "options": [
+      "They were playing football at 5 p.m.",
+      "They play football at 5 p.m.",
+      "They have played football at 5 p.m.",
+      "They had played football at 5 p.m."
+    ],
+    "answerIndex": 0,
+    "explanation": "was/were + V-ing là quá khứ tiếp diễn."
+  },
+  {
+    "id": "q19",
+    "type": "grammar-mcq",
+    "difficulty": "medium",
+    "prompt": "Chọn câu đúng thì quá khứ hoàn thành:",
+    "options": [
+      "She had left before I arrived.",
+      "She has left before I arrived.",
+      "She was leaving before I arrived.",
+      "She leave before I arrived."
+    ],
+    "answerIndex": 0,
+    "explanation": "had + V3 là quá khứ hoàn thành."
+  },
+  {
+    "id": "q20",
+    "type": "grammar-mcq",
+    "difficulty": "medium",
+    "prompt": "Câu nào dùng thì quá khứ hoàn thành tiếp diễn?",
+    "options": [
+      "They had been working for hours before the boss came.",
+      "They have been working for hours before the boss came.",
+      "They were working for hours before the boss came.",
+      "They had worked for hours before the boss came."
+    ],
+    "answerIndex": 0,
+    "explanation": "had + been + V-ing là quá khứ hoàn thành tiếp diễn."
+  },
+  {
+    "id": "q21",
+    "type": "grammar-mcq",
+    "difficulty": "easy",
+    "prompt": "Chọn câu đúng thì tương lai đơn:",
+    "options": [
+      "I will call you tomorrow.",
+      "I am call you tomorrow.",
+      "I will called you tomorrow.",
+      "I call you tomorrow."
+    ],
+    "answerIndex": 0,
+    "explanation": "will + V là tương lai đơn."
+  },
+  {
+    "id": "q22",
+    "type": "grammar-mcq",
+    "difficulty": "medium",
+    "prompt": "Câu nào dùng thì tương lai tiếp diễn?",
+    "options": [
+      "She will be studying at 8 p.m.",
+      "She is studying at 8 p.m.",
+      "She will study at 8 p.m.",
+      "She will have studied at 8 p.m."
+    ],
+    "answerIndex": 0,
+    "explanation": "will be + V-ing là tương lai tiếp diễn."
+  },
+  {
+    "id": "q23",
+    "type": "grammar-mcq",
+    "difficulty": "medium",
+    "prompt": "Chọn câu đúng thì tương lai hoàn thành:",
+    "options": [
+      "He will have finished the work by 5 p.m.",
+      "He will finish the work by 5 p.m.",
+      "He will be finishing the work by 5 p.m.",
+      "He will has finished the work by 5 p.m."
+    ],
+    "answerIndex": 0,
+    "explanation": "will have + V3 là tương lai hoàn thành."
+  },
+  {
+    "id": "q24",
+    "type": "grammar-mcq",
+    "difficulty": "hard",
+    "prompt": "Câu nào dùng thì tương lai hoàn thành tiếp diễn?",
+    "options": [
+      "By next month, I will have been working here for 2 years.",
+      "By next month, I will be working here for 2 years.",
+      "By next month, I will have worked here for 2 years.",
+      "By next month, I will working here for 2 years."
+    ],
+    "answerIndex": 0,
+    "explanation": "will have been + V-ing là tương lai hoàn thành tiếp diễn."
+  },
+  {
+    "id": "q25",
+    "type": "sentence-order",
+    "difficulty": "medium",
+    "tokens": ["He", "has", "been", "waiting", "for", "an", "hour"],
+    "answer": "He has been waiting for an hour",
+    "explanation": "Hiện tại hoàn thành tiếp diễn: S + have/has + been + V-ing."
+  },
+  {
+    "id": "q26",
+    "type": "sentence-order",
+    "difficulty": "medium",
+    "tokens": ["They", "had", "left", "before", "we", "arrived"],
+    "answer": "They had left before we arrived",
+    "explanation": "Quá khứ hoàn thành: S + had + V3."
+  },
+  {
+    "id": "q27",
+    "type": "sentence-order",
+    "difficulty": "medium",
+    "tokens": ["I", "will", "have", "finished", "by", "6", "p.m."],
+    "answer": "I will have finished by 6 p.m.",
+    "explanation": "Tương lai hoàn thành: S + will have + V3."
   }
 ]
