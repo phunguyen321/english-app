@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useAppDispatch, useAppSelector, type RootState } from "@/store";
 import {
   loadQuizzes,
@@ -11,16 +11,13 @@ import {
   Box,
   Typography,
   Stack,
-  Card,
-  CardContent,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
   Button,
   Chip,
-  TextField,
   LinearProgress,
+  Paper,
+  Tooltip,
 } from "@mui/material";
+import QuizQuestionCard from "@/components/QuizQuestionCard";
 
 export default function QuizzesPage() {
   const dispatch = useAppDispatch();
@@ -32,132 +29,169 @@ export default function QuizzesPage() {
     if (status === "idle") dispatch(loadQuizzes());
   }, [status, dispatch]);
 
-  return (
-    <Box>
-      <Typography variant="h4" gutterBottom>
-        Bài tập{" "}
-        {source === "ai" && (
-          <Chip size="small" color="info" label="AI" sx={{ ml: 1 }} />
-        )}
-      </Typography>
-      {status === "loading" && <LinearProgress />}
-      <Stack spacing={2}>
-        {questions.map((q) => (
-          <Card key={q.id}>
-            <CardContent>
-              <Stack
-                direction="row"
-                spacing={1}
-                alignItems="center"
-                sx={{ mb: 1 }}
-              >
-                <Chip size="small" label={q.type} />
-                <Chip
-                  size="small"
-                  label={q.difficulty}
-                  color={
-                    q.difficulty === "hard"
-                      ? "error"
-                      : q.difficulty === "medium"
-                      ? "warning"
-                      : "default"
-                  }
-                />
-              </Stack>
-              <Typography sx={{ mb: 1 }}>
-                {q.type === "sentence-order"
-                  ? "Sắp xếp câu:"
-                  : "Chọn đáp án đúng:"}
-              </Typography>
-              {q.type !== "sentence-order" && (
-                <Typography variant="h6">{q.prompt}</Typography>
-              )}
-              {q.type === "vocab-mcq" || q.type === "grammar-mcq" ? (
-                <RadioGroup
-                  value={
-                    typeof userAnswers[q.id] === "number"
-                      ? String(userAnswers[q.id])
-                      : ""
-                  }
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    dispatch(
-                      answerQuestion({
-                        id: q.id,
-                        answer: Number(e.target.value),
-                      })
-                    )
-                  }
-                >
-                  {q.options.map((opt: string, idx: number) => (
-                    <FormControlLabel
-                      key={idx}
-                      value={String(idx)}
-                      control={<Radio />}
-                      label={opt}
-                    />
-                  ))}
-                </RadioGroup>
-              ) : (
-                <TextField
-                  fullWidth
-                  placeholder={q.tokens.join(" | ")}
-                  value={
-                    typeof userAnswers[q.id] === "string"
-                      ? (userAnswers[q.id] as string)
-                      : ""
-                  }
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    dispatch(
-                      answerQuestion({ id: q.id, answer: e.target.value })
-                    )
-                  }
-                />
-              )}
-              {result && (
-                <Typography
-                  color={
-                    result.details.find((d) => d.id === q.id)?.correct
-                      ? "success.main"
-                      : "error.main"
-                  }
-                  sx={{ mt: 1 }}
-                >
-                  {result.details.find((d) => d.id === q.id)?.correct
-                    ? "Đúng"
-                    : "Sai"}{" "}
-                  — {result.details.find((d) => d.id === q.id)?.explanation}
-                </Typography>
-              )}
-            </CardContent>
-          </Card>
-        ))}
+  const answeredCount = useMemo(
+    () =>
+      questions.reduce((acc, q) => {
+        const a = userAnswers[q.id];
+        if (q.type === "vocab-mcq" || q.type === "grammar-mcq") {
+          return acc + (typeof a === "number" ? 1 : 0);
+        }
+        return acc + (typeof a === "string" && a.trim() ? 1 : 0);
+      }, 0),
+    [questions, userAnswers]
+  );
 
-        <Stack direction="row" spacing={2} flexWrap="wrap">
-          <Button variant="contained" onClick={() => dispatch(submit())}>
-            Nộp bài
-          </Button>
-          <Button onClick={() => dispatch(reset())}>Làm lại</Button>
-          {source === "ai" && (
-            <Button
-              onClick={() => {
-                dispatch(loadQuizzes());
-              }}
-            >
-              Tải bộ tĩnh
+  const percentage = questions.length
+    ? Math.round((answeredCount / questions.length) * 100)
+    : 0;
+
+  return (
+    <Box sx={{ pb: 10 }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          mb: 2,
+          flexWrap: "wrap",
+          gap: 1,
+        }}
+      >
+        <Typography variant="h4" gutterBottom sx={{ mr: 1 }}>
+          Bài tập
+        </Typography>
+        {source === "ai" && <Chip size="small" color="info" label="AI" />}
+        {result && (
+          <Chip
+            size="small"
+            color={
+              result.correct / (result.total || 1) >= 0.7
+                ? "success"
+                : "warning"
+            }
+            label={`Kết quả: ${result.correct}/${result.total}`}
+          />
+        )}
+      </Box>
+      {status === "loading" && <LinearProgress sx={{ mb: 2 }} />}
+
+      {!questions.length && status === "succeeded" && (
+        <Paper variant="outlined" sx={{ p: 4, textAlign: "center" }}>
+          <Typography variant="h6" gutterBottom>
+            Chưa có câu hỏi
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+            Hãy tạo bộ câu hỏi AI hoặc tải lại dữ liệu.
+          </Typography>
+          <Stack direction="row" spacing={1} justifyContent="center">
+            <Button href="/generate-quizzes" variant="contained">
+              Tạo bằng AI
             </Button>
+            <Button onClick={() => dispatch(loadQuizzes())}>Tải lại</Button>
+          </Stack>
+        </Paper>
+      )}
+
+      <Stack spacing={2} sx={{ mb: 4 }}>
+        {questions.map((q, idx) => (
+          <QuizQuestionCard
+            key={q.id}
+            q={q}
+            index={idx}
+            total={questions.length}
+            userAnswer={userAnswers[q.id]}
+            submitted={!!result}
+            resultDetail={result?.details.find((d) => d.id === q.id)}
+            onAnswer={(value) => {
+              dispatch(
+                answerQuestion({ id: q.id, answer: value as number | string })
+              );
+            }}
+          />
+        ))}
+      </Stack>
+
+      <Paper
+        elevation={3}
+        sx={{
+          position: { xs: "fixed", md: "sticky" },
+          bottom: { xs: 0, md: "unset" },
+          top: { md: 72 },
+          left: 0,
+          right: 0,
+          zIndex: 10,
+          p: 2,
+          borderRadius: { xs: 0, md: 2 },
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 1.5,
+          alignItems: "center",
+          justifyContent: "space-between",
+          background: (theme) =>
+            theme.palette.mode === "light"
+              ? "rgba(255,255,255,0.9)"
+              : "rgba(30,30,30,0.9)",
+          backdropFilter: "blur(8px)",
+          border: (theme) => `1px solid ${theme.palette.divider}`,
+        }}
+      >
+        <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
+          <Chip
+            size="small"
+            color={percentage === 100 ? "success" : "default"}
+            label={`Tiến độ: ${answeredCount}/${questions.length} (${percentage}%)`}
+          />
+          {source === "ai" && (
+            <Chip size="small" variant="outlined" label="Nguồn: AI" />
           )}
           {result && (
             <Chip
-              label={`Kết quả: ${result.correct}/${result.total}`}
+              size="small"
               color={
                 result.correct / (result.total || 1) >= 0.7
                   ? "success"
                   : "warning"
               }
+              label={`Điểm: ${result.correct}/${result.total}`}
             />
           )}
         </Stack>
-      </Stack>
+        <Stack direction="row" spacing={1} flexWrap="wrap">
+          {!result && (
+            <Tooltip title="Chấm điểm bài làm">
+              <span>
+                <Button
+                  variant="contained"
+                  disabled={!questions.length || !answeredCount}
+                  onClick={() => dispatch(submit())}
+                >
+                  Nộp bài
+                </Button>
+              </span>
+            </Tooltip>
+          )}
+          <Button variant="outlined" onClick={() => dispatch(reset())}>
+            {result ? "Làm lại" : "Reset"}
+          </Button>
+          {source === "ai" && !result && (
+            <Button
+              variant="text"
+              onClick={() => dispatch(loadQuizzes())}
+              sx={{ textTransform: "none" }}
+            >
+              Tải bộ tĩnh
+            </Button>
+          )}
+          {!source || source === "static" ? (
+            <Button
+              variant="text"
+              href="/generate-quizzes"
+              sx={{ textTransform: "none" }}
+            >
+              Tạo bằng AI
+            </Button>
+          ) : null}
+        </Stack>
+      </Paper>
     </Box>
   );
 }

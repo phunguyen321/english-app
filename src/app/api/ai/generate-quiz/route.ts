@@ -38,7 +38,14 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { requirements, count = 8, mixTypes = true } = await req.json();
+    const body = await req.json();
+    const {
+      requirements,
+      count = 8,
+      mixTypes: legacyMixTypes = true,
+      allowedTypes: allowedTypesRaw,
+      typeRatios: typeRatiosRaw,
+    } = body || {};
     if (!requirements || typeof requirements !== "string") {
       return Response.json(
         { success: false, error: "Thiếu trường requirements." },
@@ -47,38 +54,94 @@ export async function POST(req: NextRequest) {
     }
     // Cho phép tạo nhiều câu hơn (tối đa 50) nhưng vẫn giới hạn để tránh quá tải token
     const safeCount = Math.min(Math.max(Number(count) || 8, 3), 50);
+    const ALL_TYPES: QuizType[] = [
+      "vocab-mcq",
+      "grammar-mcq",
+      "sentence-order",
+    ];
+    let allowedTypes: QuizType[] = Array.isArray(allowedTypesRaw)
+      ? (allowedTypesRaw.filter((t: unknown) =>
+          ALL_TYPES.includes(t as QuizType)
+        ) as QuizType[])
+      : ALL_TYPES;
+    if (!allowedTypes.length) allowedTypes = ALL_TYPES;
+    const mixTypes = allowedTypes.length > 1 && legacyMixTypes;
+
+    // Process ratios (optional). Expect object { type: number }
+    const ratios: Partial<Record<QuizType, number>> = {};
+    if (typeRatiosRaw && typeof typeRatiosRaw === "object") {
+      const rawRatios = typeRatiosRaw as Record<string, unknown>;
+      for (const k of Object.keys(rawRatios)) {
+        if (allowedTypes.includes(k as QuizType)) {
+          const v = Number(rawRatios[k]);
+          if (!Number.isNaN(v) && v > 0) ratios[k as QuizType] = v;
+        }
+      }
+    }
+    // If no valid ratios provided, default equal distribution
+    if (Object.keys(ratios).length === 0) {
+      const equal = 1 / allowedTypes.length;
+      for (const t of allowedTypes) ratios[t] = equal as number;
+    } else {
+      // Normalize
+      const sum = Object.values(ratios).reduce((a, b) => a + b, 0) || 1;
+      for (const k of Object.keys(ratios) as QuizType[])
+        ratios[k] = (ratios[k] || 0) / sum;
+      // Ensure all allowed types present
+      for (const t of allowedTypes) if (!(t in ratios)) ratios[t] = 0;
+      // Re-normalize after adding zeros
+      const sum2 = Object.values(ratios).reduce((a, b) => a + b, 0) || 1;
+      for (const k of Object.keys(ratios) as QuizType[])
+        ratios[k] = (ratios[k] || 0) / sum2;
+    }
+
+    // Compute target counts (approx) for guidance
+    const targetCounts: Record<QuizType, number> = {
+      "vocab-mcq": 0,
+      "grammar-mcq": 0,
+      "sentence-order": 0,
+    };
+    let allocated = 0;
+    for (const t of allowedTypes) {
+      const rawCount = Math.floor(safeCount * (ratios[t] || 0));
+      targetCounts[t] = rawCount;
+      allocated += rawCount;
+    }
+    // Distribute leftover
+    let leftover = safeCount - allocated;
+    if (leftover > 0) {
+      const order = [...allowedTypes].sort(
+        (a, b) => (ratios[b] || 0) - (ratios[a] || 0)
+      );
+      let idx = 0;
+      while (leftover > 0) {
+        targetCounts[order[idx % order.length]] += 1;
+        leftover--;
+        idx++;
+      }
+    }
 
     const model = getGeminiModel();
-    const systemPrompt = `You are an assistant that generates English learning quiz data.
-STRICT OUTPUT RULES (read carefully):
-1. OUTPUT ONLY a raw JSON array (no markdown fences, no comments, no trailing text).
-2. Each element must match one of these TypeScript shapes:
-   type QuizQuestionBase = { id: string; type: "vocab-mcq" | "grammar-mcq" | "sentence-order"; difficulty: "easy" | "medium" | "hard"; explanation: string };
-   type VocabMcqQuestion = QuizQuestionBase & { type: "vocab-mcq"; prompt: string; options: string[]; answerIndex: number };
-   type GrammarMcqQuestion = QuizQuestionBase & { type: "grammar-mcq"; prompt: string; options: string[]; answerIndex: number };
-   type SentenceOrderQuestion = QuizQuestionBase & { type: "sentence-order"; tokens: string[]; answer: string };
-3. FIELD REQUIREMENTS:
-   - id: short unique (kebab-case or alphanum, <=18 chars, no spaces).
-   - difficulty: balanced distribution overall.
-   - For MCQ (vocab-mcq / grammar-mcq): options length 4 or 5; exactly ONE correct; answerIndex valid.
-   - For sentence-order: tokens array when joined by single spaces EXACTLY equals answer.
-   - explanation: MUST be in VIETNAMESE ONLY (không dùng tiếng Anh), 1 câu ngắn gọn (<=160 ký tự), giải thích vì sao đáp án đúng (nêu mẹo/ngữ pháp/nghĩa). Không lặp lại toàn bộ câu hỏi nguyên văn trừ khi cần minh họa ngắn.
-4. PROMPT / TOKENS: luôn bằng tiếng Anh (ngoại trừ explanation bằng tiếng Việt).
-5. Không được thêm trường thừa, không null, không comment.
-6. Không dùng ký tự xuống dòng trong explanation trừ khi thật cần (ưu tiên một câu).
-7. Nếu yêu cầu đề cập trình độ (A1..C2) hãy điều chỉnh độ khó phù hợp.
-8. Tuyệt đối KHÔNG xuất bất kỳ text nào ngoài JSON array.
-
-Ví dụ (rút gọn – không lặp lại trong kết quả thật):
-[
-  {"id":"vocab-1","type":"vocab-mcq","difficulty":"easy","prompt":"Word meaning: 'travel'","options":["du lịch","ăn","ngủ","hát"],"answerIndex":0,"explanation":"'Travel' nghĩa là đi du lịch; các lựa chọn khác không đúng ngữ nghĩa."}
-]
-
-HÃY TRẢ VỀ CHỈ JSON ARRAY HỢP LỆ. NHỚ: explanation phải 100% tiếng Việt.`;
-
-    const userPrompt = `Generate ${safeCount} quiz questions. Mix types = ${mixTypes}. Requirements: ${requirements}\nIf number of questions > 25 keep explanations ultra concise (still Vietnamese).`;
+    const systemPrompt = `Output ONLY a JSON array (no markdown). Allowed question types: ${allowedTypes.join(
+      ", "
+    )}.
+Each object: { id, type, difficulty, explanation, ...typeSpecific }.
+- type: one of ${allowedTypes.join("|")}
+- difficulty: easy|medium|hard (balanced overall)
+- explanation: Vietnamese only, <=120 chars, 1 concise line (no English)
+MCQ types (vocab-mcq / grammar-mcq): add { prompt, options[4-5], answerIndex } (single correct).
+Sentence-order: add { tokens[], answer } with tokens.join(' ') === answer.
+- id: unique, short (kebab/alphanum <=18 chars)
+- prompts/tokens: English only
+- NO extra fields / null / commentary.
+Return EXACTLY N items. Start with '[' immediately.`;
+    const targetCountsStr = allowedTypes
+      .map((t) => `${t}=${targetCounts[t]}`)
+      .join(", ");
+    const userPrompt = `N=${safeCount}; distributeTypes=${mixTypes}; requirements="${requirements}"; targetCounts(${targetCountsStr}); If N>25 compress explanations. Match target counts as close as possible.`;
     const result = await model.generateContent([
       { text: systemPrompt },
+      { text: `Temperature=0.6; softLimit=${safeCount * 90}` },
       { text: userPrompt },
     ]);
     const raw = result.response.text().trim();
@@ -178,6 +241,7 @@ HÃY TRẢ VỀ CHỈ JSON ARRAY HỢP LỆ. NHỚ: explanation phải 100% ti�
         const q = sanitize(item);
         if (!q) continue;
         if (seen.has(q.id)) continue;
+        if (!allowedTypes.includes(q.type)) continue; // filter unmatched types per selection
         seen.add(q.id);
         valid.push(q);
       }
