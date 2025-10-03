@@ -1,6 +1,13 @@
 import { NextRequest } from "next/server";
 import { getGeminiModel } from "@/lib/gemini";
-import { AnyQuizQuestion } from "@/types";
+import {
+  AnyQuizQuestion,
+  VocabMcqQuestion,
+  GrammarMcqQuestion,
+  SentenceOrderQuestion,
+  QuizType,
+  Difficulty,
+} from "@/types";
 
 // Simple in-memory rate limit
 let calls: number[] = [];
@@ -82,43 +89,98 @@ HÃY TRẢ VỀ CHỈ JSON ARRAY HỢP LỆ. NHỚ: explanation phải 100% ti�
       .replace(/^```/i, "")
       .replace(/```$/i, "")
       .trim();
-    let parsed: AnyQuizQuestion[];
+    let rawParsed: unknown;
     try {
-      parsed = JSON.parse(jsonText);
-    } catch (e) {
-      console.warn("Failed to parse JSON directly, returning raw.", raw);
+      rawParsed = JSON.parse(jsonText);
+    } catch (err) {
+      console.warn("Failed to parse JSON directly, returning raw.", err);
       return Response.json(
         { success: false, error: "AI trả về định dạng không hợp lệ." },
         { status: 500 }
       );
     }
 
-    // Basic validation & cleanup
+    const TYPES: QuizType[] = ["vocab-mcq", "grammar-mcq", "sentence-order"];
+    const DIFFICULTIES: Difficulty[] = ["easy", "medium", "hard"];
+
+    function clampDifficulty(d: unknown): Difficulty {
+      return DIFFICULTIES.includes(d as Difficulty)
+        ? (d as Difficulty)
+        : "medium";
+    }
+
+    function isStringArray(arr: unknown): arr is string[] {
+      return Array.isArray(arr) && arr.every((x) => typeof x === "string");
+    }
+
+    function sanitize(obj: unknown): AnyQuizQuestion | null {
+      if (!obj || typeof obj !== "object") return null;
+      const o = obj as Record<string, unknown>;
+      if (typeof o.id !== "string" || !o.id.trim()) return null;
+      if (!TYPES.includes(o.type as QuizType)) return null;
+      const base = {
+        id: o.id.trim().slice(0, 32),
+        type: o.type as QuizType,
+        difficulty: clampDifficulty(o.difficulty),
+        explanation:
+          typeof o.explanation === "string"
+            ? o.explanation.trim().slice(0, 200)
+            : "",
+      } as const;
+      switch (base.type) {
+        case "vocab-mcq":
+        case "grammar-mcq": {
+          if (typeof o.prompt !== "string") return null;
+          const options = o.options;
+          if (!isStringArray(options) || options.length < 2) return null;
+          if (typeof o.answerIndex !== "number") return null;
+          const answerIndex = o.answerIndex as number;
+          if (answerIndex < 0 || answerIndex >= options.length) return null;
+          const mcq: VocabMcqQuestion | GrammarMcqQuestion = {
+            id: base.id,
+            type: base.type,
+            difficulty: base.difficulty,
+            explanation: base.explanation,
+            prompt: o.prompt.trim().slice(0, 260),
+            options: options.map((s) => s.trim()).slice(0, 6),
+            answerIndex,
+          };
+          return mcq;
+        }
+        case "sentence-order": {
+          const tokens = o.tokens;
+          if (!isStringArray(tokens) || typeof o.answer !== "string")
+            return null;
+          const joined = tokens.join(" ").trim();
+          const answer = o.answer.trim();
+          // Soft check: ensure they roughly match ignoring multiple spaces.
+          if (joined.replace(/\s+/g, " ") !== answer.replace(/\s+/g, " ")) {
+            // still accept (model đôi khi đổi nhẹ) nhưng có thể bỏ qua nếu muốn strict
+          }
+          const so: SentenceOrderQuestion = {
+            id: base.id,
+            type: "sentence-order",
+            difficulty: base.difficulty,
+            explanation: base.explanation,
+            tokens: tokens.map((t) => t.trim()).slice(0, 30),
+            answer,
+          };
+          return so;
+        }
+      }
+      return null;
+    }
+
     const valid: AnyQuizQuestion[] = [];
     const seen = new Set<string>();
-    for (const q of parsed) {
-      if (!q || typeof q !== "object") continue;
-      if (!q.id || seen.has(q.id)) continue;
-      seen.add(q.id);
-      if (
-        !q.type ||
-        !["vocab-mcq", "grammar-mcq", "sentence-order"].includes(q.type)
-      )
-        continue;
-      if (!q.difficulty) q.difficulty = "medium" as any;
-      if (q.type === "vocab-mcq" || q.type === "grammar-mcq") {
-        if (!Array.isArray((q as any).options) || (q as any).options.length < 2)
-          continue;
-        if (typeof (q as any).answerIndex !== "number") continue;
-      } else if (q.type === "sentence-order") {
-        if (
-          !Array.isArray((q as any).tokens) ||
-          typeof (q as any).answer !== "string"
-        )
-          continue;
+    if (Array.isArray(rawParsed)) {
+      for (const item of rawParsed) {
+        const q = sanitize(item);
+        if (!q) continue;
+        if (seen.has(q.id)) continue;
+        seen.add(q.id);
+        valid.push(q);
       }
-      if (typeof q.explanation !== "string") q.explanation = "" as any;
-      valid.push(q as AnyQuizQuestion);
     }
 
     if (!valid.length) {
@@ -129,7 +191,7 @@ HÃY TRẢ VỀ CHỈ JSON ARRAY HỢP LỆ. NHỚ: explanation phải 100% ti�
     }
 
     return Response.json({ success: true, data: valid });
-  } catch (err: any) {
+  } catch (err) {
     console.error("AI quiz generation error", err);
     return Response.json(
       { success: false, error: "Server lỗi hoặc AI không phản hồi." },

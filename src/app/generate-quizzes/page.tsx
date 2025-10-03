@@ -49,8 +49,9 @@ export default function GenerateQuizzesPage() {
       dispatch(setQuestions({ questions: json.data, source: "ai" }));
       setRawPreview(JSON.stringify(json.data, null, 2));
       router.push("/quizzes");
-    } catch (e: any) {
-      setError(e.message || "Đã xảy ra lỗi.");
+    } catch (e: unknown) {
+      const msg = (e instanceof Error && e.message) || "Đã xảy ra lỗi.";
+      setError(msg);
     } finally {
       setLoading(false);
     }
