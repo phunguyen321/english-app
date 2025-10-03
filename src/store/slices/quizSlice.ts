@@ -6,6 +6,7 @@ type QuizState = {
   status: "idle" | "loading" | "succeeded" | "failed";
   error?: string;
   userAnswers: Record<string, number | string | string[]>; // id -> answer
+  source?: "static" | "ai"; // nguồn dữ liệu câu hỏi
   result?: {
     correct: number;
     total: number;
@@ -33,6 +34,19 @@ const quizSlice = createSlice({
   name: "quiz",
   initialState,
   reducers: {
+    setQuestions(
+      state,
+      action: PayloadAction<{
+        questions: AnyQuizQuestion[];
+        source?: "static" | "ai";
+      }>
+    ) {
+      state.questions = action.payload.questions;
+      state.status = "succeeded";
+      state.source = action.payload.source || "static";
+      state.userAnswers = {};
+      state.result = undefined;
+    },
     answerQuestion(
       state,
       action: PayloadAction<{ id: string; answer: number | string | string[] }>
@@ -84,6 +98,7 @@ const quizSlice = createSlice({
         (state, action: PayloadAction<AnyQuizQuestion[]>) => {
           state.status = "succeeded";
           state.questions = action.payload;
+          state.source = "static";
         }
       )
       .addCase(loadQuizzes.rejected, (state, action) => {
@@ -93,5 +108,6 @@ const quizSlice = createSlice({
   },
 });
 
-export const { answerQuestion, submit, reset } = quizSlice.actions;
+export const { answerQuestion, submit, reset, setQuestions } =
+  quizSlice.actions;
 export default quizSlice.reducer;

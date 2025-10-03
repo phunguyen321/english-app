@@ -27,6 +27,9 @@ export default function NavBar() {
           <Button LinkComponent={Link} href="/quizzes" color="primary">
             Bài tập
           </Button>
+          <Button LinkComponent={Link} href="/generate-quizzes" color="primary">
+            Tạo bài tập AI
+          </Button>
         </Box>
       </Toolbar>
     </AppBar>

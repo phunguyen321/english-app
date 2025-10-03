@@ -22,6 +22,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import GavelIcon from "@mui/icons-material/Gavel";
 import QuizIcon from "@mui/icons-material/Quiz";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
@@ -40,6 +41,11 @@ const navItems: NavItem[] = [
   { label: "Từ vựng", href: "/vocabulary", icon: <MenuBookIcon /> },
   { label: "Ngữ pháp", href: "/grammar", icon: <GavelIcon /> },
   { label: "Bài tập", href: "/quizzes", icon: <QuizIcon /> },
+  {
+    label: "Tạo bài tập AI",
+    href: "/generate-quizzes",
+    icon: <AutoAwesomeIcon />,
+  },
 ];
 
 type SidebarProps = {

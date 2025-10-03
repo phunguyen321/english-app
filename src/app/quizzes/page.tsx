@@ -24,7 +24,7 @@ import {
 
 export default function QuizzesPage() {
   const dispatch = useAppDispatch();
-  const { questions, status, userAnswers, result } = useAppSelector(
+  const { questions, status, userAnswers, result, source } = useAppSelector(
     (s: RootState) => s.quiz
   );
 
@@ -35,7 +35,10 @@ export default function QuizzesPage() {
   return (
     <Box>
       <Typography variant="h4" gutterBottom>
-        Bài tập
+        Bài tập{" "}
+        {source === "ai" && (
+          <Chip size="small" color="info" label="AI" sx={{ ml: 1 }} />
+        )}
       </Typography>
       {status === "loading" && <LinearProgress />}
       <Stack spacing={2}>
@@ -129,11 +132,20 @@ export default function QuizzesPage() {
           </Card>
         ))}
 
-        <Stack direction="row" spacing={2}>
+        <Stack direction="row" spacing={2} flexWrap="wrap">
           <Button variant="contained" onClick={() => dispatch(submit())}>
             Nộp bài
           </Button>
           <Button onClick={() => dispatch(reset())}>Làm lại</Button>
+          {source === "ai" && (
+            <Button
+              onClick={() => {
+                dispatch(loadQuizzes());
+              }}
+            >
+              Tải bộ tĩnh
+            </Button>
+          )}
           {result && (
             <Chip
               label={`Kết quả: ${result.correct}/${result.total}`}
