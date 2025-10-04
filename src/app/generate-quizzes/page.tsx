@@ -33,7 +33,8 @@ export default function GenerateQuizzesPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [requirements, setRequirements] = useState("");
-  const [count, setCount] = useState<number>(8);
+  // Keep raw input as string to avoid forcing a default like 0 when user clears the field
+  const [countInput, setCountInput] = useState<string>("8");
   const [mixTypes, setMixTypes] = useState(true);
   const [allowedTypes, setAllowedTypes] = useState<string[]>([
     "vocab-mcq",
@@ -54,6 +55,17 @@ export default function GenerateQuizzesPage() {
     "sentence-order": 1,
   });
 
+  // Parse and validate count without mutating user input
+  const parsedCount = useMemo(() => {
+    const v = parseInt(countInput, 10);
+    return Number.isFinite(v) ? v : NaN;
+  }, [countInput]);
+  // Valid when between 1 and 50 inclusive
+  const isCountValid =
+    Number.isFinite(parsedCount) && parsedCount >= 1 && parsedCount <= 50;
+  // For calculations, treat invalid as 0 so predictedCounts show 0 without blocking typing
+  const allocCount = isCountValid ? (parsedCount as number) : 0;
+
   // Compute normalized ratios for display
   const normalizedRatios = useMemo(() => {
     const activeEntries = Object.entries(typeRatios).filter(([k]) =>
@@ -73,11 +85,11 @@ export default function GenerateQuizzesPage() {
     }));
     const rawAllocs = entries.map((e) => ({
       type: e.type,
-      raw: (e.pct / 100) * count,
-      floor: Math.floor((e.pct / 100) * count),
+      raw: (e.pct / 100) * allocCount,
+      floor: Math.floor((e.pct / 100) * allocCount),
     }));
     const allocated = rawAllocs.reduce((a, r) => a + r.floor, 0);
-    let leftover = count - allocated;
+    let leftover = allocCount - allocated;
     // distribute leftover by largest fractional part
     const fracSorted = [...rawAllocs]
       .map((r) => ({ type: r.type, frac: r.raw - r.floor }))
@@ -92,7 +104,7 @@ export default function GenerateQuizzesPage() {
       idx++;
     }
     return result;
-  }, [allowedTypes, normalizedRatios, count]);
+  }, [allowedTypes, normalizedRatios, allocCount]);
 
   const updateRatio = (key: string, value: number) => {
     setTypeRatios((prev) => ({ ...prev, [key]: value }));
@@ -130,7 +142,7 @@ export default function GenerateQuizzesPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           requirements,
-          count,
+          count: parsedCount,
           mixTypes,
           allowedTypes,
           typeRatios: Object.fromEntries(
@@ -184,15 +196,30 @@ export default function GenerateQuizzesPage() {
               type="number"
               size="small"
               disabled={loading}
-              value={count}
+              value={countInput}
               onChange={(e) => {
-                const v = parseInt(e.target.value, 10);
-                if (isNaN(v)) return setCount(3);
-                setCount(Math.min(Math.max(v, 3), 50));
+                const val = e.target.value;
+                if (val === "") {
+                  setCountInput("");
+                  return;
+                }
+                const v = parseInt(val, 10);
+                if (Number.isNaN(v)) {
+                  // Keep raw text to not force a default like 0
+                  setCountInput(val);
+                } else {
+                  // Cap only the maximum; no minimum enforcement
+                  setCountInput(String(Math.min(v, 50)));
+                }
               }}
-              inputProps={{ min: 3, max: 50 }}
+              inputProps={{ max: 50 }}
               sx={{ width: 160, maxWidth: "100%" }}
-              helperText="Nhập số từ 3 đến 50"
+              error={!isCountValid}
+              helperText={
+                isCountValid
+                  ? "Tối đa 50 (không đặt min). Để trống/sai sẽ không thể bấm tạo."
+                  : "Số hợp lệ từ 1 đến 50."
+              }
               label="Số lượng"
             />
             <Typography
@@ -428,7 +455,7 @@ export default function GenerateQuizzesPage() {
             <Button
               variant="contained"
               onClick={handleGenerate}
-              disabled={loading}
+              disabled={loading || !requirements.trim() || !isCountValid}
               startIcon={<PsychologyAltIcon />}
             >
               {loading ? "Đang tạo..." : "Sinh câu hỏi"}
