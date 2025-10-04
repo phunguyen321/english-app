@@ -219,18 +219,22 @@ export default function Sidebar({ expanded, onClose, onToggle }: SidebarProps) {
               }
             }}
             sx={{
-              position: "absolute",
-              top: 0,
-              right: -6,
-              height: "100%",
-              width: 16,
+              // Fix the handle to viewport center so it never sinks on long pages
+              position: "fixed",
+              top: "50%",
+              // Center the pill over the sidebar divider: offset by half of pill width (22 / 2 = 11)
+              left: (expanded ? WIDTH_EXPANDED : WIDTH_COLLAPSED) - 11,
+              transform: "translateY(-50%)",
+              height: "auto",
+              width: 22,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
               userSelect: "none",
               opacity: 0.5,
-              transition: "opacity .25s, right .25s",
+              zIndex: (theme) => theme.zIndex.drawer + 1,
+              transition: "opacity .25s, left .25s",
               "&:hover": { opacity: 0.95 },
               "&:focus-visible": {
                 outline: "2px solid",
