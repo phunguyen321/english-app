@@ -10,7 +10,9 @@ import {
   Paper,
   Chip,
   Stack,
-  Divider,
+  Grid,
+  Switch,
+  FormControlLabel,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 // no breakpoint-specific UI; same layout for all sizes
@@ -21,6 +23,7 @@ export default function IrregularVerbsPage() {
   const [q, setQ] = useState("");
   const [data, setData] = useState<Verb[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [showMeaning, setShowMeaning] = useState(true);
 
   useEffect(() => {
     let mounted = true;
@@ -80,6 +83,30 @@ export default function IrregularVerbsPage() {
       .split("/")
       .map((x) => x.trim())
       .filter(Boolean);
+
+  const renderForms = (forms: string, color?: string) => {
+    const arr = splitVariants(forms);
+    return arr.map((form, i) => (
+      <React.Fragment key={i}>
+        <Box
+          component="span"
+          sx={{
+            fontWeight: 800,
+            fontSize: { xs: 20, sm: 22 },
+            lineHeight: 1.2,
+            color,
+          }}
+        >
+          {highlight(form)}
+        </Box>
+        {i < arr.length - 1 && (
+          <Box component="span" sx={{ mx: 0.5, opacity: 0.6 }}>
+            /
+          </Box>
+        )}
+      </React.Fragment>
+    ));
+  };
 
   return (
     <Box>
@@ -145,79 +172,58 @@ export default function IrregularVerbsPage() {
               <Card key={`${v.base}-${v.past}-${v.pp}`} variant="outlined">
                 <CardContent sx={{ py: 1.25 }}>
                   {/* V1 */}
-                  <Stack
-                    direction="row"
-                    spacing={1}
-                    alignItems="center"
-                    sx={{ flexWrap: "wrap" }}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "baseline",
+                      gap: 1,
+                      borderLeft: "4px solid",
+                      borderLeftColor: "text.disabled",
+                      pl: 1.25,
+                      py: 0.5,
+                    }}
                   >
-                    <Chip size="small" label="V1 (Base)" />
-                    <Stack
-                      direction="row"
-                      spacing={0.75}
-                      sx={{ flexWrap: "wrap" }}
-                    >
-                      {splitVariants(v.base).map((bv, i) => (
-                        <Chip
-                          key={i}
-                          size="small"
-                          variant="outlined"
-                          label={highlight(bv)}
-                        />
-                      ))}
-                    </Stack>
-                  </Stack>
-                  <Divider sx={{ my: 1 }} />
-                  {/* V2 */}
-                  <Stack
-                    direction="row"
-                    spacing={1}
-                    alignItems="center"
-                    sx={{ flexWrap: "wrap" }}
-                  >
-                    <Chip size="small" color="primary" label="V2 (Past)" />
-                    <Stack
-                      direction="row"
-                      spacing={0.75}
-                      sx={{ flexWrap: "wrap" }}
-                    >
-                      {splitVariants(v.past).map((pv, i) => (
-                        <Chip
-                          key={i}
-                          size="small"
-                          color="primary"
-                          variant="outlined"
-                          label={highlight(pv)}
-                        />
-                      ))}
-                    </Stack>
-                  </Stack>
-                  <Divider sx={{ my: 1 }} />
-                  {/* V3 */}
-                  <Stack
-                    direction="row"
-                    spacing={1}
-                    alignItems="center"
-                    sx={{ flexWrap: "wrap" }}
-                  >
-                    <Chip size="small" color="secondary" label="V3 (PP)" />
-                    <Stack
-                      direction="row"
-                      spacing={0.75}
-                      sx={{ flexWrap: "wrap" }}
-                    >
-                      {splitVariants(v.pp).map((ppv, i) => (
-                        <Chip
-                          key={i}
-                          size="small"
-                          color="secondary"
-                          variant="outlined"
-                          label={highlight(ppv)}
-                        />
-                      ))}
-                    </Stack>
-                  </Stack>
-                  {v.meaning && (
+                    <Chip size="small" label="V1" />
+                    <Box>{renderForms(v.base)}</Box>
+                  </Box>
+
+                  {/* V2/V3 side by side on desktop, stacked on mobile */}
+                  <Grid container spacing={1} sx={{ mt: 0.5 }}>
+                    <Grid item xs={12} md={6}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "baseline",
+                          gap: 1,
+                          borderLeft: "4px solid",
+                          borderLeftColor: "primary.main",
+                          pl: 1.25,
+                          py: 0.5,
+                        }}
+                      >
+                        <Chip size="small" color="primary" label="V2" />
+                        <Box>{renderForms(v.past, "primary.main")}</Box>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "baseline",
+                          gap: 1,
+                          borderLeft: "4px solid",
+                          borderLeftColor: "secondary.main",
+                          pl: 1.25,
+                          py: 0.5,
+                        }}
+                      >
+                        <Chip size="small" color="secondary" label="V3" />
+                        <Box>{renderForms(v.pp, "secondary.main")}</Box>
+                      </Box>
+                    </Grid>
+                  </Grid>
+
+                  {showMeaning && v.meaning && (
                     <Typography
                       variant="body2"
                       sx={{ mt: 1, color: "text.secondary" }}
