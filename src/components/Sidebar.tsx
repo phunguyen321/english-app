@@ -25,6 +25,7 @@ import QuizIcon from "@mui/icons-material/Quiz";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import RuleIcon from "@mui/icons-material/Rule";
 
 // Drawer dynamic to avoid SSR mismatch on mobile
 const DrawerDynamic = dynamic(() => import("@mui/material/Drawer"), {
@@ -40,6 +41,11 @@ const navItems: NavItem[] = [
   { label: "Trang chủ", href: "/", icon: <HomeIcon /> },
   { label: "Từ vựng", href: "/vocabulary", icon: <MenuBookIcon /> },
   { label: "Ngữ pháp", href: "/grammar", icon: <GavelIcon /> },
+  {
+    label: "Động từ bất quy tắc",
+    href: "/irregular-verbs",
+    icon: <RuleIcon />,
+  },
   { label: "Bài tập", href: "/quizzes", icon: <QuizIcon /> },
   {
     label: "Tạo bài tập AI",
