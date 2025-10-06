@@ -11,8 +11,6 @@ import {
   Chip,
   Stack,
   Grid,
-  Switch,
-  FormControlLabel,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 // no breakpoint-specific UI; same layout for all sizes
@@ -23,7 +21,7 @@ export default function IrregularVerbsPage() {
   const [q, setQ] = useState("");
   const [data, setData] = useState<Verb[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [showMeaning, setShowMeaning] = useState(true);
+  const [showMeaning] = useState(true);
 
   useEffect(() => {
     let mounted = true;

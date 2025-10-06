@@ -1,617 +1,2330 @@
 {
   "topics": [
-    { "id": "daily", "name": "Sinh hoạt hằng ngày", "level": "A1" },
-    { "id": "travel", "name": "Du lịch", "level": "A2" },
-    { "id": "study", "name": "Học tập & Công việc", "level": "A2" },
-    { "id": "personality", "name": "Tính cách", "level": "B1" }
+    { "id": "home", "name": "Ngôi nhà", "level": "A1" },
+    { "id": "bedroom", "name": "Phòng ngủ", "level": "A1" },
+    { "id": "livingroom", "name": "Phòng khách", "level": "A1" },
+    { "id": "kitchen", "name": "Phòng bếp", "level": "A1" }
   ],
   "entries": [
     {
-      "id": "1",
-      "word": "book",
-      "phonetic": "/bʊk/",
-      "meaningVi": "sách",
-      "topicId": "study",
+      "id": "h1",
+      "word": "air conditioner",
+      "phonetic": "/ˈeərkənˌdɪʃənər/",
+      "pos": "n",
+      "meaningVi": "điều hòa không khí",
+      "topicId": "home",
       "level": "A1",
       "examples": [
         {
-          "en": "This book is very interesting.",
-          "vi": "Cuốn sách này rất thú vị."
-        },
-        {
-          "en": "I read a book every night.",
-          "vi": "Tôi đọc một cuốn sách mỗi tối."
+          "en": "It's so hot; let's turn on the air conditioner.",
+          "vi": "Trời nóng quá; chúng ta hãy bật điều hòa lên."
         }
       ]
     },
     {
-      "id": "2",
-      "word": "house",
-      "phonetic": "/haʊs/",
-      "meaningVi": "ngôi nhà",
-      "topicId": "daily",
+      "id": "h2",
+      "word": "attic",
+      "phonetic": "/ˈætɪk/",
+      "pos": "n",
+      "meaningVi": "gác thượng",
+      "topicId": "home",
       "level": "A1",
       "examples": [
         {
-          "en": "My house is near the park.",
-          "vi": "Nhà tôi ở gần công viên."
-        },
-        { "en": "They built a new house.", "vi": "Họ xây một ngôi nhà mới." }
+          "en": "We keep old boxes in the attic.",
+          "vi": "Chúng tôi giữ những chiếc hộp cũ trên gác thượng."
+        }
       ]
     },
     {
-      "id": "3",
-      "word": "family",
-      "phonetic": "/ˈfæməli/",
-      "meaningVi": "gia đình",
-      "topicId": "daily",
+      "id": "h3",
+      "word": "balcony",
+      "phonetic": "/ˈbælkəni/",
+      "pos": "n",
+      "meaningVi": "ban công",
+      "topicId": "home",
       "level": "A1",
       "examples": [
         {
-          "en": "Family is important to me.",
-          "vi": "Gia đình rất quan trọng với tôi."
-        },
-        {
-          "en": "We have a big family dinner.",
-          "vi": "Chúng tôi có một bữa tối gia đình lớn."
+          "en": "She is reading a book on the balcony.",
+          "vi": "Cô ấy đang đọc sách trên ban công."
         }
       ]
     },
     {
-      "id": "4",
-      "word": "work",
-      "phonetic": "/wɜːk/",
-      "meaningVi": "làm việc; công việc",
-      "topicId": "study",
-      "level": "A2",
-      "examples": [
-        {
-          "en": "I work from Monday to Friday.",
-          "vi": "Tôi làm việc từ thứ Hai đến thứ Sáu."
-        },
-        {
-          "en": "Her work is very demanding.",
-          "vi": "Công việc của cô ấy rất áp lực."
-        }
-      ]
-    },
-    {
-      "id": "5",
-      "word": "travel",
-      "phonetic": "/ˈtræv.əl/",
-      "meaningVi": "du lịch",
-      "topicId": "travel",
-      "level": "A2",
-      "examples": [
-        {
-          "en": "I love to travel abroad.",
-          "vi": "Tôi thích đi du lịch nước ngoài."
-        },
-        {
-          "en": "They plan to travel next month.",
-          "vi": "Họ dự định đi du lịch tháng sau."
-        }
-      ]
-    },
-    {
-      "id": "6",
-      "word": "health",
-      "phonetic": "/hɛlθ/",
-      "meaningVi": "sức khỏe",
-      "topicId": "daily",
-      "level": "A2",
-      "examples": [
-        {
-          "en": "Health is more important than wealth.",
-          "vi": "Sức khỏe quan trọng hơn tiền bạc."
-        },
-        {
-          "en": "Exercise is good for your health.",
-          "vi": "Tập thể dục tốt cho sức khỏe."
-        }
-      ]
-    },
-    {
-      "id": "7",
-      "word": "food",
-      "phonetic": "/fuːd/",
-      "meaningVi": "thức ăn",
-      "topicId": "daily",
-      "level": "A1",
-      "examples": [
-        { "en": "The food tastes delicious.", "vi": "Đồ ăn rất ngon." },
-        {
-          "en": "We bought some food at the market.",
-          "vi": "Chúng tôi mua một ít đồ ăn ở chợ."
-        }
-      ]
-    },
-    {
-      "id": "8",
-      "word": "learn",
-      "phonetic": "/lɜːn/",
-      "meaningVi": "học",
-      "topicId": "study",
-      "level": "A2",
-      "examples": [
-        {
-          "en": "I learn English every day.",
-          "vi": "Tôi học tiếng Anh mỗi ngày."
-        },
-        {
-          "en": "We learn from our mistakes.",
-          "vi": "Chúng ta học từ những sai lầm."
-        }
-      ]
-    },
-    {
-      "id": "9",
-      "word": "friend",
-      "phonetic": "/frɛnd/",
-      "meaningVi": "bạn; người bạn",
-      "topicId": "daily",
+      "id": "h4",
+      "word": "bathroom",
+      "phonetic": "/ˈbɑːθruːm/",
+      "pos": "n",
+      "meaningVi": "phòng tắm",
+      "topicId": "home",
       "level": "A1",
       "examples": [
         {
-          "en": "He is my best friend.",
-          "vi": "Anh ấy là bạn thân nhất của tôi."
-        },
-        {
-          "en": "We made new friends at school.",
-          "vi": "Chúng tôi kết bạn mới ở trường."
+          "en": "The hotel has a large bathroom.",
+          "vi": "Khách sạn có một phòng tắm lớn."
         }
       ]
     },
     {
-      "id": "10",
-      "word": "weather",
-      "phonetic": "/ˈwɛð.ər/",
-      "meaningVi": "thời tiết",
-      "topicId": "daily",
+      "id": "h5",
+      "word": "bedroom",
+      "phonetic": "/ˈbedruːm/",
+      "pos": "n",
+      "meaningVi": "phòng ngủ",
+      "topicId": "home",
       "level": "A1",
       "examples": [
         {
-          "en": "The weather is sunny today.",
-          "vi": "Hôm nay thời tiết nắng đẹp."
-        },
-        {
-          "en": "Bad weather can delay flights.",
-          "vi": "Thời tiết xấu có thể làm hoãn chuyến bay."
+          "en": "I need to clean my bedroom this weekend.",
+          "vi": "Tôi cần dọn dẹp phòng ngủ của mình vào cuối tuần này."
         }
       ]
     },
     {
-      "id": "11",
-      "word": "water",
-      "phonetic": "/ˈwɔː.tər/",
-      "meaningVi": "nước (uống)",
-      "topicId": "daily",
+      "id": "h6",
+      "word": "broom",
+      "phonetic": "/bruːm/",
+      "pos": "n",
+      "meaningVi": "chổi",
+      "topicId": "home",
       "level": "A1",
       "examples": [
         {
-          "en": "Drink plenty of water.",
-          "vi": "Hãy uống nhiều nước."
-        },
-        {
-          "en": "She poured water into the glass.",
-          "vi": "Cô ấy rót nước vào ly."
+          "en": "Use the broom to sweep the floor.",
+          "vi": "Hãy dùng chổi để quét sàn nhà."
         }
       ]
     },
     {
-      "id": "12",
-      "word": "morning",
-      "phonetic": "/ˈmɔː.nɪŋ/",
-      "meaningVi": "buổi sáng",
-      "topicId": "daily",
+      "id": "h7",
+      "word": "chimney",
+      "phonetic": "/ˈtʃɪmni/",
+      "pos": "n",
+      "meaningVi": "ống khói",
+      "topicId": "home",
       "level": "A1",
       "examples": [
         {
-          "en": "Good morning, everyone!",
-          "vi": "Chào buổi sáng mọi người!"
-        },
-        {
-          "en": "I exercise in the morning.",
-          "vi": "Tôi tập thể dục vào buổi sáng."
+          "en": "Smoke was coming out of the chimney.",
+          "vi": "Khói đang bay ra từ ống khói."
         }
       ]
     },
     {
-      "id": "13",
-      "word": "bus",
-      "phonetic": "/bʌs/",
-      "meaningVi": "xe buýt",
-      "topicId": "travel",
+      "id": "h8",
+      "word": "clothes line",
+      "phonetic": "/ˈkləʊðz laɪn/",
+      "pos": "n",
+      "meaningVi": "dây phơi quần áo",
+      "topicId": "home",
       "level": "A1",
       "examples": [
         {
-          "en": "We took the bus to the city.",
-          "vi": "Chúng tôi đi xe buýt vào thành phố."
-        },
-        {
-          "en": "The bus stop is over there.",
-          "vi": "Trạm xe buýt ở đằng kia."
+          "en": "She hung the wet towels on the clothes line.",
+          "vi": "Cô ấy đã treo những chiếc khăn ướt lên dây phơi quần áo."
         }
       ]
     },
     {
-      "id": "14",
-      "word": "ticket",
-      "phonetic": "/ˈtɪk.ɪt/",
-      "meaningVi": "vé",
-      "topicId": "travel",
+      "id": "h9",
+      "word": "corridor",
+      "phonetic": "/ˈkɒrɪdɔː(r)/",
+      "pos": "n",
+      "meaningVi": "hành lang",
+      "topicId": "home",
       "level": "A1",
       "examples": [
         {
-          "en": "I bought a train ticket.",
-          "vi": "Tôi đã mua vé tàu."
-        },
-        {
-          "en": "Please show your ticket.",
-          "vi": "Vui lòng xuất trình vé của bạn."
+          "en": "Walk down the corridor to find the office.",
+          "vi": "Đi dọc hành lang để tìm văn phòng."
         }
       ]
     },
     {
-      "id": "15",
-      "word": "airport",
-      "phonetic": "/ˈeə.pɔːt/",
-      "meaningVi": "sân bay",
-      "topicId": "travel",
-      "level": "A2",
-      "examples": [
-        {
-          "en": "We arrived at the airport early.",
-          "vi": "Chúng tôi đến sân bay sớm."
-        },
-        {
-          "en": "The airport is very busy today.",
-          "vi": "Sân bay hôm nay rất đông."
-        }
-      ]
-    },
-    {
-      "id": "16",
-      "word": "teacher",
-      "phonetic": "/ˈtiː.tʃər/",
-      "meaningVi": "giáo viên",
-      "topicId": "study",
+      "id": "h10",
+      "word": "curtain",
+      "phonetic": "/ˈkɜːtn/",
+      "pos": "n",
+      "meaningVi": "rèm cửa",
+      "topicId": "home",
       "level": "A1",
       "examples": [
         {
-          "en": "The teacher explains the lesson.",
-          "vi": "Cô giáo giảng bài."
-        },
-        {
-          "en": "He is my English teacher.",
-          "vi": "Anh ấy là giáo viên tiếng Anh của tôi."
+          "en": "Please close the curtain because of the bright sun.",
+          "vi": "Làm ơn kéo rèm cửa lại vì ánh nắng chói chang."
         }
       ]
     },
     {
-      "id": "17",
-      "word": "student",
-      "phonetic": "/ˈstjuː.dənt/",
-      "meaningVi": "học sinh; sinh viên",
-      "topicId": "study",
+      "id": "h11",
+      "word": "curtain rod",
+      "phonetic": "/ˈkɜːtn rɒd/",
+      "pos": "n",
+      "meaningVi": "thanh cuộn rèm",
+      "topicId": "home",
       "level": "A1",
       "examples": [
         {
-          "en": "She is a university student.",
-          "vi": "Cô ấy là sinh viên đại học."
-        },
-        {
-          "en": "Students have exams next week.",
-          "vi": "Sinh viên có kỳ thi tuần sau."
+          "en": "We need a strong curtain rod for the heavy drapes.",
+          "vi": "Chúng ta cần một thanh cuộn rèm chắc chắn cho những tấm rèm nặng."
         }
       ]
     },
     {
-      "id": "18",
-      "word": "lesson",
-      "phonetic": "/ˈles.ən/",
-      "meaningVi": "bài học",
-      "topicId": "study",
-      "level": "A2",
-      "examples": [
-        {
-          "en": "Today's lesson is about verbs.",
-          "vi": "Bài học hôm nay về động từ."
-        },
-        {
-          "en": "I missed the lesson yesterday.",
-          "vi": "Tôi đã bỏ lỡ bài học hôm qua."
-        }
-      ]
-    },
-    {
-      "id": "19",
-      "word": "market",
-      "phonetic": "/ˈmɑː.kɪt/",
-      "meaningVi": "chợ",
-      "topicId": "daily",
+      "id": "h12",
+      "word": "door",
+      "phonetic": "/dɔː(r)/",
+      "pos": "n",
+      "meaningVi": "cánh cửa",
+      "topicId": "home",
       "level": "A1",
       "examples": [
         {
-          "en": "We went to the market.",
-          "vi": "Chúng tôi đi chợ."
-        },
-        {
-          "en": "The market sells fresh food.",
-          "vi": "Chợ bán đồ ăn tươi."
+          "en": "Don't forget to lock the door when you leave.",
+          "vi": "Đừng quên khóa cửa khi bạn rời đi."
         }
       ]
     },
     {
-      "id": "20",
-      "word": "rain",
-      "phonetic": "/reɪn/",
-      "meaningVi": "mưa",
-      "topicId": "daily",
+      "id": "h13",
+      "word": "doorknob",
+      "phonetic": "/ˈdɔːnɒb/",
+      "pos": "n",
+      "meaningVi": "quả đấm ở cửa",
+      "topicId": "home",
       "level": "A1",
       "examples": [
         {
-          "en": "It may rain this afternoon.",
-          "vi": "Chiều nay có thể mưa."
-        },
-        {
-          "en": "I like the sound of rain.",
-          "vi": "Tôi thích âm thanh của mưa."
+          "en": "The doorknob is made of brass.",
+          "vi": "Quả đấm cửa được làm bằng đồng thau."
         }
       ]
     },
     {
-      "id": "21",
-      "word": "map",
-      "phonetic": "/mæp/",
-      "meaningVi": "bản đồ",
-      "topicId": "travel",
+      "id": "h14",
+      "word": "driveway",
+      "phonetic": "/ˈdraɪvweɪ/",
+      "pos": "n",
+      "meaningVi": "đường lái xe vào nhà",
+      "topicId": "home",
       "level": "A1",
       "examples": [
         {
-          "en": "He checked the map.",
-          "vi": "Anh ấy kiểm tra bản đồ."
-        },
-        {
-          "en": "Do you have a city map?",
-          "vi": "Bạn có bản đồ thành phố không?"
+          "en": "Park your car at the end of the driveway.",
+          "vi": "Hãy đậu xe của bạn ở cuối đường lái xe vào nhà."
         }
       ]
     },
     {
-      "id": "22",
-      "word": "station",
-      "phonetic": "/ˈsteɪ.ʃən/",
-      "meaningVi": "nhà ga",
-      "topicId": "travel",
-      "level": "A2",
-      "examples": [
-        { "en": "Meet me at the station.", "vi": "Gặp tôi ở nhà ga." },
-        { "en": "The station is crowded.", "vi": "Nhà ga rất đông." }
-      ]
-    },
-    {
-      "id": "1001",
-      "word": "absent-minded",
-      "phonetic": "/ˌæbsənt ˈmaɪndɪd/",
-      "pos": "adj",
-      "meaningVi": "đãng trí",
-      "topicId": "personality",
-      "level": "B1",
+      "id": "h15",
+      "word": "dry",
+      "phonetic": "/draɪ/",
+      "pos": "v",
+      "meaningVi": "lau khô",
+      "topicId": "home",
+      "level": "A1",
       "examples": [
         {
-          "en": "My grandpa is very absent-minded and often forgets his glasses.",
-          "vi": "Ông tôi rất đãng trí và thường quên mất cặp kính của mình."
+          "en": "Please dry the dishes after washing them.",
+          "vi": "Làm ơn lau khô bát đĩa sau khi rửa chúng."
         }
       ]
     },
     {
-      "id": "1002",
-      "word": "adventurous",
-      "phonetic": "/ədˈventʃərəs/",
-      "pos": "adj",
-      "meaningVi": "thích phiêu lưu",
-      "topicId": "personality",
-      "level": "B1",
+      "id": "h16",
+      "word": "dustpan",
+      "phonetic": "/ˈdʌstpæn/",
+      "pos": "n",
+      "meaningVi": "cái hót rác",
+      "topicId": "home",
+      "level": "A1",
       "examples": [
         {
-          "en": "He is an adventurous person who loves to explore new places.",
-          "vi": "Anh ấy là một người thích phiêu lưu, yêu việc khám phá những vùng đất mới."
+          "en": "Sweep the dirt into the dustpan.",
+          "vi": "Quét rác vào cái hót rác."
         }
       ]
     },
     {
-      "id": "1003",
-      "word": "aggressive",
-      "phonetic": "/əˈɡresɪv/",
-      "pos": "adj",
-      "meaningVi": "hùng hổ; hung hăng; hiếu chiến",
-      "topicId": "personality",
-      "level": "B1",
+      "id": "h17",
+      "word": "fan",
+      "phonetic": "/fæn/",
+      "pos": "n",
+      "meaningVi": "quạt",
+      "topicId": "home",
+      "level": "A1",
       "examples": [
         {
-          "en": "The dog was aggressive towards strangers.",
-          "vi": "Con chó tỏ ra hung hăng với người lạ."
+          "en": "The room is hot, so I turned on the fan.",
+          "vi": "Căn phòng nóng, vì vậy tôi đã bật quạt."
         }
       ]
     },
     {
-      "id": "1004",
-      "word": "ambitious",
-      "phonetic": "/æmˈbɪʃəs/",
-      "pos": "adj",
-      "meaningVi": "đầy tham vọng",
-      "topicId": "personality",
-      "level": "B1",
+      "id": "h18",
+      "word": "floor",
+      "phonetic": "/flɔː(r)/",
+      "pos": "n",
+      "meaningVi": "sàn nhà, tầng",
+      "topicId": "home",
+      "level": "A1",
       "examples": [
         {
-          "en": "She is a very ambitious student and wants to be a doctor.",
-          "vi": "Cô ấy là một học sinh rất tham vọng và muốn trở thành bác sĩ."
+          "en": "Be careful not to slip on the wet floor.",
+          "vi": "Hãy cẩn thận đừng trượt chân trên sàn nhà ướt."
         }
       ]
     },
     {
-      "id": "1005",
-      "word": "amusing",
-      "phonetic": "/əˈmjuːzɪŋ/",
-      "pos": "adj",
-      "meaningVi": "làm cho buồn cười; vui nhộn",
-      "topicId": "personality",
-      "level": "B1",
+      "id": "h19",
+      "word": "fold",
+      "phonetic": "/fəʊld/",
+      "pos": "v",
+      "meaningVi": "gấp lại",
+      "topicId": "home",
+      "level": "A1",
       "examples": [
         {
-          "en": "He told us an amusing story about his childhood.",
-          "vi": "Anh ấy đã kể cho chúng tôi một câu chuyện vui nhộn về tuổi thơ của mình."
+          "en": "Fold your clothes neatly before putting them away.",
+          "vi": "Gấp quần áo của bạn gọn gàng trước khi cất chúng đi."
         }
       ]
     },
     {
-      "id": "1006",
-      "word": "arrogant",
-      "phonetic": "/ˈærəɡənt/",
-      "pos": "adj",
-      "meaningVi": "kiêu căng; kiêu ngạo",
-      "topicId": "personality",
-      "level": "B1",
+      "id": "h20",
+      "word": "fridge",
+      "phonetic": "/frɪdʒ/",
+      "pos": "n",
+      "meaningVi": "tủ lạnh",
+      "topicId": "home",
+      "level": "A1",
+      "examples": [
+        { "en": "There is milk in the fridge.", "vi": "Có sữa trong tủ lạnh." }
+      ]
+    },
+    {
+      "id": "h21",
+      "word": "garage",
+      "phonetic": "/ˈdɒrɑːʒ/",
+      "pos": "n",
+      "meaningVi": "nhà để xe",
+      "topicId": "home",
+      "level": "A1",
       "examples": [
         {
-          "en": "His arrogant attitude makes him unpopular.",
-          "vi": "Thái độ kiêu ngạo khiến anh ta không được yêu mến."
+          "en": "The car is parked inside the garage.",
+          "vi": "Chiếc xe được đậu bên trong nhà để xe."
         }
       ]
     },
     {
-      "id": "1007",
-      "word": "brave",
-      "phonetic": "/breɪv/",
-      "pos": "adj",
-      "meaningVi": "dũng cảm",
-      "topicId": "personality",
-      "level": "A2",
+      "id": "h22",
+      "word": "garden",
+      "phonetic": "/ˈɡɑːdn/",
+      "pos": "n",
+      "meaningVi": "vườn",
+      "topicId": "home",
+      "level": "A1",
       "examples": [
         {
-          "en": "The brave firefighter rescued the cat from the tree.",
-          "vi": "Người lính cứu hỏa dũng cảm đã cứu con mèo khỏi cái cây."
+          "en": "We are growing tomatoes in the garden.",
+          "vi": "Chúng tôi đang trồng cà chua trong vườn."
         }
       ]
     },
     {
-      "id": "1008",
-      "word": "bright",
-      "phonetic": "/braɪt/",
-      "pos": "adj",
-      "meaningVi": "sáng dạ; thông minh",
-      "topicId": "personality",
-      "level": "A2",
+      "id": "h23",
+      "word": "gate",
+      "phonetic": "/ɡeɪt/",
+      "pos": "n",
+      "meaningVi": "cổng",
+      "topicId": "home",
+      "level": "A1",
       "examples": [
         {
-          "en": "She is a bright student who always gets high scores.",
-          "vi": "Cô ấy là một học sinh thông minh và luôn đạt điểm cao."
+          "en": "Please remember to close the gate behind you.",
+          "vi": "Làm ơn nhớ đóng cổng lại sau lưng bạn."
         }
       ]
     },
     {
-      "id": "1009",
-      "word": "careless",
-      "phonetic": "/ˈkeələs/",
-      "pos": "adj",
-      "meaningVi": "bất cẩn; cẩu thả",
-      "topicId": "personality",
-      "level": "A2",
+      "id": "h24",
+      "word": "hang",
+      "phonetic": "/hæŋ/",
+      "pos": "v",
+      "meaningVi": "treo",
+      "topicId": "home",
+      "level": "A1",
       "examples": [
         {
-          "en": "He made a careless mistake on the test.",
-          "vi": "Anh ấy đã mắc một lỗi bất cẩn trong bài kiểm tra."
+          "en": "Hang your coat in the closet.",
+          "vi": "Treo áo khoác của bạn vào tủ quần áo."
         }
       ]
     },
     {
-      "id": "1010",
-      "word": "cheeky",
-      "phonetic": "/ˈtʃiːki/",
-      "pos": "adj",
-      "meaningVi": "hỗn xược",
-      "topicId": "personality",
-      "level": "B1",
+      "id": "h25",
+      "word": "hinge",
+      "phonetic": "/hɪndʒ/",
+      "pos": "n",
+      "meaningVi": "bản lề",
+      "topicId": "home",
+      "level": "A1",
       "examples": [
         {
-          "en": "The cheeky child talked back to his mother.",
-          "vi": "Đứa trẻ hỗn xược đã cãi lại mẹ nó."
+          "en": "The door needs oiling because the hinge is squeaky.",
+          "vi": "Cánh cửa cần được tra dầu vì bản lề đang kêu cót két."
         }
       ]
     },
     {
-      "id": "1011",
-      "word": "clever",
-      "phonetic": "/ˈklevə(r)/",
-      "pos": "adj",
-      "meaningVi": "thông minh; lanh lợi",
-      "topicId": "personality",
-      "level": "A2",
+      "id": "h26",
+      "word": "iron",
+      "phonetic": "/ˈaɪən/",
+      "pos": "v",
+      "meaningVi": "là, ủi",
+      "topicId": "home",
+      "level": "A1",
       "examples": [
         {
-          "en": "The clever fox found a way to open the gate.",
-          "vi": "Con cáo thông minh đã tìm ra cách để mở cổng."
+          "en": "I need to iron my shirt for the meeting.",
+          "vi": "Tôi cần ủi áo sơ mi của mình cho cuộc họp."
         }
       ]
     },
     {
-      "id": "1012",
-      "word": "confident",
-      "phonetic": "/ˈkɒnfɪdənt/",
-      "pos": "adj",
-      "meaningVi": "tự tin",
-      "topicId": "personality",
-      "level": "A2",
+      "id": "h27",
+      "word": "keyhole",
+      "phonetic": "/ˈkiːhəʊl/",
+      "pos": "n",
+      "meaningVi": "lỗ khóa",
+      "topicId": "home",
+      "level": "A1",
       "examples": [
         {
-          "en": "She is confident about her ability to win the competition.",
-          "vi": "Cô ấy tự tin về khả năng chiến thắng cuộc thi của mình."
+          "en": "He looked through the keyhole to see if anyone was inside.",
+          "vi": "Anh ấy nhìn qua lỗ khóa để xem có ai bên trong không."
         }
       ]
     },
     {
-      "id": "1013",
-      "word": "cowardly",
-      "phonetic": "/ˈkaʊədli/",
-      "pos": "adj",
-      "meaningVi": "nhát gan",
-      "topicId": "personality",
-      "level": "B1",
+      "id": "h28",
+      "word": "keys",
+      "phonetic": "/kiːz/",
+      "pos": "n",
+      "meaningVi": "chìa khóa",
+      "topicId": "home",
+      "level": "A1",
       "examples": [
         {
-          "en": "Running away was a cowardly thing to do.",
-          "vi": "Bỏ chạy là một hành động nhát gan."
+          "en": "Where are my house keys?",
+          "vi": "Chìa khóa nhà của tôi ở đâu?"
         }
       ]
     },
     {
-      "id": "1014",
-      "word": "decisive",
-      "phonetic": "/dɪˈsaɪsɪv/",
-      "pos": "adj",
-      "meaningVi": "kiên quyết; dứt khoát; quyết đoán",
-      "topicId": "personality",
-      "level": "B1",
+      "id": "h29",
+      "word": "kitchen",
+      "phonetic": "/ˈkɪtʃɪn/",
+      "pos": "n",
+      "meaningVi": "phòng bếp",
+      "topicId": "home",
+      "level": "A1",
       "examples": [
         {
-          "en": "A good leader must be decisive.",
-          "vi": "Một nhà lãnh đạo giỏi phải quyết đoán."
+          "en": "My mother is cooking dinner in the kitchen.",
+          "vi": "Mẹ tôi đang nấu bữa tối trong nhà bếp."
         }
       ]
     },
     {
-      "id": "1015",
-      "word": "easy-going",
-      "phonetic": "/ˌiːzi ˈɡəʊɪŋ/",
-      "pos": "adj",
-      "meaningVi": "dịu dàng; dễ tính; dễ gần",
-      "topicId": "personality",
-      "level": "B1",
+      "id": "h30",
+      "word": "light switch",
+      "phonetic": "/laɪt swɪtʃ/",
+      "pos": "n",
+      "meaningVi": "công tắc điện",
+      "topicId": "home",
+      "level": "A1",
       "examples": [
         {
-          "en": "My new boss is very easy-going and friendly.",
-          "vi": "Sếp mới của tôi rất dễ gần và thân thiện."
+          "en": "The light switch is next to the door.",
+          "vi": "Công tắc điện nằm bên cạnh cửa."
+        }
+      ]
+    },
+    {
+      "id": "h31",
+      "word": "living room",
+      "phonetic": "/ˈlɪvɪŋ ruːm/",
+      "pos": "n",
+      "meaningVi": "phòng khách",
+      "topicId": "home",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "We watch television in the living room.",
+          "vi": "Chúng tôi xem TV trong phòng khách."
+        }
+      ]
+    },
+    {
+      "id": "h32",
+      "word": "lock",
+      "phonetic": "/lɒk/",
+      "pos": "v",
+      "meaningVi": "khóa",
+      "topicId": "home",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Did you remember to lock the door this morning?",
+          "vi": "Bạn có nhớ khóa cửa sáng nay không?"
+        }
+      ]
+    },
+    {
+      "id": "h33",
+      "word": "mop",
+      "phonetic": "/mɒp/",
+      "pos": "n",
+      "meaningVi": "cây lau nhà",
+      "topicId": "home",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Use the mop to clean up the spill.",
+          "vi": "Dùng cây lau nhà để lau dọn chỗ bị đổ."
+        }
+      ]
+    },
+    {
+      "id": "h34",
+      "word": "polish",
+      "phonetic": "/ˈpɒlɪʃ/",
+      "pos": "v",
+      "meaningVi": "đánh bóng",
+      "topicId": "home",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "He had to polish his shoes before the ceremony.",
+          "vi": "Anh ấy phải đánh bóng giày trước buổi lễ."
+        }
+      ]
+    },
+    {
+      "id": "h35",
+      "word": "repair",
+      "phonetic": "/rɪˈpeər/",
+      "pos": "v",
+      "meaningVi": "sửa lại",
+      "topicId": "home",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "I need to repair the broken fence.",
+          "vi": "Tôi cần sửa lại hàng rào bị hỏng."
+        }
+      ]
+    },
+    {
+      "id": "h36",
+      "word": "roof",
+      "phonetic": "/ruːf/",
+      "pos": "n",
+      "meaningVi": "mái nhà",
+      "topicId": "home",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "The strong wind blew some tiles off the roof.",
+          "vi": "Gió mạnh đã thổi bay một số viên ngói khỏi mái nhà."
+        }
+      ]
+    },
+    {
+      "id": "h37",
+      "word": "scrub",
+      "phonetic": "/skrʌb/",
+      "pos": "v",
+      "meaningVi": "cọ",
+      "topicId": "home",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "You need to scrub the floor with a brush.",
+          "vi": "Bạn cần cọ sàn nhà bằng bàn chải."
+        }
+      ]
+    },
+    {
+      "id": "h38",
+      "word": "shingles",
+      "phonetic": "/ˈʃɪŋɡlz/",
+      "pos": "n",
+      "meaningVi": "ván lợp",
+      "topicId": "home",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "The house has wooden shingles on the roof.",
+          "vi": "Ngôi nhà có ván lợp bằng gỗ trên mái."
+        }
+      ]
+    },
+    {
+      "id": "h39",
+      "word": "shrub",
+      "phonetic": "/ʃrʌb/",
+      "pos": "n",
+      "meaningVi": "cây bụi",
+      "topicId": "home",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "We planted a small shrub near the entrance.",
+          "vi": "Chúng tôi đã trồng một cây bụi nhỏ gần lối vào."
+        }
+      ]
+    },
+    {
+      "id": "h40",
+      "word": "shutter",
+      "phonetic": "/ˈʃʌtər/",
+      "pos": "n",
+      "meaningVi": "cửa chớp",
+      "topicId": "home",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Close the shutter before the storm.",
+          "vi": "Đóng cửa chớp lại trước cơn bão."
+        }
+      ]
+    },
+    {
+      "id": "h41",
+      "word": "stairs",
+      "phonetic": "/steə(r)z/",
+      "pos": "n",
+      "meaningVi": "cầu thang",
+      "topicId": "home",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Walk carefully on the stairs.",
+          "vi": "Đi cẩn thận trên cầu thang."
+        }
+      ]
+    },
+    {
+      "id": "h42",
+      "word": "sweep",
+      "phonetic": "/swiːp/",
+      "pos": "v",
+      "meaningVi": "quét",
+      "topicId": "home",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Don't forget to sweep the kitchen floor.",
+          "vi": "Đừng quên quét sàn nhà bếp."
+        }
+      ]
+    },
+    {
+      "id": "h43",
+      "word": "telephone",
+      "phonetic": "/ˈtelɪfəʊn/",
+      "pos": "n",
+      "meaningVi": "điện thoại",
+      "topicId": "home",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Can you answer the telephone?",
+          "vi": "Bạn có thể trả lời điện thoại được không?"
+        }
+      ]
+    },
+    {
+      "id": "h44",
+      "word": "tighten",
+      "phonetic": "/ˈtaɪtn/",
+      "pos": "v",
+      "meaningVi": "vặn chặt",
+      "topicId": "home",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "You need to tighten the screws on this chair.",
+          "vi": "Bạn cần vặn chặt các con ốc trên chiếc ghế này."
+        }
+      ]
+    },
+    {
+      "id": "h45",
+      "word": "vacuum cleaner",
+      "phonetic": "/ˈvækjuːm ˌkliːnər/",
+      "pos": "n",
+      "meaningVi": "máy hút bụi",
+      "topicId": "home",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "I used the vacuum cleaner to clean the carpet.",
+          "vi": "Tôi đã dùng máy hút bụi để làm sạch tấm thảm."
+        }
+      ]
+    },
+    {
+      "id": "h46",
+      "word": "wall",
+      "phonetic": "/wɔːl/",
+      "pos": "n",
+      "meaningVi": "bức tường",
+      "topicId": "home",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "We need to paint the living room wall a new color.",
+          "vi": "Chúng ta cần sơn lại bức tường phòng khách một màu mới."
+        }
+      ]
+    },
+    {
+      "id": "h47",
+      "word": "wash",
+      "phonetic": "/wɒʃ/",
+      "pos": "v",
+      "meaningVi": "rửa",
+      "topicId": "home",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "I always wash my hands before meals.",
+          "vi": "Tôi luôn rửa tay trước bữa ăn."
+        }
+      ]
+    },
+    {
+      "id": "h48",
+      "word": "washing machine",
+      "phonetic": "/ˈwɒʃɪŋ məˌʃiːn/",
+      "pos": "n",
+      "meaningVi": "máy giặt",
+      "topicId": "home",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Our old washing machine finally broke down.",
+          "vi": "Chiếc máy giặt cũ của chúng tôi cuối cùng đã bị hỏng."
+        }
+      ]
+    },
+    {
+      "id": "h49",
+      "word": "watering can",
+      "phonetic": "/ˈwɔːtərɪŋ kæn/",
+      "pos": "n",
+      "meaningVi": "bình tưới nước",
+      "topicId": "home",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "She used the watering can to water the flowers.",
+          "vi": "Cô ấy đã dùng bình tưới nước để tưới hoa."
+        }
+      ]
+    },
+    {
+      "id": "h50",
+      "word": "window",
+      "phonetic": "/ˈwɪndəʊ/",
+      "pos": "n",
+      "meaningVi": "cửa sổ",
+      "topicId": "home",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Please open the window for some fresh air.",
+          "vi": "Làm ơn mở cửa sổ ra để có không khí trong lành."
+        }
+      ]
+    },
+    {
+      "id": "h51",
+      "word": "wipe",
+      "phonetic": "/waɪp/",
+      "pos": "v",
+      "meaningVi": "lau chùi",
+      "topicId": "home",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Wipe the table clean after dinner.",
+          "vi": "Lau sạch bàn sau bữa tối."
+        }
+      ]
+    },
+    {
+      "id": "h52",
+      "word": "yard",
+      "phonetic": "/jɑːd/",
+      "pos": "n",
+      "meaningVi": "sân",
+      "topicId": "home",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "The children are playing outside in the yard.",
+          "vi": "Các con đang chơi bên ngoài sân."
+        }
+      ]
+    },
+    {
+      "id": "b1",
+      "word": "alarm clock",
+      "phonetic": "/əˈlɑːm klɒk/",
+      "pos": "n",
+      "meaningVi": "đồng hồ báo thức",
+      "topicId": "bedroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "I set my alarm clock for 6:00 AM.",
+          "vi": "Tôi đặt đồng hồ báo thức của mình lúc 6 giờ sáng."
+        }
+      ]
+    },
+    {
+      "id": "b2",
+      "word": "bed",
+      "phonetic": "/bed/",
+      "pos": "n",
+      "meaningVi": "giường",
+      "topicId": "bedroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "I like to read a book before I go to bed.",
+          "vi": "Tôi thích đọc sách trước khi đi ngủ."
+        }
+      ]
+    },
+    {
+      "id": "b3",
+      "word": "bed spread",
+      "phonetic": "/ˈbed spred/",
+      "pos": "n",
+      "meaningVi": "tấm trải giường",
+      "topicId": "bedroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "She chose a blue bed spread to match the curtains.",
+          "vi": "Cô ấy chọn một tấm trải giường màu xanh để hợp với rèm cửa."
+        }
+      ]
+    },
+    {
+      "id": "b4",
+      "word": "blanket",
+      "phonetic": "/ˈblæŋkɪt/",
+      "pos": "n",
+      "meaningVi": "chăn",
+      "topicId": "bedroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "It's cold tonight, so I need an extra blanket.",
+          "vi": "Tối nay trời lạnh, nên tôi cần thêm một cái chăn."
+        }
+      ]
+    },
+    {
+      "id": "b5",
+      "word": "bunk bed",
+      "phonetic": "/ˈbʌŋk bed/",
+      "pos": "n",
+      "meaningVi": "giường tầng",
+      "topicId": "bedroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "The two children sleep in a bunk bed.",
+          "vi": "Hai đứa trẻ ngủ trên một chiếc giường tầng."
+        }
+      ]
+    },
+    {
+      "id": "b6",
+      "word": "candle",
+      "phonetic": "/ˈkændl/",
+      "pos": "n",
+      "meaningVi": "nến",
+      "topicId": "bedroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "She lit a scented candle to relax.",
+          "vi": "Cô ấy thắp một cây nến thơm để thư giãn."
+        }
+      ]
+    },
+    {
+      "id": "b7",
+      "word": "candlestick",
+      "phonetic": "/ˈkændlstɪk/",
+      "pos": "n",
+      "meaningVi": "cây cắm nến",
+      "topicId": "bedroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "There is a beautiful silver candlestick on the shelf.",
+          "vi": "Có một cây cắm nến bạc rất đẹp trên kệ."
+        }
+      ]
+    },
+    {
+      "id": "b8",
+      "word": "carpet",
+      "phonetic": "/ˈkɑːpɪt/",
+      "pos": "n",
+      "meaningVi": "tấm thảm",
+      "topicId": "bedroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "I bought a new fluffy carpet for the bedroom.",
+          "vi": "Tôi đã mua một tấm thảm mềm mại mới cho phòng ngủ."
+        }
+      ]
+    },
+    {
+      "id": "b9",
+      "word": "chest of drawers",
+      "phonetic": "/ˌtʃest əv ˈdrɔːəz/",
+      "pos": "n",
+      "meaningVi": "tủ ngăn kéo",
+      "topicId": "bedroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "I keep my socks in the top drawer of the chest of drawers.",
+          "vi": "Tôi để tất của mình trong ngăn kéo trên cùng của tủ ngăn kéo."
+        }
+      ]
+    },
+    {
+      "id": "b10",
+      "word": "dresser",
+      "phonetic": "/ˈdresə(r)/",
+      "pos": "n",
+      "meaningVi": "tủ (có ngăn kéo)",
+      "topicId": "bedroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "She put her jewelry box on top of the dresser.",
+          "vi": "Cô ấy đặt hộp trang sức của mình lên trên mặt tủ có ngăn kéo."
+        }
+      ]
+    },
+    {
+      "id": "b11",
+      "word": "lamp",
+      "phonetic": "/læmp/",
+      "pos": "n",
+      "meaningVi": "đèn",
+      "topicId": "bedroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "I turned on the lamp to read in bed.",
+          "vi": "Tôi bật đèn lên để đọc sách trên giường."
+        }
+      ]
+    },
+    {
+      "id": "b12",
+      "word": "lampshade",
+      "phonetic": "/ˈlæmpʃeɪd/",
+      "pos": "n",
+      "meaningVi": "cái chao đèn",
+      "topicId": "bedroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "The lampshade is broken and needs to be replaced.",
+          "vi": "Cái chao đèn đã bị hỏng và cần được thay thế."
+        }
+      ]
+    },
+    {
+      "id": "b13",
+      "word": "light bulb",
+      "phonetic": "/ˈlaɪt bʌlb/",
+      "pos": "n",
+      "meaningVi": "bóng đèn tròn",
+      "topicId": "bedroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "The light bulb in the hallway burned out.",
+          "vi": "Bóng đèn tròn ở hành lang đã cháy."
+        }
+      ]
+    },
+    {
+      "id": "b14",
+      "word": "mattress",
+      "phonetic": "/ˈmætrəs/",
+      "pos": "n",
+      "meaningVi": "đệm",
+      "topicId": "bedroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "A comfortable mattress is important for a good sleep.",
+          "vi": "Một chiếc đệm thoải mái rất quan trọng cho một giấc ngủ ngon."
+        }
+      ]
+    },
+    {
+      "id": "b15",
+      "word": "pillow",
+      "phonetic": "/ˈpɪləʊ/",
+      "pos": "n",
+      "meaningVi": "gối",
+      "topicId": "bedroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "I always sleep with two pillows.",
+          "vi": "Tôi luôn ngủ với hai cái gối."
+        }
+      ]
+    },
+    {
+      "id": "b16",
+      "word": "pyjamas",
+      "phonetic": "/pəˈdʒɑːməz/",
+      "pos": "n",
+      "meaningVi": "quần áo ngủ",
+      "topicId": "bedroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "He quickly changed into his pyjamas after work.",
+          "vi": "Anh ấy nhanh chóng thay quần áo ngủ sau giờ làm việc."
+        }
+      ]
+    },
+    {
+      "id": "b17",
+      "word": "sheet",
+      "phonetic": "/ʃiːt/",
+      "pos": "n",
+      "meaningVi": "khăn trải giường",
+      "topicId": "bedroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "I need to change the sheet on my bed today.",
+          "vi": "Hôm nay tôi cần thay khăn trải giường của mình."
+        }
+      ]
+    },
+    {
+      "id": "b18",
+      "word": "slippers",
+      "phonetic": "/ˈslɪpə(r)z/",
+      "pos": "n",
+      "meaningVi": "dép đi trong nhà",
+      "topicId": "bedroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Don't forget to wear your slippers on the cold floor.",
+          "vi": "Đừng quên mang dép đi trong nhà trên sàn lạnh."
+        }
+      ]
+    },
+    {
+      "id": "b19",
+      "word": "stool",
+      "phonetic": "/stuːl/",
+      "pos": "n",
+      "meaningVi": "ghế đẩu",
+      "topicId": "bedroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "There is a wooden stool next to the dressing table.",
+          "vi": "Có một chiếc ghế đẩu bằng gỗ bên cạnh bàn trang điểm."
+        }
+      ]
+    },
+    {
+      "id": "b20",
+      "word": "wardrobe",
+      "phonetic": "/ˈwɔːdrəʊb/",
+      "pos": "n",
+      "meaningVi": "tủ quần áo",
+      "topicId": "bedroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "I hung all my dresses in the wardrobe.",
+          "vi": "Tôi đã treo tất cả váy của mình trong tủ quần áo."
+        }
+      ]
+    },
+    {
+      "id": "lr1",
+      "word": "chair",
+      "phonetic": "/tʃeər/",
+      "pos": "n",
+      "meaningVi": "ghế",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Please take a chair and sit down.",
+          "vi": "Làm ơn lấy một cái ghế và ngồi xuống."
+        }
+      ]
+    },
+    {
+      "id": "lr2",
+      "word": "armchair",
+      "phonetic": "/ˈɑːmtʃeər/",
+      "pos": "n",
+      "meaningVi": "ghế bành",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "He read a book in his comfortable armchair.",
+          "vi": "Anh ấy đọc sách trong chiếc ghế bành thoải mái của mình."
+        }
+      ]
+    },
+    {
+      "id": "lr3",
+      "word": "rocking chair",
+      "phonetic": "/ˈrɒkɪŋ tʃeər/",
+      "pos": "n",
+      "meaningVi": "ghế bập bênh",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "My grandmother likes to sit in her rocking chair.",
+          "vi": "Bà tôi thích ngồi trên chiếc ghế bập bênh của bà."
+        }
+      ]
+    },
+    {
+      "id": "lr4",
+      "word": "stool",
+      "phonetic": "/stuːl/",
+      "pos": "n",
+      "meaningVi": "ghế đẩu",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "The bar has high stools for customers.",
+          "vi": "Quầy bar có những chiếc ghế đẩu cao cho khách hàng."
+        }
+      ]
+    },
+    {
+      "id": "lr5",
+      "word": "shelf",
+      "phonetic": "/ʃelf/",
+      "pos": "n",
+      "meaningVi": "giá sách",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "He put the new books on the top shelf.",
+          "vi": "Anh ấy đặt những cuốn sách mới lên giá trên cùng."
+        }
+      ]
+    },
+    {
+      "id": "lr6",
+      "word": "sofa",
+      "phonetic": "/ˈsəʊfə/",
+      "pos": "n",
+      "meaningVi": "ghế xô-pha",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "We bought a new blue sofa for the living room.",
+          "vi": "Chúng tôi đã mua một chiếc ghế xô-pha màu xanh mới cho phòng khách."
+        }
+      ]
+    },
+    {
+      "id": "lr7",
+      "word": "cushion",
+      "phonetic": "/ˈkʊʃən/",
+      "pos": "n",
+      "meaningVi": "nệm lót",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "The cushion on the sofa is very soft.",
+          "vi": "Chiếc nệm lót trên ghế xô-pha rất mềm."
+        }
+      ]
+    },
+    {
+      "id": "lr8",
+      "word": "coffee table",
+      "phonetic": "/ˈkɒfi teɪbl/",
+      "pos": "n",
+      "meaningVi": "bàn uống cà phê",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "She placed her cup of tea on the coffee table.",
+          "vi": "Cô ấy đặt tách trà của mình lên bàn uống cà phê."
+        }
+      ]
+    },
+    {
+      "id": "lr9",
+      "word": "vase",
+      "phonetic": "/vɑːz/",
+      "pos": "n",
+      "meaningVi": "bình hoa",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "There is a beautiful vase of roses on the table.",
+          "vi": "Có một bình hoa hồng đẹp trên bàn."
+        }
+      ]
+    },
+    {
+      "id": "lr10",
+      "word": "ashtray",
+      "phonetic": "/ˈæʃtreɪ/",
+      "pos": "n",
+      "meaningVi": "cái gạt tàn",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Please use the ashtray for your cigarette.",
+          "vi": "Làm ơn dùng cái gạt tàn cho điếu thuốc lá của bạn."
+        }
+      ]
+    },
+    {
+      "id": "lr11",
+      "word": "cigarette",
+      "phonetic": "/ˌsɪɡərˈet/",
+      "pos": "n",
+      "meaningVi": "điếu thuốc lá",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Smoking a cigarette is harmful to your health.",
+          "vi": "Hút một điếu thuốc lá có hại cho sức khỏe của bạn."
+        }
+      ]
+    },
+    {
+      "id": "lr12",
+      "word": "smoke",
+      "phonetic": "/sməʊk/",
+      "pos": "n",
+      "meaningVi": "khói thuốc",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "The smoke from the fire filled the room.",
+          "vi": "Khói từ đám cháy đã tràn ngập căn phòng."
+        }
+      ]
+    },
+    {
+      "id": "lr13",
+      "word": "cigar",
+      "phonetic": "/sɪˈɡɑːr/",
+      "pos": "n",
+      "meaningVi": "xi gà",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "He celebrated with a glass of wine and a cigar.",
+          "vi": "Anh ấy ăn mừng với một ly rượu vang và một điếu xi gà."
+        }
+      ]
+    },
+    {
+      "id": "lr14",
+      "word": "pipe",
+      "phonetic": "/paɪp/",
+      "pos": "n",
+      "meaningVi": "tẩu thuốc",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "His grandfather used to smoke a tobacco pipe.",
+          "vi": "Ông nội anh ấy từng hút một cái tẩu thuốc lá."
+        }
+      ]
+    },
+    {
+      "id": "lr15",
+      "word": "carpet",
+      "phonetic": "/ˈkɑːpɪt/",
+      "pos": "n",
+      "meaningVi": "thảm",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "We need to clean the carpet in the hallway.",
+          "vi": "Chúng ta cần làm sạch tấm thảm trong hành lang."
+        }
+      ]
+    },
+    {
+      "id": "lr16",
+      "word": "rug",
+      "phonetic": "/rʌɡ/",
+      "pos": "n",
+      "meaningVi": "thảm lau chân",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "There is a small rug near the front door.",
+          "vi": "Có một tấm thảm lau chân nhỏ gần cửa trước."
+        }
+      ]
+    },
+    {
+      "id": "lr17",
+      "word": "fireplace",
+      "phonetic": "/ˈfaɪəpleɪs/",
+      "pos": "n",
+      "meaningVi": "lò sưởi",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "We sat by the fireplace to keep warm.",
+          "vi": "Chúng tôi ngồi cạnh lò sưởi để giữ ấm."
+        }
+      ]
+    },
+    {
+      "id": "lr18",
+      "word": "cup",
+      "phonetic": "/kʌp/",
+      "pos": "n",
+      "meaningVi": "tách, chén",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "He filled his cup with hot coffee.",
+          "vi": "Anh ấy đổ cà phê nóng đầy tách của mình."
+        }
+      ]
+    },
+    {
+      "id": "lr19",
+      "word": "pitcher",
+      "phonetic": "/ˈpɪtʃər/",
+      "pos": "n",
+      "meaningVi": "bình rót",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "The pitcher was filled with fresh lemonade.",
+          "vi": "Bình rót được đổ đầy nước chanh tươi."
+        }
+      ]
+    },
+    {
+      "id": "lr20",
+      "word": "glass",
+      "phonetic": "/ɡlɑːs/",
+      "pos": "n",
+      "meaningVi": "cốc thủy tinh",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "She poured water into a clean glass.",
+          "vi": "Cô ấy rót nước vào một chiếc cốc thủy tinh sạch."
+        }
+      ]
+    },
+    {
+      "id": "lr21",
+      "word": "painting",
+      "phonetic": "/ˈpeɪntɪŋ/",
+      "pos": "n",
+      "meaningVi": "bức tranh",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "There is a large abstract painting on the wall.",
+          "vi": "Có một bức tranh trừu tượng lớn trên tường."
+        }
+      ]
+    },
+    {
+      "id": "lr22",
+      "word": "ceiling",
+      "phonetic": "/ˈsiːlɪŋ/",
+      "pos": "n",
+      "meaningVi": "trần nhà",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "The ceiling in this old house is very high.",
+          "vi": "Trần nhà trong căn nhà cũ này rất cao."
+        }
+      ]
+    },
+    {
+      "id": "lr23",
+      "word": "ceiling fan",
+      "phonetic": "/ˈsiːlɪŋ fæn/",
+      "pos": "n",
+      "meaningVi": "quạt trần",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "We use the ceiling fan to cool the room in summer.",
+          "vi": "Chúng tôi dùng quạt trần để làm mát phòng vào mùa hè."
+        }
+      ]
+    },
+    {
+      "id": "lr24",
+      "word": "wall",
+      "phonetic": "/wɔːl/",
+      "pos": "n",
+      "meaningVi": "tường",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "The wall is painted a light yellow color.",
+          "vi": "Bức tường được sơn màu vàng nhạt."
+        }
+      ]
+    },
+    {
+      "id": "lr25",
+      "word": "step",
+      "phonetic": "/step/",
+      "pos": "n",
+      "meaningVi": "bậc thang",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Be careful when you walk down the last step.",
+          "vi": "Hãy cẩn thận khi bạn bước xuống bậc thang cuối cùng."
+        }
+      ]
+    },
+    {
+      "id": "lr26",
+      "word": "television",
+      "phonetic": "/ˈtelɪvɪʒən/",
+      "pos": "n",
+      "meaningVi": "ti vi",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "They watch the news on television every evening.",
+          "vi": "Họ xem tin tức trên ti vi mỗi tối."
+        }
+      ]
+    },
+    {
+      "id": "lr27",
+      "word": "remote control",
+      "phonetic": "/rɪˈməʊt kənˈtrəʊl/",
+      "pos": "n",
+      "meaningVi": "điều khiển từ xa",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "I can't find the remote control for the TV.",
+          "vi": "Tôi không thể tìm thấy cái điều khiển từ xa của TV."
+        }
+      ]
+    },
+    {
+      "id": "lr28",
+      "word": "speaker",
+      "phonetic": "/ˈspiːkər/",
+      "pos": "n",
+      "meaningVi": "loa",
+      "topicId": "livingroom",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "The music sounded great coming from the new speakers.",
+          "vi": "Âm nhạc nghe rất tuyệt khi phát ra từ chiếc loa mới."
+        }
+      ]
+    },
+    {
+      "id": "k1",
+      "word": "apron",
+      "phonetic": "/ˈeɪprən/",
+      "pos": "n",
+      "meaningVi": "tạp dề",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "She put on her apron before starting to bake the cake.",
+          "vi": "Cô ấy đeo tạp dề vào trước khi bắt đầu nướng bánh."
+        }
+      ]
+    },
+    {
+      "id": "k2",
+      "word": "basket",
+      "phonetic": "/ˈbɑːskɪt/",
+      "pos": "n",
+      "meaningVi": "rổ, giỏ",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "We use a small basket to store fruits on the counter.",
+          "vi": "Chúng tôi dùng một cái rổ nhỏ để đựng trái cây trên kệ bếp."
+        }
+      ]
+    },
+    {
+      "id": "k3",
+      "word": "blender",
+      "phonetic": "/ˈblendə(r)/",
+      "pos": "n",
+      "meaningVi": "máy xay sinh tố",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "The blender makes smoothies very quickly.",
+          "vi": "Máy xay sinh tố làm sinh tố rất nhanh."
+        }
+      ]
+    },
+    {
+      "id": "k4",
+      "word": "bottle opener",
+      "phonetic": "/ˈbɒtl ˈəʊpənə(r)/",
+      "pos": "n",
+      "meaningVi": "cái mở nắp chai",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "I need a bottle opener to open this soda.",
+          "vi": "Tôi cần một cái mở nắp chai để mở chai nước ngọt này."
+        }
+      ]
+    },
+    {
+      "id": "k5",
+      "word": "bowl",
+      "phonetic": "/bəʊl/",
+      "pos": "n",
+      "meaningVi": "bát, tô",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "He poured the soup into a large bowl.",
+          "vi": "Anh ấy đổ súp vào một cái tô lớn."
+        }
+      ]
+    },
+    {
+      "id": "k6",
+      "word": "broiler",
+      "phonetic": "/ˈbrɔɪlə(r)/",
+      "pos": "n",
+      "meaningVi": "vỉ nướng",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "The meat was cooked under the broiler to make it crispy.",
+          "vi": "Thịt được nướng dưới vỉ nướng để làm nó giòn."
+        }
+      ]
+    },
+    {
+      "id": "k7",
+      "word": "burner",
+      "phonetic": "/ˈbɜːnə(r)/",
+      "pos": "n",
+      "meaningVi": "bếp (chỗ lửa cháy)",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Please turn off the burner after you finish cooking.",
+          "vi": "Xin hãy tắt bếp sau khi bạn nấu xong."
+        }
+      ]
+    },
+    {
+      "id": "k8",
+      "word": "cabinet",
+      "phonetic": "/ˈkæbɪnət/",
+      "pos": "n",
+      "meaningVi": "tủ nhiều ngăn",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "We keep all the spices in the kitchen cabinet.",
+          "vi": "Chúng tôi giữ tất cả các loại gia vị trong tủ bếp."
+        }
+      ]
+    },
+    {
+      "id": "k9",
+      "word": "can opener",
+      "phonetic": "/ˈkæn ˌəʊpənə(r)/",
+      "pos": "n",
+      "meaningVi": "cái mở đồ hộp",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Do you have a can opener for these tomatoes?",
+          "vi": "Bạn có cái mở đồ hộp cho những hộp cà chua này không?"
+        }
+      ]
+    },
+    {
+      "id": "k10",
+      "word": "canister",
+      "phonetic": "/ˈkænɪstə(r)/",
+      "pos": "n",
+      "meaningVi": "hộp nhỏ (đựng trà, cà phê,...) ",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "The coffee beans are stored in an airtight canister.",
+          "vi": "Hạt cà phê được bảo quản trong một cái hộp kín khí."
+        }
+      ]
+    },
+    {
+      "id": "k11",
+      "word": "casserole dish",
+      "phonetic": "/ˈkæsərəʊl dɪʃ/",
+      "pos": "n",
+      "meaningVi": "nồi hầm (có nắp)",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "She baked the chicken in a large casserole dish.",
+          "vi": "Cô ấy nướng gà trong một cái nồi hầm lớn."
+        }
+      ]
+    },
+    {
+      "id": "k12",
+      "word": "coffee maker",
+      "phonetic": "/ˈkɒfi ˌmeɪkə(r)/",
+      "pos": "n",
+      "meaningVi": "máy pha cà phê",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "My coffee maker brews a fresh pot every morning.",
+          "vi": "Máy pha cà phê của tôi pha một bình cà phê tươi mỗi sáng."
+        }
+      ]
+    },
+    {
+      "id": "k13",
+      "word": "colander",
+      "phonetic": "/ˈkʌləndə(r)/",
+      "pos": "n",
+      "meaningVi": "cái chao (rổ thủng)",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Use the colander to drain the pasta.",
+          "vi": "Hãy dùng cái chao để làm ráo mì ống."
+        }
+      ]
+    },
+    {
+      "id": "k14",
+      "word": "counter",
+      "phonetic": "/ˈkaʊntə(r)/",
+      "pos": "n",
+      "meaningVi": "bề mặt chỗ nấu ăn, quầy bếp",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Please wipe down the kitchen counter after cooking.",
+          "vi": "Làm ơn lau sạch quầy bếp sau khi nấu ăn."
+        }
+      ]
+    },
+    {
+      "id": "k15",
+      "word": "cup",
+      "phonetic": "/kʌp/",
+      "pos": "n",
+      "meaningVi": "tách, chén",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "She is drinking tea from a beautiful porcelain cup.",
+          "vi": "Cô ấy đang uống trà từ một chiếc tách sứ xinh đẹp."
+        }
+      ]
+    },
+    {
+      "id": "k16",
+      "word": "cupboard",
+      "phonetic": "/ˈkʌbəd/",
+      "pos": "n",
+      "meaningVi": "tủ đựng chén, bát (và đồ dùng khác)",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "The plates are kept in the cupboard above the sink.",
+          "vi": "Những cái đĩa được cất trong tủ phía trên bồn rửa."
+        }
+      ]
+    },
+    {
+      "id": "k17",
+      "word": "cutting board",
+      "phonetic": "/ˈkʌtɪŋ bɔːd/",
+      "pos": "n",
+      "meaningVi": "thớt",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Always use a cutting board when chopping vegetables.",
+          "vi": "Luôn luôn dùng thớt khi thái rau củ."
+        }
+      ]
+    },
+    {
+      "id": "k18",
+      "word": "chopsticks",
+      "phonetic": "/ˈtʃɒpstɪks/",
+      "pos": "n",
+      "meaningVi": "đôi đũa",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "In many Asian countries, people eat rice with chopsticks.",
+          "vi": "Ở nhiều nước châu Á, người ta ăn cơm bằng đũa."
+        }
+      ]
+    },
+    {
+      "id": "k19",
+      "word": "dish drainer",
+      "phonetic": "/ˈdɪʃ ˌdreɪnə(r)/",
+      "pos": "n",
+      "meaningVi": "rá đựng bát",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Leave the wet dishes on the dish drainer to dry.",
+          "vi": "Để bát đĩa ướt trên rá đựng bát để chúng khô."
+        }
+      ]
+    },
+    {
+      "id": "k20",
+      "word": "dishtowel",
+      "phonetic": "/ˈdɪʃ taʊəl/",
+      "pos": "n",
+      "meaningVi": "khăn lau bát đĩa",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "I dried the glasses with a clean dishtowel.",
+          "vi": "Tôi lau khô những cái ly bằng một chiếc khăn lau bát đĩa sạch."
+        }
+      ]
+    },
+    {
+      "id": "k21",
+      "word": "dishwasher",
+      "phonetic": "/ˈdɪʃwɒʃə(r)/",
+      "pos": "n",
+      "meaningVi": "máy rửa bát",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "The dishwasher makes cleaning up after dinner much easier.",
+          "vi": "Máy rửa bát giúp việc dọn dẹp sau bữa tối dễ dàng hơn nhiều."
+        }
+      ]
+    },
+    {
+      "id": "k22",
+      "word": "dishwashing liquid",
+      "phonetic": "/ˈdɪʃwɒʃɪŋ ˌlɪkwɪd/",
+      "pos": "n",
+      "meaningVi": "nước rửa bát",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "We ran out of dishwashing liquid, so I'll buy more tomorrow.",
+          "vi": "Chúng tôi hết nước rửa bát rồi, nên tôi sẽ mua thêm vào ngày mai."
+        }
+      ]
+    },
+    {
+      "id": "k23",
+      "word": "fork",
+      "phonetic": "/fɔːk/",
+      "pos": "n",
+      "meaningVi": "dĩa (cái nĩa)",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Please set the table with a knife and a fork for everyone.",
+          "vi": "Làm ơn dọn bàn với một con dao và một cái dĩa cho mỗi người."
+        }
+      ]
+    },
+    {
+      "id": "k24",
+      "word": "freezer",
+      "phonetic": "/ˈfriːzə(r)/",
+      "pos": "n",
+      "meaningVi": "ngăn đá (tủ lạnh)",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "I keep all the frozen vegetables in the freezer.",
+          "vi": "Tôi giữ tất cả rau đông lạnh trong ngăn đá."
+        }
+      ]
+    },
+    {
+      "id": "k25",
+      "word": "frying pan",
+      "phonetic": "/ˈfraɪɪŋ pæn/",
+      "pos": "n",
+      "meaningVi": "chảo rán",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "He used the frying pan to cook the eggs.",
+          "vi": "Anh ấy đã dùng chảo rán để nấu trứng."
+        }
+      ]
+    },
+    {
+      "id": "k26",
+      "word": "glass",
+      "phonetic": "/ɡlɑːs/",
+      "pos": "n",
+      "meaningVi": "ly, cốc thủy tinh",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Fill this glass with water, please.",
+          "vi": "Làm ơn đổ đầy nước vào cái ly này."
+        }
+      ]
+    },
+    {
+      "id": "k27",
+      "word": "ice bucket",
+      "phonetic": "/ˈaɪs ˌbʌkɪt/",
+      "pos": "n",
+      "meaningVi": "thùng để đá",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "We need an ice bucket to keep the champagne cold.",
+          "vi": "Chúng ta cần một thùng để đá để giữ cho rượu champagne lạnh."
+        }
+      ]
+    },
+    {
+      "id": "k28",
+      "word": "ice tray",
+      "phonetic": "/ˈaɪs treɪ/",
+      "pos": "n",
+      "meaningVi": "khay đá",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Don't forget to refill the ice tray with water.",
+          "vi": "Đừng quên đổ đầy nước vào khay đá."
+        }
+      ]
+    },
+    {
+      "id": "k29",
+      "word": "jug",
+      "phonetic": "/dʒʌɡ/",
+      "pos": "n",
+      "meaningVi": "bình nước (có quai)",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "The table had a glass jug of orange juice.",
+          "vi": "Trên bàn có một bình nước cam bằng thủy tinh."
+        }
+      ]
+    },
+    {
+      "id": "k30",
+      "word": "knife",
+      "phonetic": "/naɪf/",
+      "pos": "n",
+      "meaningVi": "dao",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Be careful when using a sharp knife.",
+          "vi": "Hãy cẩn thận khi sử dụng một con dao sắc."
+        }
+      ]
+    },
+    {
+      "id": "k31",
+      "word": "ladle",
+      "phonetic": "/ˈleɪdl/",
+      "pos": "n",
+      "meaningVi": "cái muôi, cái vá",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Use the ladle to serve the soup into the bowls.",
+          "vi": "Dùng cái muôi để múc súp ra bát."
+        }
+      ]
+    },
+    {
+      "id": "k32",
+      "word": "lid",
+      "phonetic": "/lɪd/",
+      "pos": "n",
+      "meaningVi": "nắp, vung",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Put the lid on the pot so the water boils faster.",
+          "vi": "Đậy nắp lên nồi để nước sôi nhanh hơn."
+        }
+      ]
+    },
+    {
+      "id": "k33",
+      "word": "lighter",
+      "phonetic": "/ˈlaɪtə(r)/",
+      "pos": "n",
+      "meaningVi": "bật lửa",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "He used a lighter to light the gas stove.",
+          "vi": "Anh ấy đã dùng bật lửa để châm bếp ga."
+        }
+      ]
+    },
+    {
+      "id": "k34",
+      "word": "match",
+      "phonetic": "/mætʃ/",
+      "pos": "n",
+      "meaningVi": "diêm",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "I need a match to light the candle.",
+          "vi": "Tôi cần một que diêm để đốt cây nến."
+        }
+      ]
+    },
+    {
+      "id": "k35",
+      "word": "microwave",
+      "phonetic": "/ˈmaɪkrəʊweɪv/",
+      "pos": "n",
+      "meaningVi": "lò vi sóng",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Heat up the leftovers in the microwave for two minutes.",
+          "vi": "Hâm nóng thức ăn thừa trong lò vi sóng khoảng hai phút."
+        }
+      ]
+    },
+    {
+      "id": "k36",
+      "word": "mixing bowl",
+      "phonetic": "/ˈmɪksɪŋ bəʊl/",
+      "pos": "n",
+      "meaningVi": "bát để trộn",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "She mixed the salad ingredients in a large mixing bowl.",
+          "vi": "Cô ấy trộn các nguyên liệu làm salad trong một cái bát trộn lớn."
+        }
+      ]
+    },
+    {
+      "id": "k37",
+      "word": "napkin",
+      "phonetic": "/ˈnæpkɪn/",
+      "pos": "n",
+      "meaningVi": "khăn giấy (ăn)",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Don't forget to put a napkin next to each plate.",
+          "vi": "Đừng quên đặt một chiếc khăn giấy bên cạnh mỗi cái đĩa."
+        }
+      ]
+    },
+    {
+      "id": "k38",
+      "word": "oven",
+      "phonetic": "/ˈʌvn/",
+      "pos": "n",
+      "meaningVi": "lò nướng",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "The cake is baking in the oven right now.",
+          "vi": "Bánh đang được nướng trong lò nướng ngay bây giờ."
+        }
+      ]
+    },
+    {
+      "id": "k39",
+      "word": "plate",
+      "phonetic": "/pleɪt/",
+      "pos": "n",
+      "meaningVi": "đĩa",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Put the main course on the dinner plate.",
+          "vi": "Đặt món chính lên đĩa ăn tối."
+        }
+      ]
+    },
+    {
+      "id": "k40",
+      "word": "pot",
+      "phonetic": "/pɒt/",
+      "pos": "n",
+      "meaningVi": "nồi, hũ, vại, nồi to/đáy dãi",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "The soup is simmering in a big pot on the stove.",
+          "vi": "Món súp đang sôi liu riu trong một cái nồi lớn trên bếp."
+        }
+      ]
+    },
+    {
+      "id": "k41",
+      "word": "pot holder",
+      "phonetic": "/ˈpɒt ˌhəʊldə(r)/",
+      "pos": "n",
+      "meaningVi": "miếng lót nồi",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Use a pot holder to safely take the hot pan out of the oven.",
+          "vi": "Hãy dùng miếng lót nồi để lấy cái chảo nóng ra khỏi lò một cách an toàn."
+        }
+      ]
+    },
+    {
+      "id": "k42",
+      "word": "refrigerator",
+      "phonetic": "/rɪˈfrɪdʒəreɪtə(r)/",
+      "pos": "n",
+      "meaningVi": "tủ lạnh",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Keep the milk and butter inside the refrigerator.",
+          "vi": "Để sữa và bơ bên trong tủ lạnh."
+        }
+      ]
+    },
+    {
+      "id": "k43",
+      "word": "rice cooker",
+      "phonetic": "/ˈraɪs ˌkʊkə(r)/",
+      "pos": "n",
+      "meaningVi": "nồi cơm điện",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "My mom always makes perfect rice with her rice cooker.",
+          "vi": "Mẹ tôi luôn nấu cơm hoàn hảo bằng nồi cơm điện của bà."
+        }
+      ]
+    },
+    {
+      "id": "k44",
+      "word": "roasting pan",
+      "phonetic": "/ˈrəʊstɪŋ pæn/",
+      "pos": "n",
+      "meaningVi": "chảo nướng",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "They used a roasting pan to cook the whole chicken.",
+          "vi": "Họ đã dùng một cái chảo nướng để nướng cả con gà."
+        }
+      ]
+    },
+    {
+      "id": "k45",
+      "word": "rolling pin",
+      "phonetic": "/ˈrəʊlɪŋ pɪn/",
+      "pos": "n",
+      "meaningVi": "trục cán bột",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "She flattened the dough with a rolling pin.",
+          "vi": "Cô ấy làm dẹt bột bằng trục cán bột."
+        }
+      ]
+    },
+    {
+      "id": "k46",
+      "word": "saucepan",
+      "phonetic": "/ˈsɔːspæn/",
+      "pos": "n",
+      "meaningVi": "cái xoong (nồi nhỏ có quai)",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Heat the milk gently in a small saucepan.",
+          "vi": "Hâm nóng sữa nhẹ nhàng trong một cái xoong nhỏ."
+        }
+      ]
+    },
+    {
+      "id": "k47",
+      "word": "scouring pad",
+      "phonetic": "/ˈskaʊərɪŋ pæd/",
+      "pos": "n",
+      "meaningVi": "miếng cọ rửa",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Use a scouring pad to remove the burnt food from the pan.",
+          "vi": "Dùng miếng cọ rửa để loại bỏ thức ăn cháy khỏi chảo."
+        }
+      ]
+    },
+    {
+      "id": "k48",
+      "word": "spoon",
+      "phonetic": "/spuːn/",
+      "pos": "n",
+      "meaningVi": "thìa, muỗng",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Stir the coffee with a small spoon.",
+          "vi": "Khuấy cà phê bằng một chiếc thìa nhỏ."
+        }
+      ]
+    },
+    {
+      "id": "k49",
+      "word": "steamer",
+      "phonetic": "/ˈstiːmə(r)/",
+      "pos": "n",
+      "meaningVi": "rá để hấp, nồi hấp",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "We cooked the vegetables in the steamer to keep the nutrients.",
+          "vi": "Chúng tôi nấu rau bằng nồi hấp để giữ chất dinh dưỡng."
+        }
+      ]
+    },
+    {
+      "id": "k50",
+      "word": "stove",
+      "phonetic": "/stəʊv/",
+      "pos": "n",
+      "meaningVi": "bếp ga, bếp lò",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Turn on the stove to boil the water.",
+          "vi": "Bật bếp ga lên để đun nước sôi."
+        }
+      ]
+    },
+    {
+      "id": "k51",
+      "word": "tea pot",
+      "phonetic": "/ˈtiː pɒt/",
+      "pos": "n",
+      "meaningVi": "ấm trà",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "The tea pot is full of freshly brewed green tea.",
+          "vi": "Ấm trà đầy trà xanh mới pha."
+        }
+      ]
+    },
+    {
+      "id": "k52",
+      "word": "teakettle",
+      "phonetic": "/ˈtiːketl/",
+      "pos": "n",
+      "meaningVi": "ấm đun nước pha trà",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "I put the teakettle on the stove to boil water for a drink.",
+          "vi": "Tôi đặt ấm đun nước lên bếp để đun nước uống."
+        }
+      ]
+    },
+    {
+      "id": "k53",
+      "word": "teaspoon",
+      "phonetic": "/ˈtiːspuːn/",
+      "pos": "n",
+      "meaningVi": "thìa cà phê",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "Add one teaspoon of sugar to your coffee.",
+          "vi": "Thêm một thìa cà phê đường vào cà phê của bạn."
+        }
+      ]
+    },
+    {
+      "id": "k54",
+      "word": "toaster",
+      "phonetic": "/ˈtəʊstə(r)/",
+      "pos": "n",
+      "meaningVi": "lò nướng bánh (mỳ)",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "I put two slices of bread in the toaster for breakfast.",
+          "vi": "Tôi cho hai lát bánh mì vào lò nướng bánh cho bữa sáng."
+        }
+      ]
+    },
+    {
+      "id": "k55",
+      "word": "tray",
+      "phonetic": "/treɪ/",
+      "pos": "n",
+      "meaningVi": "mâm, khay",
+      "topicId": "kitchen",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "She carried the cups and plates on a large tray.",
+          "vi": "Cô ấy mang những cái tách và đĩa trên một cái mâm lớn."
         }
       ]
     }
