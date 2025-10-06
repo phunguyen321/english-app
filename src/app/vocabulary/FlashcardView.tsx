@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Box,
   Stack,
@@ -121,12 +121,27 @@ export default function FlashcardView(props: FlashcardViewProps) {
   >("idle");
   const [dragging, setDragging] = useState(false);
   const cardRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const transitionMs = 260;
   const leaveMs = 220;
   const enterMs = 280;
   const easing = "cubic-bezier(.22,.61,.36,1)";
   const enterOffsetFactor = 0.35;
-  const cardW = isMobile ? 360 : 480;
+  // Measure the actual container width to make swipe distance responsive on very small screens
+  const [cardW, setCardW] = useState<number>(isMobile ? 320 : 480);
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver((entries) => {
+      const rect = entries[0]?.contentRect;
+      if (!rect) return;
+      // Clamp to a sensible range
+      const w = Math.max(240, Math.min(rect.width, 560));
+      setCardW(w);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
   const SWIPE_DIST = Math.max(80, Math.round(cardW * 0.18));
   const SWIPE_VEL = 0.4;
   const pDown = useRef(false);
@@ -274,6 +289,7 @@ export default function FlashcardView(props: FlashcardViewProps) {
           maxWidth: 560,
           minHeight: isMobile ? 220 : 170,
         }}
+        ref={containerRef}
       >
         <Box
           sx={{
@@ -362,7 +378,15 @@ export default function FlashcardView(props: FlashcardViewProps) {
             }
           }}
         >
-          <Typography variant={isMobile ? "h4" : "h3"} textAlign="center">
+          <Typography
+            variant={isMobile ? "h5" : "h3"}
+            textAlign="center"
+            sx={{
+              // Keep large words from overflowing on narrow screens
+              wordBreak: "break-word",
+              overflowWrap: "anywhere",
+            }}
+          >
             {entry?.word || "—"}
           </Typography>
           <Typography color="text.secondary" textAlign="center">
@@ -548,7 +572,11 @@ export default function FlashcardView(props: FlashcardViewProps) {
             </Button>
           </Box>
           <Box
-            sx={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 1 }}
+            sx={{
+              display: "grid",
+              gridTemplateColumns: { xs: "1fr 1fr", sm: "1fr 1fr 1fr" },
+              gap: 1,
+            }}
           >
             <Button
               fullWidth
@@ -574,6 +602,7 @@ export default function FlashcardView(props: FlashcardViewProps) {
               variant={knowledgeState === "known" ? "contained" : "outlined"}
               color="success"
               onClick={onMarkKnown}
+              sx={{ gridColumn: { xs: "span 2", sm: "auto" } }}
             >
               Đã thuộc
             </Button>

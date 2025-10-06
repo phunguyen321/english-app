@@ -93,8 +93,9 @@ export default function VocabularyPage() {
       const raw = localStorage.getItem("vocabKnowledge");
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (parsed && typeof parsed === "object")
+        if (parsed && typeof parsed === "object") {
           dispatch(loadKnowledge(parsed));
+        }
       }
     } catch {}
   }, [dispatch]);
@@ -442,7 +443,7 @@ export default function VocabularyPage() {
       <Stack
         direction={{ xs: "column", lg: "row" }}
         spacing={2}
-        alignItems="flex-start"
+        alignItems={{ xs: "stretch", lg: "flex-start" }}
       >
         {/* Sidebar (hidden on mobile) */}
         <Box
@@ -578,8 +579,15 @@ export default function VocabularyPage() {
 
         {/* Main content */}
         <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Card sx={{ p: 2 }}>
-            <CardContent>
+          <Card
+            sx={{
+              width: "100%",
+              px: { xs: 0, sm: 2 },
+              py: { xs: 1, sm: 2 },
+              borderRadius: { xs: 0, sm: 1 },
+            }}
+          >
+            <CardContent sx={{ width: "100%", px: { xs: 0, sm: 2 } }}>
               {/* Mobile quick actions */}
               {!flashMode && isMobile ? (
                 <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
@@ -943,67 +951,107 @@ function VocabularyList({
             display: "grid",
             gridTemplateColumns: {
               xs: "1fr",
-              sm: "minmax(120px,160px) 1fr auto auto",
+              sm: "minmax(120px,160px) 1fr",
             },
             gap: 1,
             p: 1,
             border: "1px solid",
             borderColor: "divider",
-            borderRadius: 1,
+            borderRadius: 0,
+            position: "relative",
           }}
         >
-          <Typography fontWeight={600}>{e.word}</Typography>
-          <Box sx={{ minWidth: 0 }}>
-            <Typography
-              variant="body2"
-              sx={{
-                whiteSpace: "normal",
-                wordBreak: "break-word",
-                overflowWrap: "anywhere",
-              }}
-            >
-              <Highlighted text={e.meaningVi} query={search} />
+          <Box sx={{ position: "absolute", top: 6, right: 8 }}>
+            <Typography variant="caption" color="text.secondary">
+              #{i + 1}
             </Typography>
           </Box>
-          <Chip
-            size="small"
-            label={topicName[e.topicId] || e.topicId}
-            variant="outlined"
-          />
-          <Chip
-            size="small"
-            label={
-              k === "known"
-                ? "Đã thuộc"
-                : k === "learning"
-                ? "Chưa chắc"
-                : "Chưa thuộc"
-            }
-            color={
-              k === "known"
-                ? "success"
-                : k === "learning"
-                ? "warning"
-                : "default"
-            }
-            variant={k === "unknown" ? "outlined" : "filled"}
-          />
+          <Typography
+            sx={{ fontWeight: 700, fontSize: { xs: "1.05rem", sm: "1rem" } }}
+          >
+            {e.word}
+          </Typography>
+          <Box sx={{ minWidth: 0 }}>
+            <Box
+              sx={{
+                pl: 1,
+                py: 0.5,
+                borderLeft: "3px solid",
+                borderColor: "primary.light",
+                bgcolor: "action.hover",
+                borderRadius: 0.5,
+              }}
+            >
+              <Typography
+                variant="body2"
+                sx={{
+                  whiteSpace: "normal",
+                  wordBreak: "break-word",
+                  overflowWrap: "anywhere",
+                  fontWeight: 600,
+                }}
+              >
+                <Highlighted text={e.meaningVi} query={search} />
+              </Typography>
+            </Box>
+          </Box>
+          <Typography
+            variant="caption"
+            sx={{
+              fontWeight: 600,
+              color:
+                k === "known"
+                  ? "success.main"
+                  : k === "learning"
+                  ? "warning.main"
+                  : "text.secondary",
+            }}
+          >
+            {k === "known"
+              ? "Đã thuộc"
+              : k === "learning"
+              ? "Chưa chắc"
+              : "Chưa thuộc"}
+          </Typography>
         </Box>
       );
       return;
     }
 
     items.push(
-      <Card key={e.id} variant="outlined">
+      <Card
+        key={e.id}
+        variant="outlined"
+        sx={{ borderRadius: 0, position: "relative" }}
+      >
         <CardHeader
           title={e.word}
+          titleTypographyProps={{
+            sx: {
+              fontWeight: 700,
+              fontSize: { xs: "1.25rem", sm: "1.35rem" },
+              lineHeight: 1.2,
+            },
+          }}
           subheader={
             e.phonetic
               ? `${e.phonetic}${e.pos ? " • " + e.pos : ""}`
               : e.pos || undefined
           }
+          subheaderTypographyProps={{
+            sx: {
+              color: "text.secondary",
+              fontSize: { xs: "0.95rem", sm: "1rem" },
+              letterSpacing: 0.15,
+            },
+          }}
           action={
-            <Stack direction="row" spacing={1} alignItems="center">
+            <Stack
+              direction="row"
+              spacing={1}
+              alignItems="center"
+              sx={{ display: { xs: "none", md: "flex" } }}
+            >
               <Chip
                 size="small"
                 icon={<LabelOutlinedIcon />}
@@ -1018,14 +1066,53 @@ function VocabularyList({
               />
             </Stack>
           }
+          sx={{
+            py: 1,
+            px: { xs: 1, sm: 2 },
+            "& .MuiCardHeader-content": { minWidth: 0 },
+          }}
         />
-        <CardContent>
-          <Stack spacing={1}>
-            <Typography sx={{ whiteSpace: "normal", wordBreak: "break-word" }}>
+        {/* Top-right index badge */}
+        <Box sx={{ position: "absolute", top: 6, right: 8, zIndex: 2 }}>
+          <Typography variant="caption" color="text.secondary">
+            #{i + 1}
+          </Typography>
+        </Box>
+        <CardContent
+          sx={{ pt: 0.5, px: { xs: 1, sm: 2 }, pb: { xs: 1.25, sm: 2 } }}
+        >
+          <Stack spacing={1.1}>
+            <Divider sx={{ mb: 0.5 }} />
+            <Typography
+              sx={{
+                whiteSpace: "normal",
+                wordBreak: "break-word",
+                fontWeight: 600,
+                fontSize: { xs: "1.05rem", sm: "1.125rem" },
+                lineHeight: 1.5,
+                p: 1,
+                borderRadius: 1,
+                bgcolor: "action.hover",
+                display: "block",
+                width: "100%",
+              }}
+            >
               <Highlighted text={e.meaningVi} query={search} />
             </Typography>
             {showExamples && e.examples?.length ? (
-              <ExampleList examples={e.examples} max={1} dense />
+              <Box
+                sx={{
+                  pl: 1.25,
+                  py: 0.75,
+                  borderLeft: "3px solid",
+                  borderColor: "primary.light",
+                  bgcolor: "action.hover",
+                  borderRadius: 1,
+                  width: "100%",
+                }}
+              >
+                <ExampleList examples={e.examples} max={1} dense />
+              </Box>
             ) : null}
             <Stack
               direction="row"
@@ -1033,9 +1120,6 @@ function VocabularyList({
               alignItems="center"
               flexWrap="wrap"
             >
-              <Typography variant="caption" color="text.secondary">
-                #{i + 1}
-              </Typography>
               <Chip
                 size="small"
                 label={
@@ -1064,13 +1148,26 @@ function VocabularyList({
                 Chưa thuộc
               </Button>
             </Stack>
+            {/* Subtle context line for small screens */}
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ display: { xs: "block", md: "none" }, mt: 0.5 }}
+            >
+              {`Chủ đề: ${topicName[e.topicId] || e.topicId}`}
+              {e.level ? ` · Level: ${e.level}` : ""}
+            </Typography>
           </Stack>
         </CardContent>
       </Card>
     );
   });
 
-  return <Stack spacing={compact ? 0.75 : 2}>{items}</Stack>;
+  return (
+    <Stack spacing={{ xs: compact ? 0.5 : 1.25, sm: compact ? 0.75 : 2 }}>
+      {items}
+    </Stack>
+  );
 }
 
 // Skeleton for list during loading/shuffle
@@ -1094,7 +1191,7 @@ function VocabularyListSkeleton({
             p: 1,
             border: "1px solid",
             borderColor: "divider",
-            borderRadius: 1,
+            borderRadius: 0,
           }}
         >
           <Skeleton width={100} height={20} />
@@ -1105,7 +1202,7 @@ function VocabularyListSkeleton({
       );
     } else {
       items.push(
-        <Card key={i} variant="outlined">
+        <Card key={i} variant="outlined" sx={{ borderRadius: 0 }}>
           <CardHeader
             title={<Skeleton width={160} height={28} />}
             subheader={<Skeleton width={120} height={18} />}
