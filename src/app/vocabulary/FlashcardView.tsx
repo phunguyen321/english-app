@@ -9,7 +9,6 @@ import {
   Divider,
   IconButton,
   Fade,
-  Slide,
 } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -54,13 +53,10 @@ function ExampleList({
         direction="row"
         spacing={0.5}
         alignItems="center"
-        sx={{
-          color: "text.secondary",
-          justifyContent: alignCenter ? "center" : "flex-start",
-        }}
+        justifyContent={alignCenter ? "center" : "flex-start"}
+        sx={{ color: "text.secondary", mb: 0.5 }}
       >
-        <LightbulbOutlinedIcon fontSize="small" />
-        <Typography variant="caption">Ví dụ</Typography>
+        <LightbulbOutlinedIcon sx={{ color: "#ffc048" }} fontSize="small" />
       </Stack>
       {items.map((ex, i) => (
         <Box
@@ -83,18 +79,18 @@ function ExampleList({
           >
             <Typography
               variant="body2"
-              sx={{
-                whiteSpace: "normal",
-                wordBreak: "break-word",
-                fontStyle: "italic",
-              }}
+              sx={{ whiteSpace: "normal", wordBreak: "break-word" }}
             >
               {ex.en}
             </Typography>
             <Typography
               variant="body2"
               color="text.secondary"
-              sx={{ whiteSpace: "normal", wordBreak: "break-word" }}
+              sx={{
+                whiteSpace: "normal",
+                wordBreak: "break-word",
+                fontStyle: "italic",
+              }}
             >
               {ex.vi}
             </Typography>
@@ -284,40 +280,33 @@ export default function FlashcardView(props: FlashcardViewProps) {
 
   return (
     <Stack spacing={2} alignItems="center" sx={{ width: "100%" }}>
-      {/* Top bar: progress and exit */}
-      <Stack
-        spacing={1}
-        sx={{ width: "100%", maxWidth: 560, position: "relative" }}
-      >
+      {/* Top bar: progress info + exit like the sample */}
+      <Stack spacing={1} sx={{ width: "100%", maxWidth: 560 }}>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Typography variant="body2" color="text.secondary">
+            {index + 1} / {total}
+          </Typography>
+          <IconButton aria-label="thoat" color="error" onClick={onExit}>
+            <ExitToAppIcon />
+          </IconButton>
+        </Stack>
         <LinearProgress
           variant="determinate"
           value={total ? ((index + 1) / total) * 100 : 0}
           sx={{
-            borderRadius: 999,
-            height: 6,
-            backgroundColor: alpha(theme.palette.primary.main, 0.15),
+            borderRadius: 1,
+            height: 8,
+            backgroundColor: (t) => alpha(t.palette.grey[400], 0.35),
             "& .MuiLinearProgress-bar": {
-              borderRadius: 999,
-              background: `linear-gradient(90deg, ${alpha(
-                theme.palette.primary.light,
-                0.95
-              )}, ${theme.palette.primary.main})`,
+              borderRadius: 1,
+              backgroundColor: theme.palette.primary.main,
             },
           }}
         />
-        <Typography variant="caption" color="text.secondary" textAlign="center">
-          {index + 1} / {total}
-        </Typography>
-        <Box sx={{ position: "absolute", right: 0, top: -8 }}>
-          <IconButton
-            aria-label="thoat"
-            color="error"
-            onClick={onExit}
-            size="small"
-          >
-            <ExitToAppIcon />
-          </IconButton>
-        </Box>
       </Stack>
       <Box
         sx={{
@@ -378,9 +367,9 @@ export default function FlashcardView(props: FlashcardViewProps) {
           sx={{
             position: "relative",
             zIndex: 1,
-            borderRadius: 2,
-            px: 2,
-            py: isMobile ? 2 : 1.5,
+            borderRadius: "20px",
+            px: 3,
+            py: isMobile ? 3 : 2.5,
             touchAction: "pan-y",
             transform: `translateX(${dragX}px) rotate(${dragX / 28}deg)`,
             transition: dragging
@@ -390,9 +379,9 @@ export default function FlashcardView(props: FlashcardViewProps) {
               anim.startsWith("leaving") || anim.startsWith("entering")
                 ? 0.98
                 : 1,
-            backgroundColor: (t) => t.palette.background.paper,
-            boxShadow: (t) => t.shadows[2],
-            border: (t) => `1px solid ${alpha(t.palette.divider, 0.6)}`,
+            backgroundColor: "#ffffff",
+            boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
+            border: "none",
             cursor: "pointer",
             userSelect: "none",
             overflow: "hidden",
@@ -414,49 +403,66 @@ export default function FlashcardView(props: FlashcardViewProps) {
             }
           }}
         >
+          {/* Word */}
+          <Typography
+            variant={isMobile ? "h5" : "h3"}
+            textAlign="center"
+            sx={{
+              fontWeight: 800,
+              letterSpacing: 0.2,
+              wordBreak: "break-word",
+              overflowWrap: "anywhere",
+              color: "#00b894",
+            }}
+          >
+            {entry?.word || "—"}
+          </Typography>
+          {/* Pronunciation line */}
           <Stack
             direction="row"
             spacing={1}
             alignItems="center"
             justifyContent="center"
+            sx={{ mb: 1.25, mt: 0.25 }}
           >
-            <Typography
-              variant={isMobile ? "h5" : "h3"}
-              color="primary.main"
-              textAlign="center"
-              sx={{
-                fontWeight: 800,
-                letterSpacing: 0.2,
-                wordBreak: "break-word",
-                overflowWrap: "anywhere",
-              }}
-            >
-              {entry?.word || "—"}
-            </Typography>
+            <Typography color="text.secondary">{entry?.phonetic}</Typography>
+            {!!entry?.pos && (
+              <Box
+                component="span"
+                sx={{
+                  fontSize: 12,
+                  fontWeight: 700,
+                  color: "#34495e",
+                  backgroundColor: "#f2f4f8",
+                  px: 1,
+                  py: 0.25,
+                  borderRadius: 1,
+                }}
+              >
+                {entry.pos}
+              </Box>
+            )}
             <IconButton
               aria-label="phat-am"
               size="small"
               onClick={() => speak(entry?.word)}
             >
-              <VolumeUpOutlinedIcon />
+              <VolumeUpOutlinedIcon fontSize="small" />
             </IconButton>
           </Stack>
-          <Typography color="text.secondary" textAlign="center">
-            {entry?.phonetic}
-            {entry?.pos ? ` • ${entry.pos}` : ""}
-          </Typography>
           {showAnswer && (
             <Stack spacing={1} sx={{ width: "100%", mt: 1 }}>
               <Divider />
               <Typography
-                variant={isMobile ? "subtitle1" : "h6"}
+                variant={isMobile ? "h6" : "h5"}
                 textAlign="center"
                 sx={{
                   whiteSpace: "normal",
                   wordBreak: "break-word",
-                  fontSize: { xs: "1rem", sm: "1.125rem" },
+                  fontSize: { xs: "1.125rem", sm: "1.375rem" },
                   px: 1,
-                  fontWeight: 600,
+                  fontWeight: 700,
+                  color: "#333",
                 }}
               >
                 {entry?.meaningVi}
@@ -515,36 +521,50 @@ export default function FlashcardView(props: FlashcardViewProps) {
           sx={{ width: "100%", maxWidth: 560 }}
         >
           <Button
-            variant="outlined"
-            color="error"
+            variant="contained"
             sx={{
               px: 2.5,
-              py: 0.9,
-              borderRadius: 999,
+              py: 1.4,
+              borderRadius: 2,
               textTransform: "none",
-              fontWeight: 600,
+              fontWeight: 700,
+              backgroundColor: "#ff4757",
+              boxShadow: "0 4px 10px rgba(255,71,87,0.4)",
+              "&:hover": { backgroundColor: "#ff4757" },
+              "&:active": {
+                transform: "scale(0.98)",
+                backgroundColor: "#e63946",
+              },
             }}
             onClick={() => {
               onMarkUnknown?.();
               setTimeout(() => animateSwipe("left"), 60);
             }}
+            startIcon={<span style={{ fontSize: 20 }}>🥲</span>}
           >
             Chưa thuộc
           </Button>
           <Button
-            variant="outlined"
-            color="success"
+            variant="contained"
             sx={{
               px: 2.5,
-              py: 0.9,
-              borderRadius: 999,
+              py: 1.4,
+              borderRadius: 2,
               textTransform: "none",
-              fontWeight: 600,
+              fontWeight: 700,
+              backgroundColor: "#00b894",
+              boxShadow: "0 4px 10px rgba(0,184,148,0.4)",
+              "&:hover": { backgroundColor: "#00b894" },
+              "&:active": {
+                transform: "scale(0.98)",
+                backgroundColor: "#00a080",
+              },
             }}
             onClick={() => {
               onMarkKnown?.();
               setTimeout(() => animateSwipe("left"), 60);
             }}
+            startIcon={<span style={{ fontSize: 18 }}>✅</span>}
           >
             Đã thuộc
           </Button>
