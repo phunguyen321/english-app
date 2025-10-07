@@ -112,50 +112,261 @@ export default function GrammarPage() {
                         {g.brief}
                       </Typography>
                       <Stack spacing={2}>
-                        {g.points.map((p, idx2) => (
-                          <Box
-                            key={idx2}
-                            sx={{
-                              bgcolor: "#fff",
-                              borderRadius: 1,
-                              p: 2,
-                              boxShadow: 0,
-                              borderLeft: "4px solid #1976d2",
-                              mb: 1,
-                            }}
-                          >
-                            <Typography
-                              fontWeight={600}
-                              sx={{ color: "#1976d2", mb: 0.5 }}
+                        {g.points.map((p, idx2) => {
+                          const type:
+                            | "positive"
+                            | "negative"
+                            | "question"
+                            | "note" = /^Khẳng định:/i.test(p.rule)
+                            ? "positive"
+                            : /^Phủ định:/i.test(p.rule)
+                            ? "negative"
+                            : /^Nghi vấn:/i.test(p.rule)
+                            ? "question"
+                            : "note";
+
+                          const palette = {
+                            positive: {
+                              border: "#28a745",
+                              icon: "✅",
+                              iconSize: 22,
+                              iconColor: "#28a745",
+                            },
+                            negative: {
+                              border: "#dc3545",
+                              icon: "❌",
+                              iconSize: 22,
+                              iconColor: "#dc3545",
+                            },
+                            question: {
+                              border: "#ffc107",
+                              icon: "❓",
+                              iconSize: 22,
+                              iconColor: "#ffc107",
+                            },
+                            note: {
+                              border: "#1a73e8",
+                              icon: "📝",
+                              iconSize: 18,
+                              iconColor: "#1a73e8",
+                            },
+                          } as const;
+
+                          const { border, icon, iconSize, iconColor } =
+                            palette[type as keyof typeof palette];
+
+                          const title = p.rule
+                            .replace(/^(Khẳng định|Phủ định|Nghi vấn):\s*/i, "")
+                            .trim();
+
+                          const renderStyledTitle = (text: string) => {
+                            if (type === "note") {
+                              const [head, rest] = text.split(/:\s*/, 2);
+                              const terms = (rest ?? "").split(/(,\s*)/);
+                              return (
+                                <>
+                                  <Box
+                                    component="span"
+                                    sx={{
+                                      color: "#1a73e8",
+                                      fontWeight: 600,
+                                      mr: 0.5,
+                                    }}
+                                  >
+                                    {head}
+                                  </Box>
+                                  {terms.map((t, i) => {
+                                    const isSep = /,\s*/.test(t);
+                                    return (
+                                      <Box
+                                        key={i}
+                                        component="span"
+                                        sx={{
+                                          color: isSep ? undefined : "#dc3545",
+                                          fontWeight: isSep ? undefined : 700,
+                                        }}
+                                      >
+                                        {t}
+                                      </Box>
+                                    );
+                                  })}
+                                </>
+                              );
+                            }
+
+                            const parts = text
+                              .split(/(\s+|\+|\(|\)|;|,|\?|:)/g)
+                              .filter((p) => p !== "");
+                            const isVerbToken = (s: string) =>
+                              /^(V(?:\(s\/es\))?|V2\/ed|V3|V-?ing)$/i.test(s);
+                            const isAux = (s: string) =>
+                              /^(am|is|are|was|were|have|has|had|do|does|did|will|been|be)$/i.test(
+                                s
+                              ) || /^(Do\/Does|Have\/Has)$/i.test(s);
+                            const isSubject = (s: string) =>
+                              /^S$/i.test(s) ||
+                              /^(He\/She\/It|I\/You\/We\/They)$/i.test(s);
+                            const isWhitespace = (s: string) => /^\s+$/.test(s);
+                            const nextNonSpace = (i: number) => {
+                              for (let j = i + 1; j < parts.length; j++) {
+                                if (!isWhitespace(parts[j])) return j;
+                              }
+                              return -1;
+                            };
+                            const prevNonSpace = (i: number) => {
+                              for (let j = i - 1; j >= 0; j--) {
+                                if (!isWhitespace(parts[j])) return j;
+                              }
+                              return -1;
+                            };
+                            const parenIsForSEs = (i: number, raw: string) => {
+                              if (raw !== "(" && raw !== ")") return false;
+                              if (raw === "(") {
+                                const n1 = nextNonSpace(i);
+                                const n2 = n1 >= 0 ? nextNonSpace(n1) : -1;
+                                return (
+                                  n1 >= 0 &&
+                                  n2 >= 0 &&
+                                  parts[n1].trim().toLowerCase() === "s/es" &&
+                                  parts[n2].trim() === ")"
+                                );
+                              } else {
+                                const p1 = prevNonSpace(i);
+                                const p2 = p1 >= 0 ? prevNonSpace(p1) : -1;
+                                return (
+                                  p1 >= 0 &&
+                                  p2 >= 0 &&
+                                  parts[p1].trim().toLowerCase() === "s/es" &&
+                                  parts[p2].trim() === "("
+                                );
+                              }
+                            };
+                            return (
+                              <>
+                                {parts.map((tk, idx) => {
+                                  const raw = tk.trim();
+                                  let color: string | undefined;
+                                  let fontWeight: number | undefined;
+                                  let fontSize: number | undefined;
+                                  if (/^not$/i.test(raw)) {
+                                    color = "#dc3545"; // red
+                                    fontWeight = 700;
+                                  } else if (isVerbToken(raw) || isAux(raw)) {
+                                    color = "#1a73e8"; // blue
+                                    fontWeight = 700;
+                                  } else if (/^s\/es$/i.test(raw)) {
+                                    // làm 's/es' nhỏ hơn chữ V để dễ nhìn
+                                    color = "#1a73e8";
+                                    fontWeight = 700;
+                                    fontSize = 13;
+                                  } else if (parenIsForSEs(idx, raw)) {
+                                    // thu nhỏ cả dấu ngoặc của (s/es)
+                                    color = "#1a73e8";
+                                    fontWeight = 700;
+                                    fontSize = 13;
+                                  } else if (isSubject(raw)) {
+                                    color = "#5f6368"; // gray
+                                  }
+                                  return (
+                                    <Box
+                                      key={idx}
+                                      component="span"
+                                      sx={{ color, fontWeight, fontSize }}
+                                    >
+                                      {tk}
+                                    </Box>
+                                  );
+                                })}
+                              </>
+                            );
+                          };
+
+                          return (
+                            <Box
+                              key={idx2}
+                              sx={{
+                                position: "relative",
+                                bgcolor: "#ffffff",
+                                borderRadius: 2,
+                                p: 2.25, // ~18px
+                                mb: 1.5,
+                                boxShadow: "0 4px 15px rgba(0, 0, 0, 0.08)",
+                                borderLeft: `6px solid ${border}`,
+                                lineHeight: 1.5,
+                              }}
                             >
-                              {p.rule
-                                .replace(/^Khẳng định:/i, "✅")
-                                .replace(/^Phủ định:/i, "❌")
-                                .replace(/^Nghi vấn:/i, "❓")}
-                            </Typography>
-                            <Stack
-                              direction="row"
-                              spacing={1}
-                              alignItems="center"
-                            >
+                              {/* Icon góc phải */}
                               <Box
-                                sx={{ color: "#43a047", fontSize: 20, mr: 1 }}
+                                sx={{
+                                  position: "absolute",
+                                  top: 12,
+                                  right: 12,
+                                  fontSize: iconSize,
+                                  fontWeight: 700,
+                                  color: iconColor,
+                                }}
                               >
-                                💡
+                                {icon}
                               </Box>
-                              <Typography>
-                                <b>Ví dụ:</b>{" "}
-                                <span style={{ color: "#1565c0" }}>
-                                  {p.example.en}
-                                </span>{" "}
-                                —{" "}
-                                <span style={{ color: "#6d4c41" }}>
-                                  {p.example.vi}
-                                </span>
+
+                              {/* Tiêu đề công thức */}
+                              <Typography
+                                sx={{
+                                  fontSize: 17,
+                                  fontWeight: 600,
+                                  color: "#333",
+                                  pr: 5, // chừa chỗ cho icon
+                                  mb: 1,
+                                }}
+                              >
+                                {renderStyledTitle(title)}
                               </Typography>
-                            </Stack>
-                          </Box>
-                        ))}
+
+                              {/* Ví dụ */}
+                              <Box
+                                sx={{
+                                  mt: 1.5,
+                                  pt: 1,
+                                  borderTop: "1px solid #eee",
+                                }}
+                              >
+                                <Stack
+                                  direction="row"
+                                  spacing={1}
+                                  alignItems="center"
+                                  sx={{ mb: 0.5 }}
+                                >
+                                  <Box sx={{ color: "#ffc107", fontSize: 16 }}>
+                                    💡
+                                  </Box>
+                                  <Typography
+                                    sx={{
+                                      fontSize: 14,
+                                      fontWeight: 600,
+                                      color: "#5f6368",
+                                    }}
+                                  >
+                                    Ví dụ:
+                                  </Typography>
+                                </Stack>
+                                <Typography
+                                  sx={{ fontSize: 14, color: "#444", mb: 0.5 }}
+                                >
+                                  {p.example.en}
+                                </Typography>
+                                <Typography
+                                  sx={{
+                                    color: "#666",
+                                    fontStyle: "italic",
+                                    fontSize: 14,
+                                  }}
+                                >
+                                  {p.example.vi}
+                                </Typography>
+                              </Box>
+                            </Box>
+                          );
+                        })}
                       </Stack>
                     </AccordionDetails>
                   </Accordion>

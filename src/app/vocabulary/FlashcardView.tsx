@@ -148,6 +148,8 @@ export default function FlashcardView(props: FlashcardViewProps) {
     | "entering-left"
     | "entering-right"
   >("idle");
+  // Lock interactions while animating to avoid double-advance when clicking fast
+  const [locked, setLocked] = useState(false);
   const [dragging, setDragging] = useState(false);
   const cardRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -188,31 +190,41 @@ export default function FlashcardView(props: FlashcardViewProps) {
     setAnim("idle");
     setDragX(0);
   };
-  const animateSwipe = (dir: "left" | "right") => {
+  const animateSwipe = (dir: "left" | "right", advance?: "next" | "prev") => {
+    const go = advance ?? (dir === "left" ? "next" : "prev");
     const dist = cardW + 80;
     setDragging(false);
+    if (locked || anim !== "idle") return; // guard against reentry
     if (dir === "left") {
       setAnim("leaving-left");
       setDragX(-dist);
       setTimeout(() => {
-        onNext();
+        if (go === "next") onNext();
+        else onPrev();
         setAnim("entering-right");
         setDragX(dist * enterOffsetFactor);
         requestAnimationFrame(() => {
           setDragX(0);
-          setTimeout(() => setAnim("idle"), enterMs);
+          setTimeout(() => {
+            setAnim("idle");
+            setLocked(false);
+          }, enterMs);
         });
       }, leaveMs);
     } else {
       setAnim("leaving-right");
       setDragX(dist);
       setTimeout(() => {
-        onPrev();
+        if (go === "next") onNext();
+        else onPrev();
         setAnim("entering-left");
         setDragX(-dist * enterOffsetFactor);
         requestAnimationFrame(() => {
           setDragX(0);
-          setTimeout(() => setAnim("idle"), enterMs);
+          setTimeout(() => {
+            setAnim("idle");
+            setLocked(false);
+          }, enterMs);
         });
       }, leaveMs);
     }
@@ -222,6 +234,7 @@ export default function FlashcardView(props: FlashcardViewProps) {
     el.setPointerCapture?.(e.pointerId);
     pDown.current = true;
     setDragging(true);
+    if (locked || anim !== "idle") return;
     startXRef.current = e.clientX;
     startTRef.current = Date.now();
     lastXRef.current = e.clientX;
@@ -385,6 +398,7 @@ export default function FlashcardView(props: FlashcardViewProps) {
             cursor: "pointer",
             userSelect: "none",
             overflow: "hidden",
+            pointerEvents: locked ? "none" : "auto",
           }}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
@@ -512,24 +526,25 @@ export default function FlashcardView(props: FlashcardViewProps) {
           : "Nhấn để lật • Vuốt/← → để chuyển • Esc thoát"}
       </Typography>
 
-      {/* Simplified rating: only show after flipped */}
-      <Fade in={showAnswer} timeout={{ enter: 200, exit: 140 }}>
+      {/* Mobile: luôn hiển thị 2 nút hành động bên trái/bên phải */}
+      {isMobile && (
         <Stack
-          direction={{ xs: "column", sm: "row" }}
+          direction="row"
           spacing={1}
           justifyContent="center"
           sx={{ width: "100%", maxWidth: 560 }}
         >
           <Button
+            fullWidth
             variant="contained"
             sx={{
-              px: 2.5,
-              py: 1.4,
+              px: 2,
+              py: 1.2,
               borderRadius: 2,
               textTransform: "none",
               fontWeight: 700,
               backgroundColor: "#ff4757",
-              boxShadow: "0 4px 10px rgba(255,71,87,0.4)",
+              boxShadow: "0 4px 10px rgba(255,71,87,0.35)",
               "&:hover": { backgroundColor: "#ff4757" },
               "&:active": {
                 transform: "scale(0.98)",
@@ -537,23 +552,25 @@ export default function FlashcardView(props: FlashcardViewProps) {
               },
             }}
             onClick={() => {
+              if (locked || anim !== "idle" || dragging) return;
               onMarkUnknown?.();
-              setTimeout(() => animateSwipe("left"), 60);
+              setTimeout(() => animateSwipe("left", "next"), 60);
             }}
-            startIcon={<span style={{ fontSize: 20 }}>🥲</span>}
+            startIcon={<span style={{ fontSize: 18 }}>🥲</span>}
           >
             Chưa thuộc
           </Button>
           <Button
+            fullWidth
             variant="contained"
             sx={{
-              px: 2.5,
-              py: 1.4,
+              px: 2,
+              py: 1.2,
               borderRadius: 2,
               textTransform: "none",
               fontWeight: 700,
               backgroundColor: "#00b894",
-              boxShadow: "0 4px 10px rgba(0,184,148,0.4)",
+              boxShadow: "0 4px 10px rgba(0,184,148,0.35)",
               "&:hover": { backgroundColor: "#00b894" },
               "&:active": {
                 transform: "scale(0.98)",
@@ -561,15 +578,79 @@ export default function FlashcardView(props: FlashcardViewProps) {
               },
             }}
             onClick={() => {
+              if (locked || anim !== "idle" || dragging) return;
               onMarkKnown?.();
-              setTimeout(() => animateSwipe("left"), 60);
+              setTimeout(() => animateSwipe("right", "next"), 60);
             }}
-            startIcon={<span style={{ fontSize: 18 }}>✅</span>}
+            startIcon={<span style={{ fontSize: 16 }}>✅</span>}
           >
             Đã thuộc
           </Button>
         </Stack>
-      </Fade>
+      )}
+
+      {/* Simplified rating: only show after flipped */}
+      {!isMobile && (
+        <Fade in={showAnswer} timeout={{ enter: 200, exit: 140 }}>
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            spacing={1}
+            justifyContent="center"
+            sx={{ width: "100%", maxWidth: 560 }}
+          >
+            <Button
+              variant="contained"
+              sx={{
+                px: 2.5,
+                py: 1.4,
+                borderRadius: 2,
+                textTransform: "none",
+                fontWeight: 700,
+                backgroundColor: "#ff4757",
+                boxShadow: "0 4px 10px rgba(255,71,87,0.4)",
+                "&:hover": { backgroundColor: "#ff4757" },
+                "&:active": {
+                  transform: "scale(0.98)",
+                  backgroundColor: "#e63946",
+                },
+              }}
+              onClick={() => {
+                if (locked || anim !== "idle" || dragging) return;
+                onMarkUnknown?.();
+                setTimeout(() => animateSwipe("left", "next"), 60);
+              }}
+              startIcon={<span style={{ fontSize: 20 }}>🥲</span>}
+            >
+              Chưa thuộc
+            </Button>
+            <Button
+              variant="contained"
+              sx={{
+                px: 2.5,
+                py: 1.4,
+                borderRadius: 2,
+                textTransform: "none",
+                fontWeight: 700,
+                backgroundColor: "#00b894",
+                boxShadow: "0 4px 10px rgba(0,184,148,0.4)",
+                "&:hover": { backgroundColor: "#00b894" },
+                "&:active": {
+                  transform: "scale(0.98)",
+                  backgroundColor: "#00a080",
+                },
+              }}
+              onClick={() => {
+                if (locked || anim !== "idle" || dragging) return;
+                onMarkKnown?.();
+                setTimeout(() => animateSwipe("right", "next"), 60);
+              }}
+              startIcon={<span style={{ fontSize: 18 }}>✅</span>}
+            >
+              Đã thuộc
+            </Button>
+          </Stack>
+        </Fade>
+      )}
     </Stack>
   );
 }

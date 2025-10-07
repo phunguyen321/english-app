@@ -5,14 +5,17 @@ import { useAppDispatch, useAppSelector, type RootState } from "@/store";
 import {
   loadVocab,
   shuffleFlashcards,
+  shuffleRemaining,
   toggleAnswer,
-  setFlashcardSubset,
+  setFlashcardOrder,
   nextCard,
   prevCard,
   markKnown,
   markLearning,
   markUnknown,
   loadKnowledge,
+  setListOrder,
+  shuffleList,
 } from "@/store/slices/vocabSlice";
 import {
   Box,
@@ -60,9 +63,8 @@ export default function VocabularyPage() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
-  const { topics, entries, status, flashcard, knowledge } = useAppSelector(
-    (s: RootState) => s.vocab
-  );
+  const { topics, entries, status, flashcard, knowledge, listOrder } =
+    useAppSelector((s: RootState) => s.vocab);
 
   // UI state
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
@@ -107,8 +109,9 @@ export default function VocabularyPage() {
     } catch {}
   }, [knowledge]);
 
-  // Recompute subset order whenever filters change
+  // Recompute LIST order whenever filters change (kept separate from flashcards)
   useEffect(() => {
+    // do not depend on flash animations; list is independent
     const n = entries.length;
     if (!n) return;
     const s = Math.max(1, Math.min(start || 1, n));
@@ -143,18 +146,33 @@ export default function VocabularyPage() {
         );
       });
     }
-    const finalOrder = shuffleTopicMix ? shuffleSimple(pipeline) : pipeline;
-    dispatch(setFlashcardSubset(finalOrder));
+    // Preserve current LIST order as much as possible: filter out removed items and append new ones at the end.
+    let finalOrder: number[];
+    {
+      const prev = listOrder;
+      if (prev.length) {
+        const setP = new Set(pipeline);
+        const kept = prev.filter((i) => setP.has(i));
+        const missing = pipeline.filter((i) => !prev.includes(i));
+        finalOrder = kept.concat(missing);
+      } else {
+        finalOrder = pipeline; // default: no shuffle for list on init
+      }
+    }
+    const sameList =
+      finalOrder.length === listOrder.length &&
+      finalOrder.every((v, i) => v === listOrder[i]);
+    if (!sameList) dispatch(setListOrder(finalOrder));
   }, [
     entries,
     start,
     end,
     selectedTopics,
     search,
-    shuffleTopicMix,
     filterLevels,
     knowledgeFilter,
     knowledge,
+    listOrder,
     dispatch,
   ]);
 
@@ -226,13 +244,23 @@ export default function VocabularyPage() {
   const current = entries[flashcard.order[flashcard.index]];
 
   const startFlashcards = () => {
+    // Enter flash mode with current LIST order; no auto-shuffle
+    dispatch(
+      setFlashcardOrder({
+        order: listOrder.length ? listOrder : entries.map((_, i) => i),
+        index: 0,
+      })
+    );
     setFlashMode(true);
-    setIsShuffling(true);
-    dispatch(shuffleFlashcards());
   };
   const handleShuffle = () => {
-    setIsShuffling(true);
-    dispatch(shuffleFlashcards());
+    if (flashMode) {
+      // In flash mode: only shuffle the remaining cards after current index
+      dispatch(shuffleRemaining());
+    } else {
+      // In list mode: shuffle list order only
+      dispatch(shuffleList());
+    }
   };
 
   // Mobile presentation preferences: respect user's toggles on all devices
@@ -334,7 +362,7 @@ export default function VocabularyPage() {
         Từ vựng thông dụng
       </Typography>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-        Đã lọc: {flashcard.order.length} từ
+        Đã lọc: {listOrder.length || 0} từ
       </Typography>
       {status === "loading" && <LinearProgress />}
 
@@ -436,7 +464,7 @@ export default function VocabularyPage() {
           ) : (
             <VocabularyList
               entries={entries}
-              order={flashcard.order}
+              order={listOrder.length ? listOrder : []}
               knowledge={knowledge}
               topicName={topicName}
               search={search}

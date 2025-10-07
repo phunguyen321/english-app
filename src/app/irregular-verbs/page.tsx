@@ -8,12 +8,10 @@ import {
   TextField,
   InputAdornment,
   Paper,
-  Chip,
   Stack,
-  Grid,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-// no breakpoint-specific UI; same layout for all sizes
+// Mobile-first UI styled to match example/verb.html
 
 type Verb = { base: string; past: string; pp: string; meaning?: string };
 
@@ -22,6 +20,18 @@ export default function IrregularVerbsPage() {
   const [data, setData] = useState<Verb[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [showMeaning] = useState(true);
+
+  // Color tokens to mirror the sample UI
+  const colors = {
+    v1: "#28a745",
+    v2: "#ffc107",
+    v3: "#dc3545",
+    blue: "#007bff",
+    textMuted: "#6c757d",
+    cardBg: "#ffffff",
+    pageBg: "#f7f7f7",
+    divider: "#eee",
+  } as const;
 
   useEffect(() => {
     let mounted = true;
@@ -89,8 +99,8 @@ export default function IrregularVerbsPage() {
         <Box
           component="span"
           sx={{
-            fontWeight: 800,
-            fontSize: { xs: 20, sm: 22 },
+            fontWeight: 700,
+            fontSize: { xs: 18, sm: 20 },
             lineHeight: 1.2,
             color,
           }}
@@ -107,51 +117,123 @@ export default function IrregularVerbsPage() {
   };
 
   return (
-    <Box>
-      <Typography variant="h4" gutterBottom>
-        Bảng động từ bất quy tắc
-      </Typography>
-      <Card variant="outlined" sx={{ mb: 2 }}>
-        <CardContent>
-          <TextField
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="Tìm theo từ gốc / quá khứ / quá khứ phân từ / nghĩa"
-            fullWidth
-            size="small"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon fontSize="small" />
-                </InputAdornment>
-              ),
+    <Box sx={{ bgcolor: colors.pageBg, mx: -2, px: 2, py: 1 }}>
+      {/* Header */}
+      <Box
+        component="header"
+        sx={{
+          position: "sticky",
+          top: 0,
+          zIndex: 1,
+          bgcolor: colors.cardBg,
+          px: 0,
+          pt: 2,
+          pb: 1.5,
+          boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+        }}
+      >
+        <Typography
+          component="h1"
+          sx={{
+            color: colors.blue,
+            fontSize: 24,
+            fontWeight: 700,
+            mb: 1.5,
+            textAlign: "center",
+          }}
+        >
+          Bảng Động Từ Bất Quy Tắc
+        </Typography>
+
+        {/* Search input group */}
+        <TextField
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          placeholder="Tìm kiếm từ gốc / quá khứ..."
+          fullWidth
+          size="small"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon sx={{ color: colors.textMuted }} fontSize="small" />
+              </InputAdornment>
+            ),
+          }}
+          sx={{
+            mb: 1,
+            "& .MuiOutlinedInput-root": {
+              borderRadius: 2,
+              px: 1.5,
+              py: 0.5,
+            },
+          }}
+        />
+
+        {/* Tag group V1/V2/V3 */}
+        <Stack
+          direction="row"
+          spacing={1}
+          justifyContent="space-around"
+          sx={{ mb: 0.5 }}
+        >
+          <Box
+            component="span"
+            sx={{
+              px: 1.25,
+              py: 0.5,
+              borderRadius: 10,
+              fontSize: 12,
+              fontWeight: 700,
+              color: "#fff",
+              bgcolor: colors.v1,
+              minWidth: 34,
+              textAlign: "center",
             }}
-          />
-          <Typography
-            variant="caption"
-            sx={{ mt: 1, display: "block", color: "text.secondary" }}
           >
-            Kết quả: {filtered.length.toLocaleString("vi-VN")}
-          </Typography>
-          {/* Legend for V1/V2/V3 */}
-          <Stack direction="row" spacing={1} sx={{ mt: 1, flexWrap: "wrap" }}>
-            <Chip size="small" variant="outlined" label="V1 = Base form" />
-            <Chip
-              size="small"
-              variant="outlined"
-              color="primary"
-              label="V2 = Past simple"
-            />
-            <Chip
-              size="small"
-              variant="outlined"
-              color="secondary"
-              label="V3 = Past participle"
-            />
-          </Stack>
-        </CardContent>
-      </Card>
-      <Box>
+            V1
+          </Box>
+          <Box
+            component="span"
+            sx={{
+              px: 1.25,
+              py: 0.5,
+              borderRadius: 10,
+              fontSize: 12,
+              fontWeight: 700,
+              color: "#333",
+              bgcolor: colors.v2,
+              minWidth: 34,
+              textAlign: "center",
+            }}
+          >
+            V2
+          </Box>
+          <Box
+            component="span"
+            sx={{
+              px: 1.25,
+              py: 0.5,
+              borderRadius: 10,
+              fontSize: 12,
+              fontWeight: 700,
+              color: "#fff",
+              bgcolor: colors.v3,
+              minWidth: 34,
+              textAlign: "center",
+            }}
+          >
+            V3
+          </Box>
+        </Stack>
+        <Typography
+          sx={{ color: colors.textMuted, fontSize: 14, textAlign: "center" }}
+        >
+          Kết quả: {filtered.length.toLocaleString("vi-VN")}
+        </Typography>
+      </Box>
+
+      {/* Content */}
+      <Box sx={{ pt: 1 }}>
         {error && (
           <Typography color="error" sx={{ mb: 2 }}>
             {error}
@@ -160,74 +242,114 @@ export default function IrregularVerbsPage() {
         {filtered.length === 0 ? (
           <Paper
             variant="outlined"
-            sx={{ p: 4, textAlign: "center", color: "text.secondary" }}
+            sx={{ p: 4, textAlign: "center", color: colors.textMuted }}
           >
             Không tìm thấy kết quả.
           </Paper>
         ) : (
-          <Stack spacing={1.25}>
+          <Stack spacing={1.5}>
             {filtered.map((v) => (
-              <Card key={`${v.base}-${v.past}-${v.pp}`} variant="outlined">
-                <CardContent sx={{ py: 1.25 }}>
+              <Card
+                key={`${v.base}-${v.past}-${v.pp}`}
+                sx={{
+                  backgroundColor: colors.cardBg,
+                  borderRadius: 2,
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+                }}
+              >
+                <CardContent sx={{ py: 2 }}>
                   {/* V1 */}
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "baseline",
-                      gap: 1,
-                      borderLeft: "4px solid",
-                      borderLeftColor: "text.disabled",
-                      pl: 1.25,
-                      py: 0.5,
-                    }}
-                  >
-                    <Chip size="small" label="V1" />
-                    <Box>{renderForms(v.base)}</Box>
+                  <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                    <Box
+                      sx={{
+                        px: 1,
+                        py: 0.25,
+                        mr: 1.5,
+                        borderRadius: 0.75,
+                        fontWeight: 700,
+                        color: "#fff",
+                        bgcolor: colors.v1,
+                        minWidth: 35,
+                        textAlign: "center",
+                        fontSize: 13,
+                      }}
+                    >
+                      V1
+                    </Box>
+                    <Box
+                      className="verb-word"
+                      sx={{ fontSize: 18, fontWeight: 600, color: "#333" }}
+                    >
+                      {renderForms(v.base)}
+                    </Box>
                   </Box>
 
-                  {/* V2/V3 side by side on desktop, stacked on mobile */}
-                  <Grid container spacing={1} sx={{ mt: 0.5 }}>
-                    <Grid item xs={12} md={6}>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "baseline",
-                          gap: 1,
-                          borderLeft: "4px solid",
-                          borderLeftColor: "primary.main",
-                          pl: 1.25,
-                          py: 0.5,
-                        }}
-                      >
-                        <Chip size="small" color="primary" label="V2" />
-                        <Box>{renderForms(v.past, "primary.main")}</Box>
-                      </Box>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "baseline",
-                          gap: 1,
-                          borderLeft: "4px solid",
-                          borderLeftColor: "secondary.main",
-                          pl: 1.25,
-                          py: 0.5,
-                        }}
-                      >
-                        <Chip size="small" color="secondary" label="V3" />
-                        <Box>{renderForms(v.pp, "secondary.main")}</Box>
-                      </Box>
-                    </Grid>
-                  </Grid>
+                  {/* V2 */}
+                  <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                    <Box
+                      sx={{
+                        px: 1,
+                        py: 0.25,
+                        mr: 1.5,
+                        borderRadius: 0.75,
+                        fontWeight: 700,
+                        color: "#333",
+                        bgcolor: colors.v2,
+                        minWidth: 35,
+                        textAlign: "center",
+                        fontSize: 13,
+                      }}
+                    >
+                      V2
+                    </Box>
+                    <Box sx={{ fontSize: 18, fontWeight: 600, color: "#555" }}>
+                      {renderForms(v.past)}
+                    </Box>
+                  </Box>
+
+                  {/* V3 */}
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Box
+                      sx={{
+                        px: 1,
+                        py: 0.25,
+                        mr: 1.5,
+                        borderRadius: 0.75,
+                        fontWeight: 700,
+                        color: "#fff",
+                        bgcolor: colors.v3,
+                        minWidth: 35,
+                        textAlign: "center",
+                        fontSize: 13,
+                      }}
+                    >
+                      V3
+                    </Box>
+                    <Box sx={{ fontSize: 18, fontWeight: 600, color: "#555" }}>
+                      {renderForms(v.pp)}
+                    </Box>
+                  </Box>
 
                   {showMeaning && v.meaning && (
-                    <Typography
-                      variant="body2"
-                      sx={{ mt: 1, color: "text.secondary" }}
+                    <Box
+                      sx={{
+                        mt: 1.5,
+                        pt: 1,
+                        borderTop: `1px dashed ${colors.divider}`,
+                      }}
                     >
-                      Nghĩa: {highlight(v.meaning)}
-                    </Typography>
+                      <Typography
+                        sx={{ fontSize: 14, color: colors.textMuted }}
+                      >
+                        <Box
+                          component="span"
+                          sx={{ mr: 0.5, color: colors.blue }}
+                        >
+                          📚
+                        </Box>
+                        Nghĩa: {highlight(v.meaning)}
+                      </Typography>
+                    </Box>
                   )}
                 </CardContent>
               </Card>

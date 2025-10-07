@@ -6,6 +6,8 @@ export type VocabState = {
   entries: VocabEntry[];
   status: "idle" | "loading" | "succeeded" | "failed";
   error?: string;
+  // separate order for vocabulary list view
+  listOrder: number[];
   flashcard: {
     start: number;
     end: number;
@@ -21,6 +23,7 @@ const initialState: VocabState = {
   topics: [],
   entries: [],
   status: "idle",
+  listOrder: [],
   flashcard: { start: 0, end: 49, index: 0, order: [], showAnswer: false },
   knowledge: {},
 };
@@ -35,6 +38,12 @@ const vocabSlice = createSlice({
   name: "vocab",
   initialState,
   reducers: {
+    setListOrder(state: VocabState, action: PayloadAction<number[]>) {
+      const order = action.payload.filter(
+        (i) => i >= 0 && i < state.entries.length
+      );
+      state.listOrder = order;
+    },
     setFlashcardSubset(state: VocabState, action: PayloadAction<number[]>) {
       const order = action.payload.filter(
         (i) => i >= 0 && i < state.entries.length
@@ -43,6 +52,33 @@ const vocabSlice = createSlice({
         start: 0,
         end: Math.max(0, order.length - 1),
         index: 0,
+        order,
+        showAnswer: false,
+      };
+    },
+    setFlashcardOrder(
+      state: VocabState,
+      action: PayloadAction<{ order: number[]; index?: number }>
+    ) {
+      const order = action.payload.order.filter(
+        (i) => i >= 0 && i < state.entries.length
+      );
+      // Try to keep the same current entry if index isn't provided
+      const currentEntryIdx = state.flashcard.order[state.flashcard.index];
+      let nextIndex = 0;
+      if (typeof action.payload.index === "number") {
+        nextIndex = Math.max(
+          0,
+          Math.min(action.payload.index, Math.max(0, order.length - 1))
+        );
+      } else if (order.length) {
+        const pos = order.indexOf(currentEntryIdx);
+        nextIndex = pos >= 0 ? pos : 0;
+      }
+      state.flashcard = {
+        start: 0,
+        end: Math.max(0, order.length - 1),
+        index: nextIndex,
         order,
         showAnswer: false,
       };
@@ -77,6 +113,31 @@ const vocabSlice = createSlice({
         ];
       }
       state.flashcard.index = 0;
+      state.flashcard.showAnswer = false;
+    },
+    shuffleList(state: VocabState) {
+      const arr = [...state.listOrder];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      state.listOrder = arr;
+    },
+    shuffleRemaining(state: VocabState) {
+      const idx = Math.max(
+        0,
+        Math.min(
+          state.flashcard.index,
+          Math.max(0, state.flashcard.order.length - 1)
+        )
+      );
+      const prefix = state.flashcard.order.slice(0, idx + 1);
+      const rest = state.flashcard.order.slice(idx + 1);
+      for (let i = rest.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [rest[i], rest[j]] = [rest[j], rest[i]];
+      }
+      state.flashcard.order = prefix.concat(rest);
       state.flashcard.showAnswer = false;
     },
     nextCard(state: VocabState) {
@@ -130,6 +191,7 @@ const vocabSlice = createSlice({
           }
           const end = Math.min(49, Math.max(0, state.entries.length - 1));
           const arr = Array.from({ length: end + 1 }, (_, i) => i);
+          state.listOrder = arr; // list view starts in natural order
           state.flashcard = {
             start: 0,
             end,
@@ -147,9 +209,13 @@ const vocabSlice = createSlice({
 });
 
 export const {
+  setListOrder,
   setFlashcardSubset,
   setFlashcardRange,
+  setFlashcardOrder,
   shuffleFlashcards,
+  shuffleList,
+  shuffleRemaining,
   nextCard,
   prevCard,
   toggleAnswer,
