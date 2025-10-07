@@ -9,7 +9,8 @@ const theme = createTheme({
   },
   shape: { borderRadius: 10 },
   typography: {
-    fontFamily: "Inter, Roboto, Arial, sans-serif",
+    // Use the CSS variable from next/font as the primary family
+    fontFamily: "var(--font-poppins), Poppins, Roboto, Arial, sans-serif",
   },
 });
 
