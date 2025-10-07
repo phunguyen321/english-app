@@ -49,8 +49,8 @@ import ShuffleIcon from "@mui/icons-material/Shuffle";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import LabelOutlinedIcon from "@mui/icons-material/LabelOutlined";
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
-import FormatQuoteRoundedIcon from "@mui/icons-material/FormatQuoteRounded";
 import FilterListIcon from "@mui/icons-material/FilterList";
+import VolumeUpOutlinedIcon from "@mui/icons-material/VolumeUpOutlined";
 import FlashcardView from "./FlashcardView";
 
 export default function VocabularyPage() {
@@ -338,7 +338,7 @@ export default function VocabularyPage() {
       </Typography>
       {status === "loading" && <LinearProgress />}
 
-      {/* Top controls */}
+      {/* Top controls: only Search + Filter button + Shuffle + Flashcards */}
       <Card variant="outlined" sx={{ mb: 2 }}>
         <CardContent>
           <Stack
@@ -346,6 +346,128 @@ export default function VocabularyPage() {
             spacing={1.5}
             alignItems={{ md: "center" }}
           >
+            <TextField
+              size="small"
+              label="Tìm kiếm"
+              placeholder="từ, nghĩa hoặc ví dụ"
+              value={search}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setSearch(e.target.value)
+              }
+              sx={{ minWidth: { xs: "100%", md: 260 } }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon fontSize="small" />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{ ml: { md: "auto" } }}
+              alignItems="center"
+              flexWrap="nowrap"
+            >
+              <Tooltip title="Bộ lọc">
+                <IconButton
+                  color="primary"
+                  onClick={() => setMobileFilterOpen(true)}
+                  aria-label="Mở bộ lọc"
+                >
+                  <FilterListIcon />
+                </IconButton>
+              </Tooltip>
+              <Button
+                size="small"
+                variant="outlined"
+                startIcon={<ShuffleIcon />}
+                onClick={handleShuffle}
+              >
+                Xáo trộn
+              </Button>
+              <Button
+                size="small"
+                variant="contained"
+                startIcon={<PlayArrowIcon />}
+                onClick={startFlashcards}
+              >
+                Học thẻ
+              </Button>
+            </Stack>
+          </Stack>
+        </CardContent>
+      </Card>
+
+      <Stack
+        direction={{ xs: "column", lg: "row" }}
+        spacing={2}
+        alignItems={{ xs: "stretch", lg: "flex-start" }}
+      >
+        {/* Sidebar removed: all filters moved to Drawer */}
+        <Box sx={{ display: "none" }} />
+
+        {/* Main content: remove large background card wrapper */}
+        <Box sx={{ flex: 1, minWidth: 0 }}>
+          {flashMode ? (
+            <FlashcardView
+              entry={current}
+              showAnswer={flashcard.showAnswer}
+              showExamples={effectiveShowExamples}
+              index={flashcard.index}
+              total={flashcard.order.length}
+              onToggleAnswer={() => dispatch(toggleAnswer())}
+              onNext={() => dispatch(nextCard())}
+              onPrev={() => dispatch(prevCard())}
+              onExit={() => setFlashMode(false)}
+              knowledgeState={current ? knowledge[current.id] : undefined}
+              onMarkKnown={() => current && dispatch(markKnown(current.id))}
+              onMarkLearning={() =>
+                current && dispatch(markLearning(current.id))
+              }
+              onMarkUnknown={() => current && dispatch(markUnknown(current.id))}
+            />
+          ) : status === "loading" || isShuffling ? (
+            <VocabularyListSkeleton
+              rows={effectiveCompact ? 10 : 5}
+              compact={effectiveCompact}
+            />
+          ) : (
+            <VocabularyList
+              entries={entries}
+              order={flashcard.order}
+              knowledge={knowledge}
+              topicName={topicName}
+              search={search}
+              showExamples={effectiveShowExamples}
+              compact={effectiveCompact}
+              onMarkKnown={(id) => dispatch(markKnown(id))}
+              onMarkLearning={(id) => dispatch(markLearning(id))}
+              onMarkUnknown={(id) => dispatch(markUnknown(id))}
+            />
+          )}
+        </Box>
+      </Stack>
+
+      {/* Filter drawer (now the single place for all filters) */}
+      <Drawer
+        anchor="right"
+        open={mobileFilterOpen}
+        onClose={() => setMobileFilterOpen(false)}
+        PaperProps={{ sx: { width: "80vw", maxWidth: 320 } }}
+      >
+        <Box sx={{ p: 2 }} role="presentation">
+          <Typography variant="h6" gutterBottom>
+            Bộ lọc
+          </Typography>
+          <Divider sx={{ mb: 1 }} />
+
+          {/* Range filter */}
+          <Typography variant="subtitle2" gutterBottom>
+            Khoảng từ
+          </Typography>
+          <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
             <TextField
               size="small"
               type="number"
@@ -371,308 +493,7 @@ export default function VocabularyPage() {
               sx={{ width: 120 }}
               inputProps={{ min: 1 }}
             />
-            <TextField
-              size="small"
-              label="Tìm kiếm"
-              placeholder="từ, nghĩa hoặc ví dụ"
-              value={search}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setSearch(e.target.value)
-              }
-              sx={{ minWidth: { xs: "100%", md: 260 } }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon fontSize="small" />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={shuffleTopicMix}
-                  onChange={(e) => setShuffleTopicMix(e.target.checked)}
-                />
-              }
-              label="Xáo trộn chủ đề"
-            />
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={showExamples}
-                  onChange={(e) => setShowExamples(e.target.checked)}
-                />
-              }
-              label={
-                <Stack direction="row" spacing={0.5} alignItems="center">
-                  <VisibilityIcon fontSize="small" />
-                  <span>Hiện ví dụ</span>
-                </Stack>
-              }
-            />
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={compact}
-                  onChange={(e) => setCompact(e.target.checked)}
-                />
-              }
-              label="Danh sách gọn"
-            />
-            <Stack direction="row" spacing={1} sx={{ ml: { md: "auto" } }}>
-              <Button
-                variant="contained"
-                startIcon={<PlayArrowIcon />}
-                onClick={startFlashcards}
-              >
-                Học Flashcards
-              </Button>
-              <Button
-                variant="outlined"
-                startIcon={<ShuffleIcon />}
-                onClick={handleShuffle}
-              >
-                Xáo trộn
-              </Button>
-            </Stack>
           </Stack>
-        </CardContent>
-      </Card>
-
-      <Stack
-        direction={{ xs: "column", lg: "row" }}
-        spacing={2}
-        alignItems={{ xs: "stretch", lg: "flex-start" }}
-      >
-        {/* Sidebar (hidden on mobile) */}
-        <Box
-          sx={{
-            width: { xs: "100%", lg: 320 },
-            flexShrink: 0,
-            display: { xs: "none", lg: "block" },
-          }}
-        >
-          <Card
-            variant="outlined"
-            sx={{ position: { lg: "sticky" }, top: { lg: 16 } }}
-          >
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Chủ đề
-              </Typography>
-              <List
-                dense
-                subheader={
-                  <ListSubheader component="div" disableSticky>
-                    Chọn chủ đề để lọc
-                  </ListSubheader>
-                }
-                sx={{
-                  maxHeight: 300,
-                  overflowY: "auto",
-                  border: "1px solid",
-                  borderColor: "divider",
-                  borderRadius: 1,
-                  mb: 1,
-                }}
-              >
-                {topics.map((t) => {
-                  const st = topicStats[t.id] || {
-                    total: 0,
-                    known: 0,
-                    learning: 0,
-                    unknown: 0,
-                  };
-                  const checked = selectedTopics.includes(t.id);
-                  const pctKnown =
-                    st.total > 0 ? Math.round((st.known / st.total) * 100) : 0;
-                  return (
-                    <ListItemButton
-                      key={t.id}
-                      dense
-                      selected={checked}
-                      onClick={() =>
-                        setSelectedTopics((prev) =>
-                          prev.includes(t.id)
-                            ? prev.filter((x) => x !== t.id)
-                            : [...prev, t.id]
-                        )
-                      }
-                    >
-                      <Checkbox
-                        edge="start"
-                        size="small"
-                        tabIndex={-1}
-                        checked={checked}
-                      />
-                      <ListItemText
-                        disableTypography
-                        primary={
-                          <Typography variant="body2" component="span">
-                            {t.name}
-                          </Typography>
-                        }
-                        secondary={
-                          <Box sx={{ mt: 0.25 }}>
-                            <Typography
-                              variant="caption"
-                              color="text.secondary"
-                            >
-                              {st.total} từ • {pctKnown}% đã thuộc
-                            </Typography>
-                            <LinearProgress
-                              variant="determinate"
-                              value={pctKnown}
-                              sx={{ height: 4, borderRadius: 999, mt: 0.5 }}
-                            />
-                          </Box>
-                        }
-                      />
-                    </ListItemButton>
-                  );
-                })}
-              </List>
-              <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
-                <Button
-                  size="small"
-                  onClick={() => setSelectedTopics(topics.map((t) => t.id))}
-                >
-                  Tất cả
-                </Button>
-                <Button size="small" onClick={() => setSelectedTopics([])}>
-                  Xóa
-                </Button>
-              </Stack>
-              {/* POS filter removed */}
-              <Divider sx={{ my: 1 }} />
-              <Typography variant="subtitle2" gutterBottom>
-                Trạng thái học
-              </Typography>
-              <ToggleButtonGroup
-                size="small"
-                value={knowledgeFilter}
-                exclusive
-                onChange={(_, val) => val && setKnowledgeFilter(val)}
-              >
-                <ToggleButton value="all">Tất cả</ToggleButton>
-                <ToggleButton value="unknown">Chưa thuộc</ToggleButton>
-                <ToggleButton value="learning">Chưa chắc</ToggleButton>
-                <ToggleButton value="known">Đã thuộc</ToggleButton>
-              </ToggleButtonGroup>
-              <Divider sx={{ my: 1 }} />
-              <Tooltip title="Reset mọi lọc">
-                <Button
-                  size="small"
-                  onClick={() => {
-                    setSelectedTopics([]);
-                    setFilterLevels([]);
-                    setKnowledgeFilter("all");
-                  }}
-                >
-                  Reset lọc
-                </Button>
-              </Tooltip>
-            </CardContent>
-          </Card>
-        </Box>
-
-        {/* Main content */}
-        <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Card
-            sx={{
-              width: "100%",
-              px: { xs: 0, sm: 2 },
-              py: { xs: 1, sm: 2 },
-              borderRadius: { xs: 0, sm: 1 },
-            }}
-          >
-            <CardContent sx={{ width: "100%", px: { xs: 0, sm: 2 } }}>
-              {/* Mobile quick actions */}
-              {!flashMode && isMobile ? (
-                <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
-                  <IconButton
-                    color="primary"
-                    onClick={() => setMobileFilterOpen(true)}
-                    aria-label="Mở bộ lọc"
-                  >
-                    <FilterListIcon />
-                  </IconButton>
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    startIcon={<ShuffleIcon />}
-                    onClick={handleShuffle}
-                  >
-                    Xáo trộn
-                  </Button>
-                  <Button
-                    size="small"
-                    variant="contained"
-                    startIcon={<PlayArrowIcon />}
-                    onClick={startFlashcards}
-                  >
-                    Học thẻ
-                  </Button>
-                </Stack>
-              ) : null}
-
-              {flashMode ? (
-                <FlashcardView
-                  entry={current}
-                  showAnswer={flashcard.showAnswer}
-                  showExamples={effectiveShowExamples}
-                  index={flashcard.index}
-                  total={flashcard.order.length}
-                  onToggleAnswer={() => dispatch(toggleAnswer())}
-                  onNext={() => dispatch(nextCard())}
-                  onPrev={() => dispatch(prevCard())}
-                  onExit={() => setFlashMode(false)}
-                  knowledgeState={current ? knowledge[current.id] : undefined}
-                  onMarkKnown={() => current && dispatch(markKnown(current.id))}
-                  onMarkLearning={() =>
-                    current && dispatch(markLearning(current.id))
-                  }
-                  onMarkUnknown={() =>
-                    current && dispatch(markUnknown(current.id))
-                  }
-                />
-              ) : status === "loading" || isShuffling ? (
-                <VocabularyListSkeleton
-                  rows={effectiveCompact ? 10 : 5}
-                  compact={effectiveCompact}
-                />
-              ) : (
-                <VocabularyList
-                  entries={entries}
-                  order={flashcard.order}
-                  knowledge={knowledge}
-                  topicName={topicName}
-                  search={search}
-                  showExamples={effectiveShowExamples}
-                  compact={effectiveCompact}
-                  onMarkKnown={(id) => dispatch(markKnown(id))}
-                  onMarkLearning={(id) => dispatch(markLearning(id))}
-                  onMarkUnknown={(id) => dispatch(markUnknown(id))}
-                />
-              )}
-            </CardContent>
-          </Card>
-        </Box>
-      </Stack>
-
-      {/* Mobile filter drawer */}
-      <Drawer
-        anchor="right"
-        open={mobileFilterOpen}
-        onClose={() => setMobileFilterOpen(false)}
-        PaperProps={{ sx: { width: "90vw", maxWidth: 360 } }}
-      >
-        <Box sx={{ p: 2 }} role="presentation">
-          <Typography variant="h6" gutterBottom>
-            Bộ lọc
-          </Typography>
-          <Divider sx={{ mb: 1 }} />
 
           <Typography variant="subtitle2" gutterBottom>
             Chủ đề
@@ -769,7 +590,42 @@ export default function VocabularyPage() {
             <ToggleButton value="known">Đã thuộc</ToggleButton>
           </ToggleButtonGroup>
 
-          {/* no group-by-topic toggle in mobile */}
+          <Divider sx={{ my: 1 }} />
+          {/* Display options */}
+          <Stack spacing={1} sx={{ mb: 1 }}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={showExamples}
+                  onChange={(e) => setShowExamples(e.target.checked)}
+                />
+              }
+              label={
+                <Stack direction="row" spacing={0.5} alignItems="center">
+                  <VisibilityIcon fontSize="small" />
+                  <span>Hiện ví dụ</span>
+                </Stack>
+              }
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={compact}
+                  onChange={(e) => setCompact(e.target.checked)}
+                />
+              }
+              label="Danh sách gọn"
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={shuffleTopicMix}
+                  onChange={(e) => setShuffleTopicMix(e.target.checked)}
+                />
+              }
+              label="Xáo trộn chủ đề"
+            />
+          </Stack>
 
           <Divider sx={{ my: 1 }} />
           <Stack direction="row" spacing={1}>
@@ -785,6 +641,9 @@ export default function VocabularyPage() {
                   setSelectedTopics([]);
                   setFilterLevels([]);
                   setKnowledgeFilter("all");
+                  setShowExamples(true);
+                  setCompact(false);
+                  setShuffleTopicMix(false);
                 }}
               >
                 Reset lọc
@@ -851,38 +710,49 @@ function ExampleList({
   const items = (examples || []).slice(0, max);
   if (!items.length) return null;
   return (
-    <Stack spacing={0.75} sx={{ width: "100%", mt: dense ? 0.25 : 0.5 }}>
-      {items.map((ex, i) => (
-        <Box
-          key={i}
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "auto 1fr",
-            columnGap: 1,
-            alignItems: "start",
-          }}
-        >
-          <Box sx={{ pt: 0.25, color: "text.disabled" }}>
-            <FormatQuoteRoundedIcon fontSize="small" />
-          </Box>
-          <Stack spacing={0.25}>
+    <Box
+      sx={{
+        mt: dense ? 0.5 : 1,
+        pl: 1.5,
+        pt: 1,
+        borderLeft: "4px solid #ffc048",
+      }}
+    >
+      <Typography
+        variant="caption"
+        sx={{
+          color: "#ffc048",
+          fontWeight: 700,
+          mb: 0.5,
+          display: "inline-block",
+        }}
+      >
+        💡 Ví dụ
+      </Typography>
+      <Stack spacing={0.5}>
+        {items.map((ex, i) => (
+          <Box key={i}>
             <Typography
               variant={dense ? "body2" : "body1"}
-              sx={{ whiteSpace: "normal", wordBreak: "break-word" }}
+              sx={{ whiteSpace: "normal", wordBreak: "break-word", mb: 0.25 }}
             >
               {ex.en}
             </Typography>
             <Typography
               variant="body2"
-              color="text.secondary"
-              sx={{ whiteSpace: "normal", wordBreak: "break-word" }}
+              sx={{
+                whiteSpace: "normal",
+                wordBreak: "break-word",
+                fontStyle: "italic",
+                color: "text.secondary",
+              }}
             >
               {ex.vi}
             </Typography>
-          </Stack>
-        </Box>
-      ))}
-    </Stack>
+          </Box>
+        ))}
+      </Stack>
+    </Box>
   );
 }
 
@@ -898,6 +768,9 @@ function VocabularyList({
   search,
   showExamples,
   compact,
+  // keep for prop parity with parent
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  isMobile,
   onMarkKnown,
   onMarkLearning,
   onMarkUnknown,
@@ -909,10 +782,26 @@ function VocabularyList({
   search: string;
   showExamples: boolean;
   compact: boolean;
+  isMobile?: boolean;
   onMarkKnown: (id: string) => void;
   onMarkLearning: (id: string) => void;
   onMarkUnknown: (id: string) => void;
 }) {
+  // Simple TTS for pronunciation
+  const speak = (text: string) => {
+    if (typeof window === "undefined") return;
+    const synth = window.speechSynthesis;
+    if (!synth) return;
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = "en-US";
+    utt.rate = 0.9;
+    utt.pitch = 0.9;
+    const voices = synth.getVoices?.() || [];
+    const voice = voices.find((v) => v.lang?.toLowerCase().startsWith("en"));
+    if (voice) utt.voice = voice;
+    synth.cancel();
+    synth.speak(utt);
+  };
   // Empty state
   if (!order.length) {
     return (
@@ -1022,48 +911,75 @@ function VocabularyList({
       <Card
         key={e.id}
         variant="outlined"
-        sx={{ borderRadius: 0, position: "relative" }}
+        sx={{
+          borderRadius: 2,
+          position: "relative",
+          boxShadow: (t) => t.shadows[1],
+          border: (t) =>
+            `1px solid ${
+              t.palette.mode === "light" ? "#E0E0E0" : t.palette.divider
+            }`,
+        }}
       >
         <CardHeader
-          title={e.word}
-          titleTypographyProps={{
-            sx: {
-              fontWeight: 700,
-              fontSize: { xs: "1.25rem", sm: "1.35rem" },
-              lineHeight: 1.2,
-            },
-          }}
-          subheader={
-            e.phonetic
-              ? `${e.phonetic}${e.pos ? " • " + e.pos : ""}`
-              : e.pos || undefined
+          title={
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Typography
+                sx={{
+                  fontWeight: 800,
+                  fontSize: { xs: "1.28rem", sm: "1.4rem" },
+                  lineHeight: 1.2,
+                  color: "#1a73e8",
+                }}
+              >
+                {e.word}
+              </Typography>
+              <Tooltip title="Phát âm">
+                <IconButton
+                  size="small"
+                  onClick={() => speak(e.word)}
+                  aria-label="phat-am"
+                  sx={{
+                    color: "#00b894",
+                    "&:hover": { backgroundColor: "#e6ffee" },
+                  }}
+                >
+                  <VolumeUpOutlinedIcon />
+                </IconButton>
+              </Tooltip>
+            </Stack>
           }
-          subheaderTypographyProps={{
-            sx: {
-              color: "text.secondary",
-              fontSize: { xs: "0.95rem", sm: "1rem" },
-              letterSpacing: 0.15,
-            },
-          }}
-          action={
-            <Stack
-              direction="row"
-              spacing={1}
-              alignItems="center"
-              sx={{ display: { xs: "none", md: "flex" } }}
-            >
-              <Chip
-                size="small"
-                icon={<LabelOutlinedIcon />}
-                variant="outlined"
-                label={topicName[e.topicId] || e.topicId}
-              />
-              <Chip
-                size="small"
-                icon={<SchoolOutlinedIcon />}
-                color="info"
-                label={e.level}
-              />
+          subheader={
+            <Stack direction="row" spacing={1} alignItems="center">
+              {e.phonetic ? (
+                <Typography
+                  sx={{ fontWeight: 400, color: "#5f6368", opacity: 0.95 }}
+                >
+                  {e.phonetic}
+                </Typography>
+              ) : null}
+              {e.pos ? (
+                <Box
+                  component="span"
+                  sx={{
+                    fontFamily:
+                      'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                    fontWeight: 700,
+                    fontSize: { xs: "0.8rem", sm: "0.85rem" },
+                    color: "#34495e",
+                    backgroundColor: "#f2f4f8",
+                    borderRadius: 1,
+                    px: 0.75,
+                    lineHeight: 1.6,
+                  }}
+                >
+                  {`[${
+                    e.pos.length <= 4
+                      ? e.pos + (/[.]$/.test(e.pos) ? "" : ".")
+                      : e.pos
+                  }]`}
+                </Box>
+              ) : null}
             </Stack>
           }
           sx={{
@@ -1082,17 +998,14 @@ function VocabularyList({
           sx={{ pt: 0.5, px: { xs: 1, sm: 2 }, pb: { xs: 1.25, sm: 2 } }}
         >
           <Stack spacing={1.1}>
-            <Divider sx={{ mb: 0.5 }} />
+            <Divider sx={{ mb: 0.75, borderColor: "#eeeeee" }} />
             <Typography
               sx={{
                 whiteSpace: "normal",
                 wordBreak: "break-word",
                 fontWeight: 600,
-                fontSize: { xs: "1.05rem", sm: "1.125rem" },
+                fontSize: { xs: "1.06rem", sm: "1.14rem" },
                 lineHeight: 1.5,
-                p: 1,
-                borderRadius: 1,
-                bgcolor: "action.hover",
                 display: "block",
                 width: "100%",
               }}
@@ -1100,63 +1013,29 @@ function VocabularyList({
               <Highlighted text={e.meaningVi} query={search} />
             </Typography>
             {showExamples && e.examples?.length ? (
-              <Box
-                sx={{
-                  pl: 1.25,
-                  py: 0.75,
-                  borderLeft: "3px solid",
-                  borderColor: "primary.light",
-                  bgcolor: "action.hover",
-                  borderRadius: 1,
-                  width: "100%",
-                }}
-              >
-                <ExampleList examples={e.examples} max={1} dense />
-              </Box>
+              <ExampleList examples={e.examples} max={1} dense />
             ) : null}
-            <Stack
-              direction="row"
-              spacing={1}
-              alignItems="center"
-              flexWrap="wrap"
-            >
+            {/* Footer chips styled like mock */}
+            <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
               <Chip
                 size="small"
-                label={
-                  k === "known"
-                    ? "Đã thuộc"
-                    : k === "learning"
-                    ? "Chưa chắc"
-                    : "Chưa thuộc"
-                }
-                color={
-                  k === "known"
-                    ? "success"
-                    : k === "learning"
-                    ? "warning"
-                    : "default"
-                }
-                variant={k === "unknown" ? "outlined" : "filled"}
+                label={`Level: ${e.level}`}
+                sx={{
+                  backgroundColor: "#e6ffee",
+                  color: "#1e8449",
+                  fontWeight: 600,
+                }}
               />
-              <Button size="small" onClick={() => onMarkKnown(e.id)}>
-                Thuộc
-              </Button>
-              <Button size="small" onClick={() => onMarkLearning(e.id)}>
-                Chưa chắc
-              </Button>
-              <Button size="small" onClick={() => onMarkUnknown(e.id)}>
-                Chưa thuộc
-              </Button>
+              <Chip
+                size="small"
+                label={`Chủ đề: ${topicName[e.topicId] || e.topicId}`}
+                sx={{
+                  backgroundColor: "#f0f5ff",
+                  color: "#34495e",
+                  fontWeight: 600,
+                }}
+              />
             </Stack>
-            {/* Subtle context line for small screens */}
-            <Typography
-              variant="caption"
-              color="text.secondary"
-              sx={{ display: { xs: "block", md: "none" }, mt: 0.5 }}
-            >
-              {`Chủ đề: ${topicName[e.topicId] || e.topicId}`}
-              {e.level ? ` · Level: ${e.level}` : ""}
-            </Typography>
           </Stack>
         </CardContent>
       </Card>

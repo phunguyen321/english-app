@@ -7,17 +7,17 @@ import {
   LinearProgress,
   Button,
   Divider,
-  Tooltip,
   IconButton,
+  Fade,
+  Slide,
 } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { alpha, useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import FormatQuoteRoundedIcon from "@mui/icons-material/FormatQuoteRounded";
+import LightbulbOutlinedIcon from "@mui/icons-material/LightbulbOutlined";
+import VolumeUpOutlinedIcon from "@mui/icons-material/VolumeUpOutlined";
 import type { VocabEntry } from "@/types";
 
 export interface FlashcardViewProps {
@@ -50,6 +50,18 @@ function ExampleList({
   if (!items.length) return null;
   return (
     <Stack spacing={0.75} sx={{ width: "100%", mt: 0.5 }}>
+      <Stack
+        direction="row"
+        spacing={0.5}
+        alignItems="center"
+        sx={{
+          color: "text.secondary",
+          justifyContent: alignCenter ? "center" : "flex-start",
+        }}
+      >
+        <LightbulbOutlinedIcon fontSize="small" />
+        <Typography variant="caption">Ví dụ</Typography>
+      </Stack>
       {items.map((ex, i) => (
         <Box
           key={i}
@@ -60,9 +72,7 @@ function ExampleList({
             alignItems: "start",
           }}
         >
-          <Box sx={{ pt: 0.25, color: "text.disabled" }}>
-            <FormatQuoteRoundedIcon fontSize="small" />
-          </Box>
+          <Box sx={{ pt: 0.25, color: "text.disabled" }} />
           <Stack
             spacing={0.25}
             sx={
@@ -73,7 +83,11 @@ function ExampleList({
           >
             <Typography
               variant="body2"
-              sx={{ whiteSpace: "normal", wordBreak: "break-word" }}
+              sx={{
+                whiteSpace: "normal",
+                wordBreak: "break-word",
+                fontStyle: "italic",
+              }}
             >
               {ex.en}
             </Typography>
@@ -109,6 +123,25 @@ export default function FlashcardView(props: FlashcardViewProps) {
     onMarkLearning,
     onMarkUnknown,
   } = props;
+
+  // Simple TTS
+  const speak = (text?: string) => {
+    if (!text || typeof window === "undefined") return;
+    const synth = window.speechSynthesis;
+    if (!synth) return;
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = "en-US";
+    utt.rate = 0.9; // slower
+    utt.pitch = 0.95; // slightly lower tone
+    const voices = synth.getVoices?.() || [];
+    const en =
+      voices.find(
+        (v) => /female/i.test(v.name) && v.lang?.toLowerCase().startsWith("en")
+      ) || voices.find((v) => v.lang?.toLowerCase().startsWith("en"));
+    if (en) utt.voice = en;
+    synth.cancel();
+    synth.speak(utt);
+  };
 
   // Swipe / gesture logic (adapted from original page)
   const [dragX, setDragX] = useState(0);
@@ -251,17 +284,31 @@ export default function FlashcardView(props: FlashcardViewProps) {
 
   return (
     <Stack spacing={2} alignItems="center" sx={{ width: "100%" }}>
-      {/* Header */}
-      {!isMobile && <Typography variant="h6">Flashcard</Typography>}
-      {isMobile && (
-        <Box
+      {/* Top bar: progress and exit */}
+      <Stack
+        spacing={1}
+        sx={{ width: "100%", maxWidth: 560, position: "relative" }}
+      >
+        <LinearProgress
+          variant="determinate"
+          value={total ? ((index + 1) / total) * 100 : 0}
           sx={{
-            width: "100%",
-            maxWidth: 560,
-            display: "flex",
-            justifyContent: "flex-end",
+            borderRadius: 999,
+            height: 6,
+            backgroundColor: alpha(theme.palette.primary.main, 0.15),
+            "& .MuiLinearProgress-bar": {
+              borderRadius: 999,
+              background: `linear-gradient(90deg, ${alpha(
+                theme.palette.primary.light,
+                0.95
+              )}, ${theme.palette.primary.main})`,
+            },
           }}
-        >
+        />
+        <Typography variant="caption" color="text.secondary" textAlign="center">
+          {index + 1} / {total}
+        </Typography>
+        <Box sx={{ position: "absolute", right: 0, top: -8 }}>
           <IconButton
             aria-label="thoat"
             color="error"
@@ -271,23 +318,13 @@ export default function FlashcardView(props: FlashcardViewProps) {
             <ExitToAppIcon />
           </IconButton>
         </Box>
-      )}
-      <Stack spacing={1} sx={{ width: "100%", maxWidth: 560 }}>
-        <LinearProgress
-          variant="determinate"
-          value={total ? ((index + 1) / total) * 100 : 0}
-          sx={{ borderRadius: 1, height: 6 }}
-        />
-        <Typography variant="caption" color="text.secondary" textAlign="center">
-          {index + 1} / {total}
-        </Typography>
       </Stack>
       <Box
         sx={{
           position: "relative",
           width: "100%",
           maxWidth: 560,
-          minHeight: isMobile ? 220 : 170,
+          minHeight: isMobile ? 220 : 180,
         }}
         ref={containerRef}
       >
@@ -343,7 +380,7 @@ export default function FlashcardView(props: FlashcardViewProps) {
             zIndex: 1,
             borderRadius: 2,
             px: 2,
-            py: isMobile ? 2 : 1.25,
+            py: isMobile ? 2 : 1.5,
             touchAction: "pan-y",
             transform: `translateX(${dragX}px) rotate(${dragX / 28}deg)`,
             transition: dragging
@@ -353,13 +390,12 @@ export default function FlashcardView(props: FlashcardViewProps) {
               anim.startsWith("leaving") || anim.startsWith("entering")
                 ? 0.98
                 : 1,
-            backgroundColor: (t) =>
-              isMobile
-                ? t.palette.background.default
-                : t.palette.background.paper,
-            boxShadow: (t) => (isMobile ? "none" : t.shadows[2]),
+            backgroundColor: (t) => t.palette.background.paper,
+            boxShadow: (t) => t.shadows[2],
+            border: (t) => `1px solid ${alpha(t.palette.divider, 0.6)}`,
             cursor: "pointer",
             userSelect: "none",
+            overflow: "hidden",
           }}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
@@ -378,17 +414,33 @@ export default function FlashcardView(props: FlashcardViewProps) {
             }
           }}
         >
-          <Typography
-            variant={isMobile ? "h5" : "h3"}
-            textAlign="center"
-            sx={{
-              // Keep large words from overflowing on narrow screens
-              wordBreak: "break-word",
-              overflowWrap: "anywhere",
-            }}
+          <Stack
+            direction="row"
+            spacing={1}
+            alignItems="center"
+            justifyContent="center"
           >
-            {entry?.word || "—"}
-          </Typography>
+            <Typography
+              variant={isMobile ? "h5" : "h3"}
+              color="primary.main"
+              textAlign="center"
+              sx={{
+                fontWeight: 800,
+                letterSpacing: 0.2,
+                wordBreak: "break-word",
+                overflowWrap: "anywhere",
+              }}
+            >
+              {entry?.word || "—"}
+            </Typography>
+            <IconButton
+              aria-label="phat-am"
+              size="small"
+              onClick={() => speak(entry?.word)}
+            >
+              <VolumeUpOutlinedIcon />
+            </IconButton>
+          </Stack>
           <Typography color="text.secondary" textAlign="center">
             {entry?.phonetic}
             {entry?.pos ? ` • ${entry.pos}` : ""}
@@ -404,6 +456,7 @@ export default function FlashcardView(props: FlashcardViewProps) {
                   wordBreak: "break-word",
                   fontSize: { xs: "1rem", sm: "1.125rem" },
                   px: 1,
+                  fontWeight: 600,
                 }}
               >
                 {entry?.meaningVi}
@@ -414,7 +467,7 @@ export default function FlashcardView(props: FlashcardViewProps) {
             </Stack>
           )}
         </Box>
-        {/* Arrow overlays */}
+        {/* Arrow hints while swiping (non-interactive) */}
         <Box
           sx={{
             pointerEvents: "none",
@@ -449,166 +502,54 @@ export default function FlashcardView(props: FlashcardViewProps) {
       </Box>
       <Typography variant="caption" color="text.secondary">
         {isMobile
-          ? "Chạm để hiện nghĩa • Vuốt trái/phải để chuyển"
-          : "Vuốt trái/phải • Space hiện nghĩa • ← → điều hướng • Esc thoát"}
+          ? "Chạm để lật thẻ • Vuốt trái/phải để chuyển"
+          : "Nhấn để lật • Vuốt/← → để chuyển • Esc thoát"}
       </Typography>
 
-      {/* Actions */}
-      {!isMobile && (
-        <>
-          <Stack
-            direction="row"
-            spacing={1}
-            flexWrap="wrap"
-            justifyContent="center"
-          >
-            <Tooltip title={showAnswer ? "Ẩn nghĩa" : "Hiện nghĩa"}>
-              <Button
-                variant="contained"
-                size="small"
-                startIcon={
-                  showAnswer ? <VisibilityOffIcon /> : <VisibilityIcon />
-                }
-                onClick={onToggleAnswer}
-              >
-                {showAnswer ? "Ẩn nghĩa" : "Hiện nghĩa"}
-              </Button>
-            </Tooltip>
-            <Button
-              variant="outlined"
-              size="small"
-              startIcon={<ChevronLeftIcon />}
-              onClick={onPrev}
-            >
-              Trước
-            </Button>
-            <Button
-              variant="outlined"
-              size="small"
-              endIcon={<ChevronRightIcon />}
-              onClick={onNext}
-            >
-              Tiếp
-            </Button>
-            <Button
-              variant="text"
-              size="small"
-              color="error"
-              startIcon={<ExitToAppIcon />}
-              onClick={onExit}
-            >
-              Thoát
-            </Button>
-          </Stack>
-          <Stack
-            direction="row"
-            spacing={1}
-            flexWrap="wrap"
-            justifyContent="center"
-            sx={{ mt: 1 }}
-          >
-            <Button
-              size="small"
-              variant={knowledgeState === "unknown" ? "contained" : "outlined"}
-              color="warning"
-              onClick={onMarkUnknown}
-            >
-              Chưa thuộc
-            </Button>
-            <Button
-              size="small"
-              variant={knowledgeState === "learning" ? "contained" : "outlined"}
-              color="info"
-              onClick={onMarkLearning}
-            >
-              Chưa chắc
-            </Button>
-            <Button
-              size="small"
-              variant={knowledgeState === "known" ? "contained" : "outlined"}
-              color="success"
-              onClick={onMarkKnown}
-            >
-              Đã thuộc
-            </Button>
-          </Stack>
-        </>
-      )}
-
-      {isMobile && (
-        <Stack spacing={1.25} sx={{ width: "100%", maxWidth: 560 }}>
-          <Tooltip title={showAnswer ? "Ẩn nghĩa" : "Hiện nghĩa"}>
-            <Button
-              fullWidth
-              variant="contained"
-              size="large"
-              startIcon={
-                showAnswer ? <VisibilityOffIcon /> : <VisibilityIcon />
-              }
-              onClick={onToggleAnswer}
-              sx={{ py: 1.2 }}
-            >
-              {showAnswer ? "Ẩn nghĩa" : "Hiện nghĩa"}
-            </Button>
-          </Tooltip>
-          <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 1 }}>
-            <Button
-              fullWidth
-              variant="outlined"
-              size="large"
-              startIcon={<ChevronLeftIcon />}
-              onClick={onPrev}
-            >
-              Trước
-            </Button>
-            <Button
-              fullWidth
-              variant="outlined"
-              size="large"
-              endIcon={<ChevronRightIcon />}
-              onClick={onNext}
-            >
-              Tiếp
-            </Button>
-          </Box>
-          <Box
+      {/* Simplified rating: only show after flipped */}
+      <Fade in={showAnswer} timeout={{ enter: 200, exit: 140 }}>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={1}
+          justifyContent="center"
+          sx={{ width: "100%", maxWidth: 560 }}
+        >
+          <Button
+            variant="outlined"
+            color="error"
             sx={{
-              display: "grid",
-              gridTemplateColumns: { xs: "1fr 1fr", sm: "1fr 1fr 1fr" },
-              gap: 1,
+              px: 2.5,
+              py: 0.9,
+              borderRadius: 999,
+              textTransform: "none",
+              fontWeight: 600,
+            }}
+            onClick={() => {
+              onMarkUnknown?.();
+              setTimeout(() => animateSwipe("left"), 60);
             }}
           >
-            <Button
-              fullWidth
-              size="medium"
-              variant={knowledgeState === "unknown" ? "contained" : "outlined"}
-              color="warning"
-              onClick={onMarkUnknown}
-            >
-              Chưa thuộc
-            </Button>
-            <Button
-              fullWidth
-              size="medium"
-              variant={knowledgeState === "learning" ? "contained" : "outlined"}
-              color="info"
-              onClick={onMarkLearning}
-            >
-              Chưa chắc
-            </Button>
-            <Button
-              fullWidth
-              size="medium"
-              variant={knowledgeState === "known" ? "contained" : "outlined"}
-              color="success"
-              onClick={onMarkKnown}
-              sx={{ gridColumn: { xs: "span 2", sm: "auto" } }}
-            >
-              Đã thuộc
-            </Button>
-          </Box>
+            Chưa thuộc
+          </Button>
+          <Button
+            variant="outlined"
+            color="success"
+            sx={{
+              px: 2.5,
+              py: 0.9,
+              borderRadius: 999,
+              textTransform: "none",
+              fontWeight: 600,
+            }}
+            onClick={() => {
+              onMarkKnown?.();
+              setTimeout(() => animateSwipe("left"), 60);
+            }}
+          >
+            Đã thuộc
+          </Button>
         </Stack>
-      )}
+      </Fade>
     </Stack>
   );
 }
