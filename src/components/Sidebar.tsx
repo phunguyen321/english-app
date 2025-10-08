@@ -195,11 +195,17 @@ export default function Sidebar({ expanded, onClose, onToggle }: SidebarProps) {
   const content = (
     <Box
       sx={{
-        position: "relative",
+        // Keep the sidebar fixed in view on desktop while page scrolls
+        position: isDesktop ? "sticky" : "relative",
+        top: isDesktop ? 0 : "auto",
+        alignSelf: isDesktop ? "flex-start" : "stretch",
         width,
         display: "flex",
         flexDirection: "column",
-        minHeight: "100vh",
+        // Occupy full viewport height and allow internal scroll if needed
+        height: isDesktop ? "100vh" : "auto",
+        minHeight: isDesktop ? "100vh" : undefined,
+        overflowY: isDesktop ? "auto" : "visible",
         bgcolor: "background.paper",
         transition:
           "width .3s cubic-bezier(.4,0,.2,1), box-shadow .35s, border-color .3s",
