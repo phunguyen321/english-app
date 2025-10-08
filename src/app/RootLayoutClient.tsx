@@ -23,6 +23,17 @@ export default function RootLayoutClient({
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
 
+  // Register service worker for PWA (only in secure contexts)
+  useEffect(() => {
+    if (
+      typeof window !== "undefined" &&
+      "serviceWorker" in navigator &&
+      window.isSecureContext
+    ) {
+      navigator.serviceWorker.register("/sw.js").catch(() => {});
+    }
+  }, []);
+
   // Khóa scroll nền khi mở sidebar trên mobile
   useEffect(() => {
     if (smDown) {

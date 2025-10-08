@@ -24,6 +24,7 @@ export const metadata: Metadata = {
     { rel: "icon", url: "/english-learn.png", sizes: "512x512" },
     { rel: "apple-touch-icon", url: "/apple-touch-icon.png" },
   ],
+  themeColor: "#ffffff",
 };
 
 export default function RootLayout({
