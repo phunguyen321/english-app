@@ -10,6 +10,7 @@ import {
   IconButton,
   Fade,
 } from "@mui/material";
+import ShuffleIcon from "@mui/icons-material/Shuffle";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
@@ -29,6 +30,7 @@ export interface FlashcardViewProps {
   onNext: () => void;
   onPrev: () => void;
   onExit: () => void;
+  onShuffle?: () => void;
   knowledgeState?: "unknown" | "learning" | "known";
   onMarkKnown?: () => void;
   onMarkLearning?: () => void;
@@ -114,6 +116,7 @@ export default function FlashcardView(props: FlashcardViewProps) {
     onNext,
     onPrev,
     onExit,
+    onShuffle,
     knowledgeState,
     onMarkKnown,
     onMarkLearning,
@@ -185,6 +188,12 @@ export default function FlashcardView(props: FlashcardViewProps) {
   const TAP_SLOP = 6;
   const TAP_MS = 250;
 
+  // Ignore pointer/tap when event originates from controls like the speaker button
+  const isFromControl = (target: EventTarget | null) => {
+    const el = target as HTMLElement | null;
+    return !!el && !!el.closest("[data-ignore-card]");
+  };
+
   const bounceToCenter = () => {
     setDragging(false);
     setAnim("idle");
@@ -230,6 +239,7 @@ export default function FlashcardView(props: FlashcardViewProps) {
     }
   };
   const onPointerDown = (e: React.PointerEvent) => {
+    if (isFromControl(e.target)) return;
     const el = e.currentTarget as HTMLElement;
     el.setPointerCapture?.(e.pointerId);
     pDown.current = true;
@@ -243,6 +253,7 @@ export default function FlashcardView(props: FlashcardViewProps) {
     prevTRef.current = startTRef.current;
   };
   const onPointerMove = (e: React.PointerEvent) => {
+    if (isFromControl(e.target)) return;
     if (!pDown.current) return;
     const dx = e.clientX - startXRef.current;
     const max = Math.round(cardW * 0.35);
@@ -300,9 +311,28 @@ export default function FlashcardView(props: FlashcardViewProps) {
           alignItems="center"
           justifyContent="space-between"
         >
-          <Typography variant="body2" color="text.secondary">
-            {index + 1} / {total}
-          </Typography>
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Typography variant="body2" color="text.secondary">
+              {index + 1} / {total}
+            </Typography>
+            {onShuffle && (
+              <IconButton
+                aria-label="xao-tron-the"
+                size="small"
+                onClick={(e) => {
+                  const btn = e.currentTarget;
+                  btn.style.transition = "transform 320ms ease";
+                  btn.style.transform = "rotate(360deg)";
+                  setTimeout(() => {
+                    btn.style.transform = "rotate(0deg)";
+                  }, 320);
+                  onShuffle?.();
+                }}
+              >
+                <ShuffleIcon fontSize="small" />
+              </IconButton>
+            )}
+          </Stack>
           <IconButton aria-label="thoat" color="error" onClick={onExit}>
             <ExitToAppIcon />
           </IconButton>
@@ -459,9 +489,18 @@ export default function FlashcardView(props: FlashcardViewProps) {
             <IconButton
               aria-label="phat-am"
               size="small"
-              onClick={() => speak(entry?.word)}
+              data-ignore-card
+              onClick={(e) => {
+                e.stopPropagation();
+                speak(entry?.word);
+              }}
+              onPointerDown={(e) => e.stopPropagation()}
+              onPointerUp={(e) => e.stopPropagation()}
+              onMouseDown={(e) => e.stopPropagation()}
+              onTouchStart={(e) => e.stopPropagation()}
+              onKeyDown={(e) => e.stopPropagation()}
             >
-              <VolumeUpOutlinedIcon fontSize="small" />
+              <VolumeUpOutlinedIcon data-ignore-card fontSize="small" />
             </IconButton>
           </Stack>
           {showAnswer && (

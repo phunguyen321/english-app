@@ -195,23 +195,25 @@ export default function Sidebar({ expanded, onClose, onToggle }: SidebarProps) {
   const content = (
     <Box
       sx={{
-        // Keep the sidebar fixed in view on desktop while page scrolls
-        position: isDesktop ? "sticky" : "relative",
+        // Keep the sidebar fixed on desktop while page scrolls
+        position: isDesktop ? "fixed" : "relative",
         top: isDesktop ? 0 : "auto",
-        alignSelf: isDesktop ? "flex-start" : "stretch",
+        left: isDesktop ? 0 : "auto",
         width,
         display: "flex",
         flexDirection: "column",
-        // Occupy full viewport height and allow internal scroll if needed
-        height: isDesktop ? "100vh" : "auto",
-        minHeight: isDesktop ? "100vh" : undefined,
-        overflowY: isDesktop ? "auto" : "visible",
+        // Occupy full viewport height and allow internal scroll on all sizes
+        height: "100vh",
+        minHeight: "100vh",
+        overflowY: "auto",
         bgcolor: "background.paper",
         transition:
           "width .3s cubic-bezier(.4,0,.2,1), box-shadow .35s, border-color .3s",
         borderRight: isDesktop ? 1 : 0,
         borderColor: "divider",
-        boxShadow: expanded ? 2 : 0,
+        // Avoid heavy shadow entirely on both desktop and mobile
+        boxShadow: 0,
+        zIndex: isDesktop ? (theme) => theme.zIndex.drawer : "auto",
       }}
     >
       {header}
@@ -293,17 +295,34 @@ export default function Sidebar({ expanded, onClose, onToggle }: SidebarProps) {
         open={expanded}
         onClose={onClose}
         ModalProps={{ keepMounted: true }}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            boxShadow: "none",
+            borderRight: 1,
+            borderColor: "divider",
+            display: "flex",
+            flexDirection: "column",
+            height: "100vh",
+          },
+        }}
         sx={{
           "& .MuiDrawer-paper": {
             width: WIDTH_EXPANDED,
             overflow: "hidden",
+            overscrollBehavior: "contain",
+            WebkitOverflowScrolling: "touch",
             transition: "transform .32s cubic-bezier(.4,0,.2,1)",
+            boxShadow: "none",
+            borderRight: 1,
+            borderColor: "divider",
           },
         }}
       >
         <Box
           sx={{
-            height: "100%",
+            height: "100vh",
+            overflow: "hidden",
             opacity: expanded ? 1 : 0,
             transform: expanded ? "translateX(0)" : "translateX(-12px)",
             transition:

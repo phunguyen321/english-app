@@ -140,6 +140,25 @@ const vocabSlice = createSlice({
       state.flashcard.order = prefix.concat(rest);
       state.flashcard.showAnswer = false;
     },
+    // Shuffle the current card and the remaining ones, keeping index the same
+    shuffleFromCurrent(state: VocabState) {
+      const idx = Math.max(
+        0,
+        Math.min(
+          state.flashcard.index,
+          Math.max(0, state.flashcard.order.length - 1)
+        )
+      );
+      const head = state.flashcard.order.slice(0, idx);
+      const tail = state.flashcard.order.slice(idx);
+      for (let i = tail.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [tail[i], tail[j]] = [tail[j], tail[i]];
+      }
+      state.flashcard.order = head.concat(tail);
+      // Keep index pointing to the same position (now a possibly different card)
+      state.flashcard.showAnswer = false;
+    },
     nextCard(state: VocabState) {
       state.flashcard.index =
         (state.flashcard.index + 1) % state.flashcard.order.length;
@@ -223,5 +242,6 @@ export const {
   markLearning,
   markUnknown,
   loadKnowledge,
+  shuffleFromCurrent,
 } = vocabSlice.actions;
 export default vocabSlice.reducer;

@@ -26,10 +26,23 @@ export default function RootLayoutClient({
   // Khóa scroll nền khi mở sidebar trên mobile
   useEffect(() => {
     if (smDown) {
-      document.body.style.overflow = sidebarExpanded ? "hidden" : "";
+      const html = document.documentElement as HTMLElement;
+      if (sidebarExpanded) {
+        document.body.style.overflow = "hidden";
+        html.style.overflow = "hidden";
+        // Prevent rubber-band/overscroll propagating to page
+        (html.style as any).overscrollBehavior = "contain";
+      } else {
+        document.body.style.overflow = "";
+        html.style.overflow = "";
+        (html.style as any).overscrollBehavior = "";
+      }
     }
     return () => {
       document.body.style.overflow = "";
+      const html = document.documentElement as HTMLElement;
+      html.style.overflow = "";
+      (html.style as any).overscrollBehavior = "";
     };
   }, [sidebarExpanded, smDown]);
 
@@ -74,6 +87,8 @@ export default function RootLayoutClient({
       <div
         style={{
           display: "flex",
+          // Reserve space for fixed sidebar on desktop
+          paddingLeft: smDown ? 0 : sidebarExpanded ? 220 : 72,
           minHeight: "100vh",
           background: "#f8fafc",
           paddingTop: smDown ? 56 : 0,
@@ -88,7 +103,6 @@ export default function RootLayoutClient({
           style={{
             flex: 1,
             minWidth: 0,
-            paddingLeft: 0,
             maxWidth: "100vw",
             overflowX: "hidden",
           }}
