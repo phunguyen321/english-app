@@ -31,18 +31,18 @@ export default function RootLayoutClient({
         document.body.style.overflow = "hidden";
         html.style.overflow = "hidden";
         // Prevent rubber-band/overscroll propagating to page
-        (html.style as any).overscrollBehavior = "contain";
+        html.style.setProperty("overscroll-behavior", "contain");
       } else {
         document.body.style.overflow = "";
         html.style.overflow = "";
-        (html.style as any).overscrollBehavior = "";
+        html.style.removeProperty("overscroll-behavior");
       }
     }
     return () => {
       document.body.style.overflow = "";
       const html = document.documentElement as HTMLElement;
       html.style.overflow = "";
-      (html.style as any).overscrollBehavior = "";
+      html.style.removeProperty("overscroll-behavior");
     };
   }, [sidebarExpanded, smDown]);
 
