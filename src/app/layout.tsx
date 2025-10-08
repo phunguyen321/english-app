@@ -22,9 +22,18 @@ export const metadata: Metadata = {
     { rel: "icon", url: "/english-learn.svg" },
     { rel: "icon", url: "/english-learn.png", sizes: "192x192" },
     { rel: "icon", url: "/english-learn.png", sizes: "512x512" },
-    { rel: "apple-touch-icon", url: "/apple-touch-icon.png" },
+    // Use existing PNG for Apple touch icon
+    { rel: "apple-touch-icon", url: "/english-learn.png" },
   ],
   themeColor: "#ffffff",
+  // iOS PWA meta
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "English Learner",
+  },
+  // Avoid iOS auto-detect phone numbers
+  formatDetection: { telephone: false },
 };
 
 export default function RootLayout({
