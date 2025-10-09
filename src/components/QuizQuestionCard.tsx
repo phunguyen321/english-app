@@ -6,13 +6,10 @@ import {
   Stack,
   Chip,
   Typography,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
   TextField,
-  Alert,
   alpha,
   Box,
+  List,
 } from "@mui/material";
 import {
   AnyQuizQuestion,
@@ -57,7 +54,7 @@ export const QuizQuestionCard: React.FC<Props> = ({
         transition: "border-color .25s, box-shadow .25s, background .35s",
       }}
     >
-      <CardContent>
+      <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
         <Stack
           direction="row"
           spacing={1}
@@ -73,6 +70,7 @@ export const QuizQuestionCard: React.FC<Props> = ({
           <Chip
             size="small"
             variant="outlined"
+            color="info"
             label={
               q.type === "vocab-mcq"
                 ? "Từ vựng"
@@ -115,63 +113,159 @@ export const QuizQuestionCard: React.FC<Props> = ({
             : "Chọn đáp án đúng"}
         </Typography>
         {isMcq && (
-          <Typography variant="h6" sx={{ mb: 1, lineHeight: 1.35 }}>
+          <Typography
+            sx={{
+              typography: { xs: "h6", sm: "h5" },
+              mb: { xs: 1, sm: 1.5 },
+              lineHeight: 1.35,
+              fontWeight: 700,
+            }}
+          >
             {(q as VocabMcqQuestion | GrammarMcqQuestion).prompt}
           </Typography>
         )}
 
         {isMcq ? (
-          <RadioGroup
-            value={typeof userAnswer === "number" ? String(userAnswer) : ""}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              !submitted && onAnswer(Number(e.target.value))
-            }
-          >
+          <List sx={{ p: 0, m: 0 }}>
             {(q as VocabMcqQuestion | GrammarMcqQuestion).options.map(
               (opt: string, idx: number) => {
                 const selected = userAnswer === idx;
-                const isCorrect =
-                  submitted &&
-                  idx ===
-                    (q as VocabMcqQuestion | GrammarMcqQuestion).answerIndex;
+                const answerIndex = (q as VocabMcqQuestion | GrammarMcqQuestion)
+                  .answerIndex;
+                const isCorrect = submitted && idx === answerIndex;
                 const isWrong = submitted && selected && !isCorrect;
+
                 return (
-                  <FormControlLabel
+                  <Box
                     key={idx}
-                    value={String(idx)}
-                    control={<Radio disabled={submitted} />}
-                    label={
-                      <Box
-                        sx={{
-                          px: 1,
-                          py: 0.25,
-                          borderRadius: 1,
-                          bgcolor: isCorrect
-                            ? (theme) =>
-                                alpha(theme.palette.success.light, 0.35)
-                            : isWrong
-                            ? (theme) => alpha(theme.palette.error.light, 0.35)
-                            : selected
-                            ? (theme) =>
-                                alpha(theme.palette.primary.light, 0.25)
-                            : undefined,
-                          transition: "background .3s",
-                        }}
-                      >
-                        {opt}
-                      </Box>
-                    }
+                    onClick={() => !submitted && onAnswer(idx)}
                     sx={{
-                      m: 0,
-                      mb: 0.5,
-                      alignItems: "flex-start",
-                      ".MuiFormControlLabel-label": { width: "100%" },
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1.5,
+                      p: { xs: 1.25, sm: 1.8 },
+                      mb: { xs: 0.9, sm: 1.2 },
+                      borderRadius: { xs: 1.5, sm: 2 },
+                      border: "2px solid",
+                      borderColor: isCorrect
+                        ? "success.main"
+                        : isWrong
+                        ? "error.main"
+                        : selected
+                        ? "primary.main"
+                        : "divider",
+                      bgcolor: (theme) =>
+                        isCorrect
+                          ? alpha(theme.palette.success.light, 0.25)
+                          : isWrong
+                          ? alpha(theme.palette.error.light, 0.25)
+                          : theme.palette.background.paper,
+                      cursor: submitted ? "default" : "pointer",
+                      transition: "all .2s ease-in-out",
+                      userSelect: "none",
+                      position: "relative",
+                      "&:hover": !submitted
+                        ? {
+                            borderColor: "primary.main",
+                            boxShadow: "0 0 10px rgba(74,144,226,.15)",
+                          }
+                        : undefined,
                     }}
-                  />
+                  >
+                    {/* Custom radio */}
+                    <Box
+                      sx={{
+                        width: { xs: 16, sm: 20 },
+                        height: { xs: 16, sm: 20 },
+                        borderRadius: "50%",
+                        border: "2px solid",
+                        borderColor: isCorrect
+                          ? "success.main"
+                          : isWrong
+                          ? "error.main"
+                          : selected
+                          ? "primary.main"
+                          : "text.secondary",
+                        mr: { xs: 1.25, sm: 1.5 },
+                        flexShrink: 0,
+                        position: "relative",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        transition: "all .2s",
+                        bgcolor: isCorrect
+                          ? "success.main"
+                          : isWrong
+                          ? "error.main"
+                          : "transparent",
+                        ...(isCorrect
+                          ? {
+                              "&::after": {
+                                content: '""',
+                                position: "absolute",
+                                width: { xs: 4, sm: 5 },
+                                height: { xs: 8, sm: 10 },
+                                border: "2px solid white",
+                                borderWidth: "0 2px 2px 0",
+                                transform: "rotate(45deg)",
+                                top: { xs: 1, sm: 1 },
+                                left: { xs: 5, sm: 6 },
+                              },
+                            }
+                          : isWrong
+                          ? {
+                              "&::before": {
+                                content: '""',
+                                position: "absolute",
+                                height: "100%",
+                                width: { xs: 1.6, sm: 2 },
+                                bgcolor: "common.white",
+                                top: 0,
+                                left: "calc(50% - 1px)",
+                                transform: "rotate(-45deg)",
+                                borderRadius: 1,
+                              },
+                              "&::after": {
+                                content: '""',
+                                position: "absolute",
+                                height: "100%",
+                                width: { xs: 1.6, sm: 2 },
+                                bgcolor: "common.white",
+                                top: 0,
+                                left: "calc(50% - 1px)",
+                                transform: "rotate(45deg)",
+                                borderRadius: 1,
+                              },
+                            }
+                          : selected
+                          ? {
+                              "&::after": {
+                                content: '""',
+                                width: { xs: 8, sm: 10 },
+                                height: { xs: 8, sm: 10 },
+                                borderRadius: "50%",
+                                bgcolor: "primary.main",
+                              },
+                            }
+                          : {}),
+                      }}
+                    />
+
+                    <Typography
+                      className="option-label"
+                      sx={{
+                        fontSize: { xs: "1rem", sm: "1.1rem" },
+                        fontWeight: 500,
+                        flexGrow: 1,
+                      }}
+                    >
+                      {opt}
+                    </Typography>
+                  </Box>
                 );
               }
             )}
-          </RadioGroup>
+          </List>
         ) : (
           <TextField
             fullWidth
@@ -185,39 +279,53 @@ export const QuizQuestionCard: React.FC<Props> = ({
         )}
 
         {submitted && resultDetail && (
-          <Alert
-            severity={resultDetail.correct ? "success" : "error"}
-            variant="outlined"
-            sx={{ mt: 1.5, lineHeight: 1.4 }}
+          <Box
+            sx={{
+              mt: 2,
+              p: 2,
+              borderRadius: 2,
+              bgcolor: (theme) =>
+                theme.palette.mode === "light"
+                  ? "#f7f9fc"
+                  : alpha(theme.palette.primary.light, 0.08),
+              borderLeft: (theme) => `4px solid ${theme.palette.primary.main}`,
+              fontSize: { xs: ".9rem", sm: ".95rem" },
+              lineHeight: 1.6,
+            }}
           >
-            <Typography variant="body2" component="span" fontWeight={600}>
-              {resultDetail.correct ? "Chính xác:" : "Giải thích:"}{" "}
-            </Typography>
-            <Typography variant="body2" component="span">
+            <Typography variant="body2" sx={{ mb: 0.5 }}>
+              <Box component="strong" sx={{ color: "primary.main" }}>
+                Giải thích:
+              </Box>{" "}
               {resultDetail.explanation || "(Không có giải thích)"}
             </Typography>
-            {isMcq && !resultDetail.correct && (
-              <Typography
-                variant="caption"
-                sx={{ display: "block", mt: 0.5, opacity: 0.75 }}
-              >
+            {isMcq && (
+              <Typography variant="body2">
                 Đáp án đúng:{" "}
-                {
-                  (q as VocabMcqQuestion | GrammarMcqQuestion).options[
-                    (q as VocabMcqQuestion | GrammarMcqQuestion).answerIndex
-                  ]
-                }
+                <Box
+                  component="span"
+                  sx={{ color: "success.main", fontWeight: 700 }}
+                >
+                  {
+                    (q as VocabMcqQuestion | GrammarMcqQuestion).options[
+                      (q as VocabMcqQuestion | GrammarMcqQuestion).answerIndex
+                    ]
+                  }
+                </Box>
               </Typography>
             )}
-            {!isMcq && !resultDetail.correct && (
-              <Typography
-                variant="caption"
-                sx={{ display: "block", mt: 0.5, opacity: 0.75 }}
-              >
-                Đáp án đúng: {(q as SentenceOrderQuestion).answer}
+            {!isMcq && (
+              <Typography variant="body2">
+                Đáp án đúng:{" "}
+                <Box
+                  component="span"
+                  sx={{ color: "success.main", fontWeight: 700 }}
+                >
+                  {(q as SentenceOrderQuestion).answer}
+                </Box>
               </Typography>
             )}
-          </Alert>
+          </Box>
         )}
       </CardContent>
     </Card>

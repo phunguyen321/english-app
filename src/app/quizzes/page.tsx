@@ -15,7 +15,6 @@ import {
   Chip,
   LinearProgress,
   Paper,
-  Tooltip,
 } from "@mui/material";
 import QuizQuestionCard from "@/components/QuizQuestionCard";
 
@@ -119,7 +118,7 @@ export default function QuizzesPage() {
           left: 0,
           right: 0,
           zIndex: 10,
-          p: 2,
+          p: { xs: 1.75, sm: 2.5 },
           borderRadius: { xs: 0, md: 2 },
           display: "flex",
           flexWrap: "wrap",
@@ -134,63 +133,70 @@ export default function QuizzesPage() {
           border: (theme) => `1px solid ${theme.palette.divider}`,
         }}
       >
-        <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
-          <Chip
-            size="small"
-            color={percentage === 100 ? "success" : "default"}
-            label={`Tiến độ: ${answeredCount}/${questions.length} (${percentage}%)`}
-          />
-          {source === "ai" && (
-            <Chip size="small" variant="outlined" label="Nguồn: AI" />
-          )}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+            flexWrap: "wrap",
+          }}
+        >
+          <Box>
+            <Typography sx={{ fontWeight: 600, fontSize: { xs: 14, sm: 16 } }}>
+              {`Tiến độ: ${answeredCount}/${questions.length}`} ({percentage}%)
+            </Typography>
+            <Box
+              sx={{
+                width: { xs: 120, sm: 150 },
+                height: { xs: 6, sm: 8 },
+                bgcolor: "divider",
+                borderRadius: 1,
+                overflow: "hidden",
+                mt: 0.5,
+              }}
+            >
+              <Box
+                sx={{
+                  height: 1,
+                  width: `${percentage}%`,
+                  bgcolor: "success.main",
+                }}
+              />
+            </Box>
+          </Box>
           {result && (
-            <Chip
-              size="small"
-              color={
-                result.correct / (result.total || 1) >= 0.7
-                  ? "success"
-                  : "warning"
-              }
-              label={`Điểm: ${result.correct}/${result.total}`}
-            />
-          )}
-        </Stack>
-        <Stack direction="row" spacing={1} flexWrap="wrap">
-          {!result && (
-            <Tooltip title="Chấm điểm bài làm">
-              <span>
-                <Button
-                  variant="contained"
-                  disabled={!questions.length || !answeredCount}
-                  onClick={() => dispatch(submit())}
-                >
-                  Nộp bài
-                </Button>
-              </span>
-            </Tooltip>
-          )}
-          <Button variant="outlined" onClick={() => dispatch(reset())}>
-            {result ? "Làm lại" : "Reset"}
-          </Button>
-          {source === "ai" && !result && (
-            <Button
-              variant="text"
-              onClick={() => dispatch(loadQuizzes())}
-              sx={{ textTransform: "none" }}
+            <Typography
+              sx={{
+                fontWeight: 600,
+                color: "error.main",
+                fontSize: { xs: 14, sm: 16 },
+              }}
             >
-              Tải bộ tĩnh
+              {`Điểm: ${result.correct}/${result.total}`}
+            </Typography>
+          )}
+        </Box>
+
+        <Box>
+          {!result ? (
+            <Button
+              variant="contained"
+              disabled={!questions.length || !answeredCount}
+              onClick={() => dispatch(submit())}
+              sx={{ minWidth: { xs: 120, sm: 140 }, py: { xs: 0.75, sm: 1 } }}
+            >
+              Kiểm tra
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              onClick={() => dispatch(reset())}
+              sx={{ minWidth: { xs: 120, sm: 140 }, py: { xs: 0.75, sm: 1 } }}
+            >
+              Làm lại
             </Button>
           )}
-          {!source || source === "static" ? (
-            <Button
-              variant="text"
-              href="/generate-quizzes"
-              sx={{ textTransform: "none" }}
-            >
-              Tạo bằng AI
-            </Button>
-          ) : null}
-        </Stack>
+        </Box>
       </Paper>
     </Box>
   );

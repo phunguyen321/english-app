@@ -1,10 +1,11 @@
 "use client";
-import React, { useState, useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/store";
 import { setQuestions } from "@/store/slices/quizSlice";
 import {
   Box,
+  Container,
   Typography,
   TextField,
   Switch,
@@ -16,6 +17,7 @@ import {
   Divider,
   Chip,
   LinearProgress,
+  Slider,
   ToggleButton,
   ToggleButtonGroup,
   Card,
@@ -28,12 +30,12 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import GavelIcon from "@mui/icons-material/Gavel";
 import SortIcon from "@mui/icons-material/Sort";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import { alpha } from "@mui/material/styles";
 
 export default function GenerateQuizzesPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [requirements, setRequirements] = useState("");
-  // Keep raw input as string to avoid forcing a default like 0 when user clears the field
   const [countInput, setCountInput] = useState<string>("8");
   const [mixTypes, setMixTypes] = useState(true);
   const [allowedTypes, setAllowedTypes] = useState<string[]>([
@@ -55,77 +57,61 @@ export default function GenerateQuizzesPage() {
     "sentence-order": 1,
   });
 
-  // Parse and validate count without mutating user input
   const parsedCount = useMemo(() => {
     const v = parseInt(countInput, 10);
     return Number.isFinite(v) ? v : NaN;
   }, [countInput]);
-  // Valid when between 1 and 50 inclusive
   const isCountValid =
     Number.isFinite(parsedCount) && parsedCount >= 1 && parsedCount <= 50;
-  // For calculations, treat invalid as 0 so predictedCounts show 0 without blocking typing
   const allocCount = isCountValid ? (parsedCount as number) : 0;
 
-  // Compute normalized ratios for display
   const normalizedRatios = useMemo(() => {
-    const activeEntries = Object.entries(typeRatios).filter(([k]) =>
+    const active = Object.entries(typeRatios).filter(([k]) =>
       allowedTypes.includes(k)
     );
-    const sum = activeEntries.reduce((a, [, v]) => a + v, 0) || 1;
+    const sum = active.reduce((a, [, v]) => a + v, 0) || 1;
     return Object.fromEntries(
-      activeEntries.map(([k, v]) => [k, Number(((v / sum) * 100).toFixed(1))])
+      active.map(([k, v]) => [k, Number(((v / sum) * 100).toFixed(1))])
     );
   }, [typeRatios, allowedTypes]);
 
-  // Predicted question counts per type (integer allocation similar to backend logic)
   const predictedCounts = useMemo(() => {
-    const entries = allowedTypes.map((t) => ({
-      type: t,
-      pct: normalizedRatios[t] || 0,
+    const raw = allowedTypes.map((t) => ({
+      t,
+      val: ((normalizedRatios[t] || 0) * allocCount) / 100,
     }));
-    const rawAllocs = entries.map((e) => ({
-      type: e.type,
-      raw: (e.pct / 100) * allocCount,
-      floor: Math.floor((e.pct / 100) * allocCount),
+    const floors = raw.map((r) => ({
+      t: r.t,
+      floor: Math.floor(r.val),
+      frac: r.val - Math.floor(r.val),
     }));
-    const allocated = rawAllocs.reduce((a, r) => a + r.floor, 0);
-    let leftover = allocCount - allocated;
-    // distribute leftover by largest fractional part
-    const fracSorted = [...rawAllocs]
-      .map((r) => ({ type: r.type, frac: r.raw - r.floor }))
-      .sort((a, b) => b.frac - a.frac);
-    const result: Record<string, number> = Object.fromEntries(
-      rawAllocs.map((r) => [r.type, r.floor])
+    const base: Record<string, number> = Object.fromEntries(
+      floors.map((f) => [f.t, f.floor])
     );
-    let idx = 0;
-    while (leftover > 0 && fracSorted.length) {
-      result[fracSorted[idx % fracSorted.length].type] += 1;
-      leftover--;
-      idx++;
+    const used = floors.reduce((a, f) => a + f.floor, 0);
+    let left = allocCount - used;
+    const fracSorted = [...floors].sort((a, b) => b.frac - a.frac);
+    let i = 0;
+    while (left > 0 && fracSorted.length) {
+      base[fracSorted[i % fracSorted.length].t] += 1;
+      left--;
+      i++;
     }
-    return result;
+    return base;
   }, [allowedTypes, normalizedRatios, allocCount]);
 
-  const updateRatio = (key: string, value: number) => {
-    setTypeRatios((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const resetRatios = () => {
-    setTypeRatios((prev) => {
-      const next = { ...prev };
-      allowedTypes.forEach((t) => {
-        next[t] = 1; // equal weight
-      });
-      return next;
-    });
-  };
-
+  const updateRatio = (key: string, value: number) =>
+    setTypeRatios((p) => ({ ...p, [key]: value }));
+  const resetRatios = () =>
+    setTypeRatios((p) => ({
+      ...p,
+      ...Object.fromEntries(allowedTypes.map((t) => [t, 1])),
+    }));
   const isBalanced = useMemo(() => {
     if (allowedTypes.length <= 1) return true;
     const vals = allowedTypes.map((t) => typeRatios[t] || 0);
     if (vals.some((v) => v <= 0)) return false;
-    const first = vals[0];
-    return vals.every((v) => Math.abs(v - first) < 0.0001);
+    return vals.every((v) => Math.abs(v - vals[0]) < 0.0001);
   }, [allowedTypes, typeRatios]);
 
   const handleGenerate = async () => {
@@ -156,353 +142,519 @@ export default function GenerateQuizzesPage() {
       setRawPreview(JSON.stringify(json.data, null, 2));
       router.push("/quizzes");
     } catch (e: unknown) {
-      const msg = (e instanceof Error && e.message) || "Đã xảy ra lỗi.";
-      setError(msg);
+      setError((e as Error).message || "Đã xảy ra lỗi.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Box>
-      <Typography
-        variant="h4"
-        gutterBottom
-        sx={{ display: "flex", gap: 1, alignItems: "center" }}
-      >
-        <AutoAwesomeIcon color="primary" /> Tạo bài tập bằng AI
-      </Typography>
-      <Typography color="text.secondary" sx={{ mb: 3 }}>
-        Mô tả yêu cầu: trình độ, chủ đề, loại ngữ pháp, kiểu câu... Hệ thống sẽ
-        sinh ra bộ câu hỏi bạn có thể làm ngay ở trang Bài tập.
-      </Typography>
-      <Paper variant="outlined" sx={{ p: 3, mb: 3 }}>
-        <Stack spacing={3}>
-          <TextField
-            label="Yêu cầu / Chủ đề"
-            value={requirements}
-            onChange={(e) => setRequirements(e.target.value)}
-            placeholder="Ví dụ: 10 câu về thì hiện tại hoàn thành mức B1, trộn từ vựng du lịch và ngữ pháp"
-            multiline
-            minRows={3}
-            disabled={loading}
-            fullWidth
-          />
-          <Box>
-            <Typography gutterBottom fontWeight={600}>
-              Số câu hỏi
-            </Typography>
+    <Box sx={{ py: { xs: 2, sm: 3 } }}>
+      <Container maxWidth="sm" sx={{ pb: 6 }}>
+        <Paper
+          variant="outlined"
+          sx={{
+            p: { xs: 2, sm: 3 },
+            borderRadius: 2,
+            boxShadow: "0 10px 30px rgba(0,0,0,0.10)",
+            mb: 2,
+            border: (t) => `1px solid ${t.palette.divider}`,
+            backgroundColor: "#fff",
+          }}
+        >
+          <Typography
+            gutterBottom
+            sx={{
+              display: "flex",
+              gap: 1,
+              alignItems: "center",
+              typography: { xs: "h5", sm: "h4" },
+            }}
+          >
+            <AutoAwesomeIcon
+              color="primary"
+              sx={{ fontSize: { xs: 24, sm: 28 } }}
+            />
+            Tạo bài tập bằng AI
+          </Typography>
+          <Typography
+            color="text.secondary"
+            sx={{ mb: 3, fontSize: { xs: 14, sm: 16 } }}
+          >
+            Mô tả yêu cầu: trình độ, chủ đề, loại ngữ pháp, kiểu câu... Hệ thống
+            sẽ sinh ra bộ câu hỏi bạn có thể làm ngay ở trang Bài tập.
+          </Typography>
+
+          <Stack spacing={3}>
             <TextField
-              type="number"
-              size="small"
+              label="Yêu cầu / Chủ đề"
+              value={requirements}
+              onChange={(e) => setRequirements(e.target.value)}
+              placeholder="Viết về ngữ pháp thì hiện tại đơn cho học sinh A1..."
+              multiline
+              minRows={3}
               disabled={loading}
-              value={countInput}
-              onChange={(e) => {
-                const val = e.target.value;
-                if (val === "") {
-                  setCountInput("");
-                  return;
-                }
-                const v = parseInt(val, 10);
-                if (Number.isNaN(v)) {
-                  // Keep raw text to not force a default like 0
-                  setCountInput(val);
-                } else {
-                  // Cap only the maximum; no minimum enforcement
-                  setCountInput(String(Math.min(v, 50)));
-                }
-              }}
-              inputProps={{ max: 50 }}
-              sx={{ width: 160, maxWidth: "100%" }}
-              error={!isCountValid}
-              helperText={
-                isCountValid
-                  ? "Tối đa 50 (không đặt min). Để trống/sai sẽ không thể bấm tạo."
-                  : "Số hợp lệ từ 1 đến 50."
-              }
-              label="Số lượng"
+              fullWidth
             />
-            <Typography
-              variant="caption"
-              color="text.secondary"
-              sx={{ mt: 0.5, display: "block" }}
-            >
-              Có thể nhập trực tiếp số lớn (ví dụ 50) nhưng lưu ý thời gian tạo
-              lâu hơn.
-            </Typography>
-          </Box>
-          <Box>
-            <Typography gutterBottom fontWeight={600}>
-              Loại câu hỏi
-            </Typography>
-            <ToggleButtonGroup
-              value={allowedTypes}
-              onChange={(e, newValue: string[]) => {
-                if (!newValue || newValue.length === 0) return; // không cho rỗng
-                setAllowedTypes(newValue);
-              }}
-              aria-label="Chọn loại câu hỏi"
-              sx={{ flexWrap: "wrap", gap: 1, mb: 1 }}
-            >
-              <ToggleButton
-                value="vocab-mcq"
-                aria-label="Từ vựng"
-                sx={{ px: 2, py: 1 }}
-              >
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <MenuBookIcon fontSize="small" />
-                  <Typography variant="body2" fontWeight={600}>
-                    Từ vựng
-                  </Typography>
-                </Stack>
-              </ToggleButton>
-              <ToggleButton
-                value="grammar-mcq"
-                aria-label="Ngữ pháp"
-                sx={{ px: 2, py: 1 }}
-              >
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <GavelIcon fontSize="small" />
-                  <Typography variant="body2" fontWeight={600}>
-                    Ngữ pháp
-                  </Typography>
-                </Stack>
-              </ToggleButton>
-              <ToggleButton
-                value="sentence-order"
-                aria-label="Sắp xếp câu"
-                sx={{ px: 2, py: 1 }}
-              >
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <SortIcon fontSize="small" />
-                  <Typography variant="body2" fontWeight={600}>
-                    Sắp xếp câu
-                  </Typography>
-                </Stack>
-              </ToggleButton>
-            </ToggleButtonGroup>
-            <Stack
-              direction={{ xs: "column", md: "row" }}
-              spacing={1}
-              sx={{ mb: 1 }}
-            >
-              <Card variant="outlined" sx={{ flex: 1, minWidth: 200 }}>
-                <CardActionArea
-                  onClick={() => {
-                    setAllowedTypes([
-                      "vocab-mcq",
-                      "grammar-mcq",
-                      "sentence-order",
-                    ]);
-                    setMixTypes(true);
-                  }}
-                >
-                  <CardContent sx={{ py: 1.25 }}>
-                    <Typography
-                      variant="subtitle2"
-                      fontWeight={600}
-                      gutterBottom
-                    >
-                      Gợi ý: Đa dạng
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      Chọn cả 3 loại để tạo bộ phong phú.
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-              <Card variant="outlined" sx={{ flex: 1, minWidth: 200 }}>
-                <CardActionArea
-                  onClick={() => {
-                    setAllowedTypes(["grammar-mcq"]);
-                    setMixTypes(false);
-                  }}
-                >
-                  <CardContent sx={{ py: 1.25 }}>
-                    <Typography
-                      variant="subtitle2"
-                      fontWeight={600}
-                      gutterBottom
-                    >
-                      Chỉ Ngữ pháp
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      Luyện tập trọng tâm cấu trúc & quy tắc.
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-              <Card variant="outlined" sx={{ flex: 1, minWidth: 200 }}>
-                <CardActionArea
-                  onClick={() => {
-                    setAllowedTypes(["vocab-mcq"]);
-                    setMixTypes(false);
-                  }}
-                >
-                  <CardContent sx={{ py: 1.25 }}>
-                    <Typography
-                      variant="subtitle2"
-                      fontWeight={600}
-                      gutterBottom
-                    >
-                      Chỉ Từ vựng
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      Tập trung mở rộng vốn từ.
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Stack>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={mixTypes}
-                  onChange={(e) => setMixTypes(e.target.checked)}
-                  disabled={loading || allowedTypes.length <= 1}
-                />
-              }
-              label="Trộn ngẫu nhiên các loại (khi >= 2 loại chọn)"
-            />
-            <Typography
-              variant="caption"
-              color="text.secondary"
-              sx={{ display: "block", mt: 0.5 }}
-            >
-              Đang chọn:{" "}
-              {allowedTypes.map((t) => TYPE_LABELS[t] || t).join(", ")}
-            </Typography>
-            {allowedTypes.length > 1 && (
-              <Box sx={{ mt: 2 }}>
-                <Typography variant="subtitle2" fontWeight={600} sx={{ mb: 1 }}>
-                  Tỉ lệ mong muốn (% mỗi loại)
-                </Typography>
-                <Stack spacing={1.5}>
-                  {allowedTypes.map((t) => (
-                    <Box key={t}>
-                      <Stack
-                        direction="row"
-                        justifyContent="space-between"
-                        sx={{ mb: 0.25 }}
-                      >
-                        <Typography variant="caption" fontWeight={600}>
-                          {TYPE_LABELS[t]}
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          {normalizedRatios[t] ?? 0}% (~
-                          {predictedCounts[t] || 0})
-                        </Typography>
-                      </Stack>
-                      <input
-                        type="range"
-                        min={1}
-                        max={100}
-                        value={Math.min(
-                          100,
-                          Math.max(1, Math.round((typeRatios[t] || 1) * 10))
-                        )}
-                        onChange={(e) => {
-                          const raw = Number(e.target.value);
-                          // Store raw /10 to keep small numbers usable
-                          updateRatio(t, raw / 10);
-                        }}
-                        disabled={loading}
-                        style={{ width: "100%" }}
-                        aria-label={`Tỉ lệ ${TYPE_LABELS[t]} hiện tại ${
-                          normalizedRatios[t] || 0
-                        } phần trăm, dự kiến khoảng ${
-                          predictedCounts[t] || 0
-                        } câu`}
-                      />
-                    </Box>
-                  ))}
-                </Stack>
-                <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    startIcon={<RestartAltIcon fontSize="small" />}
-                    onClick={resetRatios}
-                    disabled={loading || isBalanced}
-                  >
-                    Cân bằng lại
-                  </Button>
-                </Stack>
-                <Typography
-                  variant="caption"
-                  color="text.secondary"
-                  sx={{ mt: 0.75, display: "block" }}
-                >
-                  Tỉ lệ sẽ được tự động chuẩn hóa tổng = 100%. Kéo thanh để ưu
-                  tiên loại.
-                </Typography>
-                <Typography
-                  variant="caption"
-                  color="text.secondary"
-                  sx={{ mt: 0.25, display: "block" }}
-                >
-                  Dự kiến phân bổ:{" "}
-                  {allowedTypes
-                    .map((t) => `${TYPE_LABELS[t]} ~${predictedCounts[t] || 0}`)
-                    .join(" · ")}
-                </Typography>
-              </Box>
-            )}
-          </Box>
-          <Divider />
-          {error && <Alert severity="error">{error}</Alert>}
-          <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-            <Button
-              variant="contained"
-              onClick={handleGenerate}
-              disabled={loading || !requirements.trim() || !isCountValid}
-              startIcon={<PsychologyAltIcon />}
-            >
-              {loading ? "Đang tạo..." : "Sinh câu hỏi"}
-            </Button>
-            <Button
-              disabled={loading || !requirements}
-              onClick={() => setRequirements("")}
-            >
-              Xóa yêu cầu
-            </Button>
-          </Stack>
-          {loading && <LinearProgress />}
-          {rawPreview && (
+
+            {/* Count section styled like a card */}
             <Box>
-              <Stack
-                direction="row"
-                spacing={1}
-                alignItems="center"
-                sx={{ mb: 1 }}
-              >
-                <Chip size="small" label="Preview JSON" />
-                <Typography variant="caption" color="text.secondary">
-                  (đã điều hướng sang Bài tập – xem tại đó để làm bài)
-                </Typography>
-              </Stack>
+              <Typography gutterBottom fontWeight={600}>
+                Số câu hỏi
+              </Typography>
               <Box
-                component="pre"
                 sx={{
                   p: 2,
-                  bgcolor: "grey.900",
-                  color: "grey.100",
-                  fontSize: 12,
-                  maxHeight: 260,
-                  overflow: "auto",
-                  borderRadius: 1,
+                  borderRadius: 2,
+                  bgcolor: (t) => alpha(t.palette.primary.main, 0.06),
+                  border: (t) =>
+                    `1px solid ${alpha(t.palette.primary.main, 0.2)}`,
                 }}
               >
-                {rawPreview}
+                <Stack
+                  direction={{ xs: "column", sm: "row" }}
+                  alignItems={{ sm: "center" }}
+                  spacing={1.5}
+                >
+                  <TextField
+                    type="number"
+                    size="small"
+                    disabled={loading}
+                    value={countInput}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (val === "") {
+                        setCountInput("");
+                        return;
+                      }
+                      const v = parseInt(val, 10);
+                      if (Number.isNaN(v)) setCountInput(val);
+                      else setCountInput(String(Math.min(v, 50)));
+                    }}
+                    inputProps={{ max: 50 }}
+                    sx={{ width: { xs: "100%", sm: 120 }, fontWeight: 700 }}
+                    error={!isCountValid}
+                    helperText={
+                      isCountValid
+                        ? "(Tối đa 50, không đặt min). Trống/lỗi sẽ không thể bấm tạo."
+                        : "Số hợp lệ từ 1 đến 50."
+                    }
+                    label="Số lượng"
+                  />
+                  <Typography variant="caption" color="text.secondary">
+                    Có thể nhập trực tiếp số lớn (ví dụ 50) nhưng lưu ý thời
+                    gian tạo lâu hơn.
+                  </Typography>
+                </Stack>
               </Box>
             </Box>
-          )}
-        </Stack>
-      </Paper>
-      <Alert severity="info" variant="outlined">
-        Sau khi tạo, bạn sẽ được chuyển tới trang Bài tập với bộ câu hỏi nguồn:{" "}
-        <strong>AI</strong> (có thể reset để quay lại bộ tĩnh ban đầu).
-      </Alert>
+
+            {/* Types with pill-style toggles */}
+            <Box>
+              <Typography gutterBottom fontWeight={600}>
+                Loại câu hỏi
+              </Typography>
+              <ToggleButtonGroup
+                value={allowedTypes}
+                onChange={(e, v: string[]) => {
+                  if (!v || v.length === 0) return;
+                  setAllowedTypes(v);
+                }}
+                aria-label="Chọn loại câu hỏi"
+                sx={{
+                  flexWrap: "wrap",
+                  gap: 1,
+                  mb: 1,
+                  "& .MuiToggleButton-root": {
+                    borderRadius: "20px",
+                    textTransform: "none",
+                    px: { xs: 1.5, sm: 2 },
+                    py: { xs: 0.6, sm: 1 },
+                    bgcolor: "#f9fafb",
+                    color: "text.secondary",
+                    borderColor: "divider",
+                    transition: "all .2s",
+                    fontSize: { xs: 12, sm: 14 },
+                  },
+                  "& .MuiToggleButton-root.Mui-selected": {
+                    bgcolor: "primary.main",
+                    color: "primary.contrastText",
+                    borderColor: "primary.main",
+                    boxShadow: "0 2px 4px rgba(59,130,246,0.4)",
+                    transform: "translateY(-1px)",
+                    "&:hover": { bgcolor: "primary.main" },
+                  },
+                }}
+              >
+                <ToggleButton
+                  value="vocab-mcq"
+                  aria-label="Từ vựng"
+                  sx={{ px: { xs: 1.5, sm: 2 }, py: { xs: 0.6, sm: 1 } }}
+                >
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <MenuBookIcon fontSize="small" />
+                    <Typography
+                      variant="body2"
+                      fontWeight={600}
+                      sx={{ fontSize: { xs: 12, sm: 14 } }}
+                    >
+                      Từ vựng
+                    </Typography>
+                  </Stack>
+                </ToggleButton>
+                <ToggleButton
+                  value="grammar-mcq"
+                  aria-label="Ngữ pháp"
+                  sx={{ px: { xs: 1.5, sm: 2 }, py: { xs: 0.6, sm: 1 } }}
+                >
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <GavelIcon fontSize="small" />
+                    <Typography
+                      variant="body2"
+                      fontWeight={600}
+                      sx={{ fontSize: { xs: 12, sm: 14 } }}
+                    >
+                      Ngữ pháp
+                    </Typography>
+                  </Stack>
+                </ToggleButton>
+                <ToggleButton
+                  value="sentence-order"
+                  aria-label="Sắp xếp câu"
+                  sx={{ px: { xs: 1.5, sm: 2 }, py: { xs: 0.6, sm: 1 } }}
+                >
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <SortIcon fontSize="small" />
+                    <Typography
+                      variant="body2"
+                      fontWeight={600}
+                      sx={{ fontSize: { xs: 12, sm: 14 } }}
+                    >
+                      Sắp xếp câu
+                    </Typography>
+                  </Stack>
+                </ToggleButton>
+              </ToggleButtonGroup>
+              <Typography
+                variant="caption"
+                color="primary"
+                sx={{ display: "block", mb: 1 }}
+              >
+                ✅ Đang chọn:{" "}
+                {allowedTypes.map((t) => TYPE_LABELS[t] || t).join(", ")}
+              </Typography>
+
+              <Stack
+                direction={{ xs: "column", md: "row" }}
+                spacing={1}
+                sx={{ mb: 1 }}
+              >
+                <Card variant="outlined" sx={{ flex: 1, minWidth: 200 }}>
+                  <CardActionArea
+                    onClick={() => {
+                      setAllowedTypes([
+                        "vocab-mcq",
+                        "grammar-mcq",
+                        "sentence-order",
+                      ]);
+                      setMixTypes(true);
+                    }}
+                  >
+                    <CardContent sx={{ py: 1.25 }}>
+                      <Typography
+                        variant="subtitle2"
+                        fontWeight={600}
+                        gutterBottom
+                      >
+                        Gợi ý: Đa dạng
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        Nên chọn cả 3 loại để tạo bộ phong phú.
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+                <Card variant="outlined" sx={{ flex: 1, minWidth: 200 }}>
+                  <CardActionArea
+                    onClick={() => {
+                      setAllowedTypes(["grammar-mcq"]);
+                      setMixTypes(false);
+                    }}
+                  >
+                    <CardContent sx={{ py: 1.25 }}>
+                      <Typography
+                        variant="subtitle2"
+                        fontWeight={600}
+                        gutterBottom
+                      >
+                        Chỉ Ngữ pháp
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        Luyện tập trọng tâm cấu trúc & quy tắc.
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+                <Card variant="outlined" sx={{ flex: 1, minWidth: 200 }}>
+                  <CardActionArea
+                    onClick={() => {
+                      setAllowedTypes(["vocab-mcq"]);
+                      setMixTypes(false);
+                    }}
+                  >
+                    <CardContent sx={{ py: 1.25 }}>
+                      <Typography
+                        variant="subtitle2"
+                        fontWeight={600}
+                        gutterBottom
+                      >
+                        Chỉ Từ vựng
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        Tập trung mở rộng vốn từ.
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Stack>
+
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={mixTypes}
+                    onChange={(e) => setMixTypes(e.target.checked)}
+                    disabled={loading || allowedTypes.length <= 1}
+                  />
+                }
+                label="Trộn ngẫu nhiên các loại (khi >= 2 loại chọn)"
+              />
+
+              {allowedTypes.length > 1 && (
+                <Box sx={{ mt: 2 }}>
+                  <Typography
+                    variant="subtitle2"
+                    fontWeight={600}
+                    sx={{ mb: 1 }}
+                  >
+                    Tỉ lệ mong muốn (% mỗi loại)
+                  </Typography>
+                  <Stack spacing={1.5}>
+                    {allowedTypes.map((t) => (
+                      <Box key={t}>
+                        <Stack
+                          direction="row"
+                          justifyContent="space-between"
+                          sx={{ mb: 0.25 }}
+                        >
+                          <Typography variant="caption" fontWeight={600}>
+                            {TYPE_LABELS[t]}
+                          </Typography>
+                          <Typography variant="caption" color="primary">
+                            {normalizedRatios[t] ?? 0}% (~
+                            {predictedCounts[t] || 0})
+                          </Typography>
+                        </Stack>
+                        <Slider
+                          value={normalizedRatios[t] ?? 0}
+                          min={0}
+                          max={100}
+                          step={1}
+                          onChange={(_, val) => {
+                            const p = Array.isArray(val)
+                              ? val[0]
+                              : (val as number);
+                            const others = allowedTypes
+                              .filter((k) => k !== t)
+                              .reduce((a, k) => a + (typeRatios[k] || 0), 0);
+                            const pct = Math.max(0, Math.min(99, p));
+                            const w =
+                              others <= 0
+                                ? pct === 0
+                                  ? 0
+                                  : 1
+                                : (pct * others) / (100 - pct);
+                            updateRatio(t, Number(w.toFixed(4)));
+                          }}
+                          disabled={loading}
+                          sx={{
+                            height: { xs: 6, sm: 8 },
+                            "& .MuiSlider-rail": {
+                              bgcolor: (th) =>
+                                alpha(th.palette.primary.main, 0.12),
+                            },
+                            "& .MuiSlider-track": { bgcolor: "primary.main" },
+                            "& .MuiSlider-thumb": {
+                              width: { xs: 14, sm: 16 },
+                              height: { xs: 14, sm: 16 },
+                              bgcolor: "primary.main",
+                              border: "3px solid #fff",
+                              boxShadow: "0 0 0 1px rgba(0,0,0,0.1)",
+                              "&:hover, &.Mui-focusVisible": {
+                                boxShadow: "0 0 0 8px rgba(59,130,246,0.2)",
+                              },
+                            },
+                          }}
+                          aria-label={`Tỉ lệ ${TYPE_LABELS[t]} hiện tại ${
+                            normalizedRatios[t] || 0
+                          }%, dự kiến khoảng ${predictedCounts[t] || 0} câu`}
+                        />
+                      </Box>
+                    ))}
+                  </Stack>
+                  <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      startIcon={<RestartAltIcon fontSize="small" />}
+                      onClick={resetRatios}
+                      disabled={loading || isBalanced}
+                    >
+                      Cân bằng lại
+                    </Button>
+                  </Stack>
+
+                  {/* Yellow rebalance info box */}
+                  <Box
+                    sx={{
+                      mt: 2,
+                      p: 1.5,
+                      display: "flex",
+                      alignItems: "flex-start",
+                      borderRadius: 2,
+                      bgcolor: "#fffbeb",
+                      border: "1px solid #fde68a",
+                      color: "#b45309",
+                      gap: 1,
+                    }}
+                  >
+                    <Box sx={{ lineHeight: 0, mt: "2px" }}>
+                      <RestartAltIcon
+                        sx={{ color: "#f59e0b" }}
+                        fontSize="small"
+                      />
+                    </Box>
+                    <Box>
+                      <Typography
+                        variant="body2"
+                        fontWeight={700}
+                        sx={{ color: "#b45309", fontSize: { xs: 13, sm: 14 } }}
+                      >
+                        CÂN BẰNG LẠI
+                      </Typography>
+                      <Typography
+                        variant="caption"
+                        sx={{ color: "#b45309", fontSize: { xs: 11, sm: 12 } }}
+                      >
+                        Tỉ lệ sẽ được tự động chuẩn hóa tổng = 100%. Kéo thanh
+                        để ưu tiên loại.
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Box>
+              )}
+            </Box>
+
+            {/* Actions */}
+            <Divider />
+            {error && <Alert severity="error">{error}</Alert>}
+            <Stack
+              direction={{ xs: "column-reverse", sm: "row" }}
+              spacing={2}
+              alignItems={{ sm: "center" }}
+              justifyContent="space-between"
+            >
+              <Button
+                variant="text"
+                color="error"
+                disabled={loading || !requirements}
+                onClick={() => setRequirements("")}
+                sx={{
+                  alignSelf: { xs: "center", sm: "flex-start" },
+                  fontSize: { xs: "0.8rem", sm: "0.875rem" },
+                  textDecoration: "none",
+                  "&:hover": { textDecoration: "underline" },
+                }}
+              >
+                🗑️ XÓA YÊU CẦU
+              </Button>
+              <Button
+                variant="contained"
+                onClick={handleGenerate}
+                disabled={loading || !requirements.trim() || !isCountValid}
+                startIcon={<PsychologyAltIcon />}
+                sx={{
+                  borderRadius: 50,
+                  px: { xs: 2.25, sm: 3 },
+                  py: { xs: 0.9, sm: 1.25 },
+                  fontSize: { xs: "1rem", sm: "1.125rem" },
+                  boxShadow:
+                    "0 10px 15px rgba(59,130,246,0.2), 0 4px 6px rgba(59,130,246,0.1)",
+                  transform: "translateZ(0)",
+                  "&:hover": { transform: "scale(1.02)" },
+                }}
+              >
+                {loading ? "Đang tạo..." : "✨ SINH CÂU HỎI"}
+              </Button>
+            </Stack>
+
+            {loading && <LinearProgress />}
+            {rawPreview && (
+              <Box>
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  alignItems="center"
+                  sx={{ mb: 1 }}
+                >
+                  <Chip size="small" label="Preview JSON" />
+                  <Typography variant="caption" color="text.secondary">
+                    (đã điều hướng sang Bài tập – xem tại đó để làm bài)
+                  </Typography>
+                </Stack>
+                <Box
+                  component="pre"
+                  sx={{
+                    p: 2,
+                    bgcolor: "grey.900",
+                    color: "grey.100",
+                    fontSize: 12,
+                    maxHeight: 260,
+                    overflow: "auto",
+                    borderRadius: 1,
+                  }}
+                >
+                  {rawPreview}
+                </Box>
+              </Box>
+            )}
+          </Stack>
+        </Paper>
+
+        {/* Blue info box */}
+        <Box
+          sx={{
+            mt: 2,
+            p: 1.5,
+            display: "flex",
+            alignItems: "flex-start",
+            borderRadius: 2,
+            bgcolor: "#e0f2fe",
+            border: "1px solid #93c5fd",
+            color: "#1d4ed8",
+            gap: 1,
+          }}
+        >
+          <Box sx={{ fontSize: 18, lineHeight: 1 }}>ⓘ</Box>
+          <Typography
+            variant="body2"
+            sx={{ fontSize: { xs: ".9rem", sm: "1rem" } }}
+          >
+            Sau khi tạo bài, bạn sẽ được chuyển tới trang Bài tập với bộ câu hỏi
+            nguồn: <strong>AI</strong> (có thể reset để quay lại bộ tình trạng
+            ban đầu).
+          </Typography>
+        </Box>
+      </Container>
     </Box>
   );
 }
