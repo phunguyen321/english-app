@@ -344,15 +344,19 @@ export default function GenerateQuizzesPage() {
                 {allowedTypes.map((t) => TYPE_LABELS[t] || t).join(", ")}
               </Typography>
 
-              <Stack
-                direction={{ xs: "column", md: "row" }}
-                spacing={1}
-                sx={{ mb: 1, flexWrap: "wrap" }}
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: {
+                    xs: "1fr",
+                    sm: "repeat(2, minmax(0, 1fr))",
+                    lg: "repeat(3, minmax(0, 1fr))",
+                  },
+                  gap: 1,
+                  mb: 1,
+                }}
               >
-                <Card
-                  variant="outlined"
-                  sx={{ flex: "1 1 200px", minWidth: 200 }}
-                >
+                <Card variant="outlined">
                   <CardActionArea
                     onClick={() => {
                       setAllowedTypes([
@@ -364,7 +368,7 @@ export default function GenerateQuizzesPage() {
                     }}
                   >
                     <CardContent
-                      sx={{ py: 1.25, minHeight: { xs: 72, sm: 80 } }}
+                      sx={{ py: 1.25, minHeight: { sm: 88, md: 96 } }}
                     >
                       <Typography
                         variant="subtitle2"
@@ -379,10 +383,7 @@ export default function GenerateQuizzesPage() {
                     </CardContent>
                   </CardActionArea>
                 </Card>
-                <Card
-                  variant="outlined"
-                  sx={{ flex: "1 1 200px", minWidth: 200 }}
-                >
+                <Card variant="outlined">
                   <CardActionArea
                     onClick={() => {
                       setAllowedTypes(["grammar-mcq"]);
@@ -390,7 +391,7 @@ export default function GenerateQuizzesPage() {
                     }}
                   >
                     <CardContent
-                      sx={{ py: 1.25, minHeight: { xs: 72, sm: 80 } }}
+                      sx={{ py: 1.25, minHeight: { sm: 88, md: 96 } }}
                     >
                       <Typography
                         variant="subtitle2"
@@ -405,10 +406,7 @@ export default function GenerateQuizzesPage() {
                     </CardContent>
                   </CardActionArea>
                 </Card>
-                <Card
-                  variant="outlined"
-                  sx={{ flex: "1 1 200px", minWidth: 200 }}
-                >
+                <Card variant="outlined">
                   <CardActionArea
                     onClick={() => {
                       setAllowedTypes(["vocab-mcq"]);
@@ -416,7 +414,7 @@ export default function GenerateQuizzesPage() {
                     }}
                   >
                     <CardContent
-                      sx={{ py: 1.25, minHeight: { xs: 72, sm: 80 } }}
+                      sx={{ py: 1.25, minHeight: { sm: 88, md: 96 } }}
                     >
                       <Typography
                         variant="subtitle2"
@@ -431,7 +429,7 @@ export default function GenerateQuizzesPage() {
                     </CardContent>
                   </CardActionArea>
                 </Card>
-              </Stack>
+              </Box>
 
               <FormControlLabel
                 control={
