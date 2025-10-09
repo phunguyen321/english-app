@@ -347,9 +347,12 @@ export default function GenerateQuizzesPage() {
               <Stack
                 direction={{ xs: "column", md: "row" }}
                 spacing={1}
-                sx={{ mb: 1 }}
+                sx={{ mb: 1, flexWrap: "wrap" }}
               >
-                <Card variant="outlined" sx={{ flex: 1, minWidth: 200 }}>
+                <Card
+                  variant="outlined"
+                  sx={{ flex: "1 1 200px", minWidth: 200 }}
+                >
                   <CardActionArea
                     onClick={() => {
                       setAllowedTypes([
@@ -360,7 +363,9 @@ export default function GenerateQuizzesPage() {
                       setMixTypes(true);
                     }}
                   >
-                    <CardContent sx={{ py: 1.25 }}>
+                    <CardContent
+                      sx={{ py: 1.25, minHeight: { xs: 72, sm: 80 } }}
+                    >
                       <Typography
                         variant="subtitle2"
                         fontWeight={600}
@@ -374,14 +379,19 @@ export default function GenerateQuizzesPage() {
                     </CardContent>
                   </CardActionArea>
                 </Card>
-                <Card variant="outlined" sx={{ flex: 1, minWidth: 200 }}>
+                <Card
+                  variant="outlined"
+                  sx={{ flex: "1 1 200px", minWidth: 200 }}
+                >
                   <CardActionArea
                     onClick={() => {
                       setAllowedTypes(["grammar-mcq"]);
                       setMixTypes(false);
                     }}
                   >
-                    <CardContent sx={{ py: 1.25 }}>
+                    <CardContent
+                      sx={{ py: 1.25, minHeight: { xs: 72, sm: 80 } }}
+                    >
                       <Typography
                         variant="subtitle2"
                         fontWeight={600}
@@ -395,14 +405,19 @@ export default function GenerateQuizzesPage() {
                     </CardContent>
                   </CardActionArea>
                 </Card>
-                <Card variant="outlined" sx={{ flex: 1, minWidth: 200 }}>
+                <Card
+                  variant="outlined"
+                  sx={{ flex: "1 1 200px", minWidth: 200 }}
+                >
                   <CardActionArea
                     onClick={() => {
                       setAllowedTypes(["vocab-mcq"]);
                       setMixTypes(false);
                     }}
                   >
-                    <CardContent sx={{ py: 1.25 }}>
+                    <CardContent
+                      sx={{ py: 1.25, minHeight: { xs: 72, sm: 80 } }}
+                    >
                       <Typography
                         variant="subtitle2"
                         fontWeight={600}
