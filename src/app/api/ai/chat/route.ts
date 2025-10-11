@@ -78,7 +78,24 @@ export async function POST(req: NextRequest) {
         ? normalized.slice(-MAX_TURNS * 2)
         : normalized;
 
-    const model = getGeminiModel(modelName);
+    let model: ReturnType<typeof getGeminiModel>;
+    try {
+      model = getGeminiModel(modelName);
+    } catch (e) {
+      const msg =
+        e instanceof Error
+          ? e.message
+          : "Không thể khởi tạo Gemini client (thiếu API key?).";
+      return Response.json(
+        {
+          success: false,
+          error:
+            msg +
+            "\nHãy đặt biến môi trường GEMINI_API_KEY hoặc GOOGLE_API_KEY trên server (và deploy lại).",
+        },
+        { status: 500 }
+      );
+    }
 
     // Use chat session with history and send the last user message
     // Note: We keep it simple (no streaming) for broad compatibility.
