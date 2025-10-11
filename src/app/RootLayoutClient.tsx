@@ -13,6 +13,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useTheme } from "@mui/material/styles";
 import AppProviders from "@/providers";
 import { useState, useEffect } from "react";
+import FloatingChatWidget from "@/components/FloatingChatWidget";
 
 export default function RootLayoutClient({
   children,
@@ -118,7 +119,10 @@ export default function RootLayoutClient({
             overflowX: "hidden",
           }}
         >
-          <AppProviders>{children}</AppProviders>
+          <AppProviders>
+            {children}
+            <FloatingChatWidget />
+          </AppProviders>
           <footer
             style={{
               marginTop: 48,

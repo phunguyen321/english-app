@@ -4,7 +4,6 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useAppDispatch, useAppSelector, type RootState } from "@/store";
 import {
   loadVocab,
-  shuffleFlashcards,
   shuffleRemaining,
   toggleAnswer,
   setFlashcardOrder,
@@ -41,7 +40,6 @@ import {
   List,
   ListItemButton,
   ListItemText,
-  ListSubheader,
   Checkbox,
   Drawer,
   IconButton,
@@ -51,15 +49,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ShuffleIcon from "@mui/icons-material/Shuffle";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import LabelOutlinedIcon from "@mui/icons-material/LabelOutlined";
-import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import VolumeUpOutlinedIcon from "@mui/icons-material/VolumeUpOutlined";
 import FlashcardView from "./FlashcardView";
 
 export default function VocabularyPage() {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
+  useMediaQuery(theme.breakpoints.down("lg"));
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -703,15 +699,7 @@ export default function VocabularyPage() {
   );
 }
 
-// Simple shuffle
-function shuffleSimple(indices: number[]) {
-  const arr = [...indices];
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
+// removed unused shuffleSimple
 
 // Highlight component
 const Highlighted: React.FC<{ text: string; query: string }> = ({
@@ -818,9 +806,6 @@ function VocabularyList({
   // keep for prop parity with parent
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   isMobile,
-  onMarkKnown,
-  onMarkLearning,
-  onMarkUnknown,
 }: {
   entries: VocabEntry[];
   order: number[];

@@ -123,6 +123,13 @@ export default function FlashcardView(props: FlashcardViewProps) {
     onMarkUnknown,
   } = props;
 
+  // Touch props to avoid unused warnings in some builds
+  // (They are used via buttons further below conditionally)
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+  knowledgeState;
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+  onMarkLearning;
+
   // Simple TTS
   const speak = (text?: string) => {
     if (!text || typeof window === "undefined") return;

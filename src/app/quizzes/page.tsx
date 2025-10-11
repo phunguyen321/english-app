@@ -35,6 +35,7 @@ export default function QuizzesPage() {
         if (q.type === "vocab-mcq" || q.type === "grammar-mcq") {
           return acc + (typeof a === "number" ? 1 : 0);
         }
+        if (Array.isArray(a)) return acc + (a.length ? 1 : 0);
         return acc + (typeof a === "string" && a.trim() ? 1 : 0);
       }, 0),
     [questions, userAnswers]
@@ -101,9 +102,7 @@ export default function QuizzesPage() {
             submitted={!!result}
             resultDetail={result?.details.find((d) => d.id === q.id)}
             onAnswer={(value) => {
-              dispatch(
-                answerQuestion({ id: q.id, answer: value as number | string })
-              );
+              dispatch(answerQuestion({ id: q.id, answer: value }));
             }}
           />
         ))}
