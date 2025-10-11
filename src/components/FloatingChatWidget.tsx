@@ -18,6 +18,7 @@ import SendIcon from "@mui/icons-material/Send";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
 import CloseIcon from "@mui/icons-material/Close";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import type { ChatMessage } from "@/types/chat";
 import AppAPI from "@/lib/api";
 import ReactMarkdown from "react-markdown";
@@ -32,6 +33,7 @@ export default function FloatingChatWidget() {
   const inputBoxRef = React.useRef<HTMLDivElement | null>(null);
   const [inputHeight, setInputHeight] = React.useState(56);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
+  const sessionRef = React.useRef(0);
 
   // Keep input above mobile virtual keyboard using VisualViewport
   React.useEffect(() => {
@@ -108,23 +110,43 @@ export default function FloatingChatWidget() {
     setMessages(next);
     setInput("");
     setLoading(true);
+    const mySession = sessionRef.current;
     try {
       const data = await AppAPI.chat(next);
       if (!data?.success) throw new Error(data?.error || "Lỗi API");
       const textResp: string = data.data?.text || "(Không có phản hồi)";
-      setMessages((prev) => [...prev, { role: "model", content: textResp }]);
+      if (sessionRef.current === mySession) {
+        setMessages((prev) => [...prev, { role: "model", content: textResp }]);
+      }
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : String(e);
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "model",
-          content: `Xin lỗi, đã có lỗi khi trả lời: ${msg}`,
-        },
-      ]);
+      if (sessionRef.current === mySession) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "model",
+            content: `Xin lỗi, đã có lỗi khi trả lời: ${msg}`,
+          },
+        ]);
+      }
     } finally {
-      setLoading(false);
+      if (sessionRef.current === mySession) setLoading(false);
     }
+  };
+
+  const newChat = () => {
+    if (messages.length > 0 || input) {
+      const ok = window.confirm(
+        "Bắt đầu cuộc trò chuyện mới? Tin nhắn hiện tại sẽ bị xóa."
+      );
+      if (!ok) return;
+    }
+    sessionRef.current += 1; // invalidate any in-flight response
+    setMessages([]);
+    setInput("");
+    setLoading(false);
+    const el = containerRef.current;
+    if (el) el.scrollTop = 0;
   };
 
   const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
@@ -252,6 +274,14 @@ export default function FloatingChatWidget() {
               Trợ lý AI
             </Typography>
             <Box flexGrow={1} />
+            <IconButton
+              size="small"
+              title="Chat mới"
+              aria-label="Chat mới"
+              onClick={newChat}
+            >
+              <RestartAltIcon />
+            </IconButton>
             <IconButton size="small" onClick={() => setOpen(false)}>
               <CloseIcon />
             </IconButton>
