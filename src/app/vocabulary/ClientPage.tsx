@@ -792,8 +792,7 @@ function ExampleList({
 }
 
 // Vocabulary list component
-import type { VocabEntry } from "@/types";
-type KnowledgeState = "unknown" | "learning" | "known";
+import type { VocabEntry, KnowledgeState } from "@/types/vocab";
 
 function VocabularyList({
   entries,

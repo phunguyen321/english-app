@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { VocabEntry, VocabTopic } from "@/types";
+import { VocabEntry, VocabTopic } from "@/types/vocab";
+import AppAPI from "@/lib/api";
 
 export type VocabState = {
   topics: VocabTopic[];
@@ -29,9 +30,7 @@ const initialState: VocabState = {
 };
 
 export const loadVocab = createAsyncThunk("vocab/load", async () => {
-  const res = await fetch("/mock/vocab.json");
-  if (!res.ok) throw new Error("Failed to load vocab");
-  return (await res.json()) as { topics: VocabTopic[]; entries: VocabEntry[] };
+  return await AppAPI.getVocab();
 });
 
 const vocabSlice = createSlice({

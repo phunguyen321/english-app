@@ -18,12 +18,8 @@ import SendIcon from "@mui/icons-material/Send";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
 import PersonIcon from "@mui/icons-material/Person";
 import CloseIcon from "@mui/icons-material/Close";
-
-type Role = "user" | "model";
-interface ChatMessage {
-  role: Role;
-  content: string;
-}
+import type { ChatMessage } from "@/types/chat";
+import AppAPI from "@/lib/api";
 
 export default function FloatingChatWidget() {
   const theme = useTheme();
@@ -83,14 +79,9 @@ export default function FloatingChatWidget() {
     setInput("");
     setLoading(true);
     try {
-      const res = await fetch("/api/ai/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next }),
-      });
-      const data = await res.json();
-      if (!res.ok || !data?.success) throw new Error(data?.error || "Lỗi API");
-      const textResp: string = data.data.text || "(Không có phản hồi)";
+      const data = await AppAPI.chat(next);
+      if (!data?.success) throw new Error(data?.error || "Lỗi API");
+      const textResp: string = data.data?.text || "(Không có phản hồi)";
       setMessages((prev) => [...prev, { role: "model", content: textResp }]);
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : String(e);

@@ -7,7 +7,7 @@ import {
   SentenceOrderQuestion,
   QuizType,
   Difficulty,
-} from "@/types";
+} from "@/types/quiz";
 
 // Simple in-memory rate limit
 let calls: number[] = [];

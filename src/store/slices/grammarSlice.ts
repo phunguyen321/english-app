@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { GrammarTopic } from "@/types";
+import { GrammarTopic } from "@/types/grammar";
+import AppAPI from "@/lib/api";
 
 type GrammarState = {
   topics: GrammarTopic[];
@@ -10,9 +11,7 @@ type GrammarState = {
 const initialState: GrammarState = { topics: [], status: "idle" };
 
 export const loadGrammar = createAsyncThunk("grammar/load", async () => {
-  const res = await fetch("/mock/grammar.json");
-  if (!res.ok) throw new Error("Failed to load grammar");
-  return (await res.json()) as GrammarTopic[];
+  return await AppAPI.getGrammar();
 });
 
 const grammarSlice = createSlice({

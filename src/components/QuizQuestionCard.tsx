@@ -19,7 +19,7 @@ import {
   SentenceOrderQuestion,
   VocabMcqQuestion,
   GrammarMcqQuestion,
-} from "@/types";
+} from "@/types/quiz";
 
 // Module-level helpers for deterministic shuffle so hook deps stay stable
 function hashString(s: string) {

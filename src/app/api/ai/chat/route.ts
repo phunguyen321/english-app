@@ -1,11 +1,6 @@
 import { NextRequest } from "next/server";
 import { getGeminiModel } from "@/lib/gemini";
-
-type Role = "user" | "model";
-interface ChatMessage {
-  role: Role;
-  content: string;
-}
+import type { ChatMessage, Role } from "@/types/chat";
 
 // Light in-memory rate limit to avoid abuse
 let calls: number[] = [];

@@ -30,6 +30,8 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import GavelIcon from "@mui/icons-material/Gavel";
 import SortIcon from "@mui/icons-material/Sort";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import AppAPI from "@/lib/api";
+import type { AnyQuizQuestion } from "@/types/quiz";
 import { alpha } from "@mui/material/styles";
 
 export default function GenerateQuizzesPage() {
@@ -123,22 +125,23 @@ export default function GenerateQuizzesPage() {
     setLoading(true);
     setRawPreview("");
     try {
-      const res = await fetch("/api/ai/generate-quiz", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          requirements,
-          count: parsedCount,
-          mixTypes,
-          allowedTypes,
-          typeRatios: Object.fromEntries(
-            allowedTypes.map((k) => [k, typeRatios[k] || 1])
-          ),
-        }),
+      const json = await AppAPI.generateQuiz({
+        requirements,
+        count: parsedCount,
+        mixTypes,
+        allowedTypes,
+        typeRatios: Object.fromEntries(
+          allowedTypes.map((k) => [k, typeRatios[k] || 1])
+        ),
       });
-      const json = await res.json();
       if (!json.success) throw new Error(json.error || "Lỗi không xác định");
-      dispatch(setQuestions({ questions: json.data, source: "ai" }));
+      // json.data should be AnyQuizQuestion[]
+      dispatch(
+        setQuestions({
+          questions: json.data as AnyQuizQuestion[],
+          source: "ai",
+        })
+      );
       setRawPreview(JSON.stringify(json.data, null, 2));
       router.push("/quizzes");
     } catch (e: unknown) {

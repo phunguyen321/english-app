@@ -11,6 +11,7 @@ import {
   Stack,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import AppAPI from "@/lib/api";
 // Mobile-first UI styled to match example/verb.html
 
 type Verb = { base: string; past: string; pp: string; meaning?: string };
@@ -35,10 +36,9 @@ export default function IrregularVerbsPage() {
 
   useEffect(() => {
     let mounted = true;
-    fetch("/mock/irregular-verbs.json")
-      .then((r) => r.json())
-      .then((json) => {
-        if (mounted) setData(Array.isArray(json) ? json : []);
+    AppAPI.getIrregularVerbs()
+      .then((data) => {
+        if (mounted) setData(Array.isArray(data) ? data : []);
       })
       .catch(() => mounted && setError("Không tải được dữ liệu."));
     return () => {

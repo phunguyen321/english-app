@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AnyQuizQuestion } from "@/types";
+import { AnyQuizQuestion } from "@/types/quiz";
+import AppAPI from "@/lib/api";
 
 type QuizState = {
   questions: AnyQuizQuestion[];
@@ -25,9 +26,7 @@ const initialState: QuizState = {
 };
 
 export const loadQuizzes = createAsyncThunk("quiz/load", async () => {
-  const res = await fetch("/mock/quizzes.json");
-  if (!res.ok) throw new Error("Failed to load quizzes");
-  return (await res.json()) as AnyQuizQuestion[];
+  return await AppAPI.getQuizzes();
 });
 
 const quizSlice = createSlice({

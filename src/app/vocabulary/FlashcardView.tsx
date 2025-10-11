@@ -18,7 +18,7 @@ import { alpha, useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import LightbulbOutlinedIcon from "@mui/icons-material/LightbulbOutlined";
 import VolumeUpOutlinedIcon from "@mui/icons-material/VolumeUpOutlined";
-import type { VocabEntry } from "@/types";
+import type { VocabEntry } from "@/types/vocab";
 
 export interface FlashcardViewProps {
   entry?: VocabEntry;
