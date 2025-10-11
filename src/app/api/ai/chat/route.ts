@@ -32,7 +32,6 @@ export async function POST(req: NextRequest) {
     const messages: ChatMessage[] = Array.isArray(body?.messages)
       ? body.messages
       : [];
-    const modelName: string = body?.model || "gemini-2.5-flash";
 
     if (!messages.length) {
       return Response.json(
@@ -78,24 +77,7 @@ export async function POST(req: NextRequest) {
         ? normalized.slice(-MAX_TURNS * 2)
         : normalized;
 
-    let model: ReturnType<typeof getGeminiModel>;
-    try {
-      model = getGeminiModel(modelName);
-    } catch (e) {
-      const msg =
-        e instanceof Error
-          ? e.message
-          : "Không thể khởi tạo Gemini client (thiếu API key?).";
-      return Response.json(
-        {
-          success: false,
-          error:
-            msg +
-            "\nHãy đặt biến môi trường GEMINI_API_KEY hoặc GOOGLE_API_KEY trên server (và deploy lại).",
-        },
-        { status: 500 }
-      );
-    }
+    const model = getGeminiModel();
 
     // Use chat session with history and send the last user message
     // Note: We keep it simple (no streaming) for broad compatibility.
@@ -105,16 +87,27 @@ export async function POST(req: NextRequest) {
         text: string
       ) => Promise<{ response: { text: () => string } }>;
     };
-    const startChat = (
-      model as unknown as {
-        startChat?: (opts: {
-          history: Array<{ role: Role; parts: { text: string }[] }>;
-        }) => ChatSession | undefined;
+    type Part = { text: string };
+    type Content = { role: Role; parts: Part[] };
+    interface GenerativeModelLike {
+      startChat?: (opts: { history: Content[] }) => ChatSession | undefined;
+      generateContent: (args: {
+        contents: Content[];
+      }) => Promise<{ response: { text: () => string } }>;
+    }
+    const m = model as unknown as GenerativeModelLike;
+    const _startChat:
+      | ((opts: { history: Content[] }) => ChatSession | undefined)
+      | undefined =
+      typeof m.startChat === "function" ? m.startChat.bind(m) : undefined;
+    let chat: ChatSession | null = null;
+    if (_startChat) {
+      try {
+        chat = _startChat({ history }) ?? null;
+      } catch {
+        chat = null;
       }
-    ).startChat;
-    const chat: ChatSession | null = startChat
-      ? startChat({ history }) ?? null
-      : null;
+    }
 
     let text = "";
     if (chat && typeof chat.sendMessage === "function") {
