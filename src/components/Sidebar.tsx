@@ -26,6 +26,7 @@ import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import RuleIcon from "@mui/icons-material/Rule";
+import SmartToyIcon from "@mui/icons-material/SmartToy";
 
 // Drawer dynamic to avoid SSR mismatch on mobile
 const DrawerDynamic = dynamic(() => import("@mui/material/Drawer"), {
@@ -219,6 +220,46 @@ export default function Sidebar({ expanded, onClose, onToggle }: SidebarProps) {
       {header}
       <Divider sx={{ mb: 0.5 }} />
       {list}
+      {isDesktop && (
+        <Box
+          sx={{ px: 1, pb: 1, pt: 0.5, borderTop: 1, borderColor: "divider" }}
+        >
+          <Tooltip
+            title={expanded ? "Trợ lý AI" : "Trợ lý AI"}
+            placement="right"
+          >
+            <ListItemButton
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.dispatchEvent(new Event("chat:toggle"));
+                }
+              }}
+              sx={{
+                py: 1,
+                minHeight: 44,
+                justifyContent: expanded ? "flex-start" : "center",
+                px: expanded ? 2 : 1,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: expanded ? 2 : 0,
+                  justifyContent: "center",
+                }}
+              >
+                <SmartToyIcon color="primary" />
+              </ListItemIcon>
+              {expanded && (
+                <ListItemText
+                  primary="Trợ lý AI"
+                  primaryTypographyProps={{ fontWeight: 600 }}
+                />
+              )}
+            </ListItemButton>
+          </Tooltip>
+        </Box>
+      )}
       {isDesktop && (
         <Tooltip title={expanded ? "Thu gọn" : "Mở rộng"} placement="right">
           <Box

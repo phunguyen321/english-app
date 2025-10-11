@@ -7,9 +7,11 @@ import {
   Toolbar,
   Typography,
   Box,
+  Button,
 } from "@mui/material";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import MenuIcon from "@mui/icons-material/Menu";
+import SmartToyIcon from "@mui/icons-material/SmartToy";
 import { useTheme } from "@mui/material/styles";
 import AppProviders from "@/providers";
 import { useState, useEffect } from "react";
@@ -91,6 +93,31 @@ export default function RootLayoutClient({
               >
                 English Learner
               </Typography>
+              <Button
+                variant="contained"
+                size="small"
+                color="primary"
+                startIcon={<SmartToyIcon />}
+                aria-label="Mở chat trợ lý AI"
+                onClick={() => {
+                  if (typeof window !== "undefined") {
+                    window.dispatchEvent(new Event("chat:toggle"));
+                  }
+                }}
+                sx={{
+                  textTransform: "none",
+                  fontWeight: 600,
+                  borderRadius: 2,
+                  px: 1.25,
+                  py: 0.5,
+                  mr: 1,
+                  my: 0.5,
+                  boxShadow: 1,
+                  "&:hover": { boxShadow: 2 },
+                }}
+              >
+                Chat
+              </Button>
             </Toolbar>
           </AppBar>
           <Box sx={{ height: 56 }} />

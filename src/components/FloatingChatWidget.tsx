@@ -9,7 +9,6 @@ import {
   Avatar,
   Typography,
   CircularProgress,
-  Fab,
   Grow,
   useMediaQuery,
 } from "@mui/material";
@@ -32,6 +31,7 @@ export default function FloatingChatWidget() {
   const [kbOffset, setKbOffset] = React.useState(0);
   const inputBoxRef = React.useRef<HTMLDivElement | null>(null);
   const [inputHeight, setInputHeight] = React.useState(56);
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
 
   // Keep input above mobile virtual keyboard using VisualViewport
   React.useEffect(() => {
@@ -39,7 +39,8 @@ export default function FloatingChatWidget() {
       setKbOffset(0);
       return;
     }
-    const vv = (window as any).visualViewport as VisualViewport | undefined;
+    const vv = (window as Window & { visualViewport?: VisualViewport })
+      .visualViewport;
     if (!vv) return; // Fallback: do nothing if not supported
     const update = () => {
       const offset = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
@@ -65,8 +66,8 @@ export default function FloatingChatWidget() {
   // Track input box height (multiline grows), so we can reserve space in the message list
   React.useEffect(() => {
     const el = inputBoxRef.current;
-    if (!el || !(window as any).ResizeObserver) return;
-    const ro = new (window as any).ResizeObserver((entries: any) => {
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver((entries: ResizeObserverEntry[]) => {
       const cr = entries[0]?.contentRect;
       if (cr) setInputHeight(Math.ceil(cr.height));
     });
@@ -77,19 +78,6 @@ export default function FloatingChatWidget() {
   }, [open]);
   const [input, setInput] = React.useState("");
   const [loading, setLoading] = React.useState(false);
-  const containerRef = React.useRef<HTMLDivElement | null>(null);
-  const fabRef = React.useRef<HTMLButtonElement | null>(null);
-  const [pos, setPos] = React.useState<{ right: number; bottom: number }>(
-    () => ({ right: 16, bottom: 16 })
-  );
-  const dragRef = React.useRef({
-    dragging: false,
-    startX: 0,
-    startY: 0,
-    moved: 0,
-  });
-  const [scrolling, setScrolling] = React.useState(false);
-  const scrollTimerRef = React.useRef<number | null>(null);
 
   React.useEffect(() => {
     if (open) {
@@ -102,22 +90,15 @@ export default function FloatingChatWidget() {
     }
   }, [open, messages.length]);
 
-  // Dim the FAB slightly while the user is scrolling to reduce distraction
+  // (FAB removed) No scroll-dimming logic needed anymore
+
+  // Listen to navbar chat toggle (mobile button)
   React.useEffect(() => {
-    const onScroll = () => {
-      setScrolling(true);
-      if (scrollTimerRef.current) {
-        window.clearTimeout(scrollTimerRef.current);
-      }
-      scrollTimerRef.current = window.setTimeout(() => {
-        setScrolling(false);
-      }, 200);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (scrollTimerRef.current) window.clearTimeout(scrollTimerRef.current);
-    };
+    const onToggle = () => setOpen((v) => !v);
+    if (typeof window !== "undefined") {
+      window.addEventListener("chat:toggle", onToggle);
+      return () => window.removeEventListener("chat:toggle", onToggle);
+    }
   }, []);
 
   const send = async () => {
@@ -172,58 +153,19 @@ export default function FloatingChatWidget() {
       };
     }
   }, [open, smDown]);
-  // Draggable FAB handlers
-  const onFabPointerDown: React.PointerEventHandler<HTMLButtonElement> = (
-    e
-  ) => {
-    try {
-      (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
-    } catch {}
-    dragRef.current.dragging = true;
-    dragRef.current.startX = e.clientX;
-    dragRef.current.startY = e.clientY;
-    dragRef.current.moved = 0;
-  };
-
-  const onFabPointerMove: React.PointerEventHandler<HTMLButtonElement> = (
-    e
-  ) => {
-    if (!dragRef.current.dragging) return;
-    const dx = e.clientX - dragRef.current.startX;
-    const dy = e.clientY - dragRef.current.startY;
-    dragRef.current.moved = Math.max(dragRef.current.moved, Math.hypot(dx, dy));
-
-    const FAB_SIZE_MOBILE = 52;
-    const FAB_SIZE_DESKTOP = 56;
-    const btnSize = smDown ? FAB_SIZE_MOBILE : FAB_SIZE_DESKTOP;
-    // Compute new left/top centered on pointer
-    const left = Math.max(
-      8,
-      Math.min(e.clientX - btnSize / 2, window.innerWidth - btnSize - 8)
-    );
-    const top = Math.max(
-      8,
-      Math.min(e.clientY - btnSize / 2, window.innerHeight - btnSize - 8)
-    );
-    const right = Math.max(8, window.innerWidth - left - btnSize);
-    const bottom = Math.max(8, window.innerHeight - top - btnSize);
-    setPos({ right, bottom });
-  };
-
-  const onFabPointerUp: React.PointerEventHandler<HTMLButtonElement> = (e) => {
-    if (!dragRef.current.dragging) return;
-    try {
-      (e.currentTarget as HTMLElement).releasePointerCapture?.(e.pointerId);
-    } catch {}
-    const moved = dragRef.current.moved;
-    dragRef.current.dragging = false;
-    // Treat as click if not dragged much
-    if (moved < 6) setOpen((v) => !v);
-  };
+  // (FAB removed) No draggable handlers needed
 
   // Markdown code block with copy button
-  const CodeBlock = (props: any) => {
-    const { inline, children, ...rest } = props || {};
+  type CodeProps = React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLElement>,
+    HTMLElement
+  > & {
+    inline?: boolean;
+    className?: string;
+    children?: React.ReactNode;
+  };
+  const CodeBlock = (props: CodeProps) => {
+    const { inline, children, ...rest } = props;
     if (inline) return <code {...rest}>{children}</code>;
     const text = React.Children.toArray(children).join("");
     const onCopy = () => {
@@ -257,32 +199,7 @@ export default function FloatingChatWidget() {
 
   return (
     <>
-      {/* Floating button */}
-      {!open && (
-        <Fab
-          ref={fabRef}
-          color="primary"
-          aria-label="Chat AI"
-          size="small"
-          onPointerDown={onFabPointerDown}
-          onPointerMove={onFabPointerMove}
-          onPointerUp={onFabPointerUp}
-          sx={{
-            position: "fixed",
-            right: pos.right,
-            bottom: pos.bottom,
-            zIndex: (th) => th.zIndex.modal + 1,
-            boxShadow: 6,
-            width: smDown ? 52 : 56,
-            height: smDown ? 52 : 56,
-            cursor: dragRef.current.dragging ? "grabbing" : "grab",
-            touchAction: "none", // prevent scrolling while dragging
-            opacity: scrolling ? (smDown ? 0.72 : 0.78) : 1,
-          }}
-        >
-          <SmartToyIcon fontSize="small" />
-        </Fab>
-      )}
+      {/* Floating button removed; chat opened via navbar (mobile) and sidebar (desktop) */}
 
       {/* Chat window */}
       <Grow in={open} mountOnEnter unmountOnExit>
@@ -452,7 +369,7 @@ export default function FloatingChatWidget() {
                                 rel="noopener noreferrer"
                               />
                             ),
-                            code: CodeBlock as any,
+                            code: CodeBlock as React.ElementType,
                           }}
                         >
                           {m.content}
