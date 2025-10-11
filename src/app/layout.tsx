@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Poppins, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import RootLayoutClient from "./RootLayoutClient";
@@ -25,7 +25,6 @@ export const metadata: Metadata = {
     // Use existing PNG for Apple touch icon
     { rel: "apple-touch-icon", url: "/english-learn.png" },
   ],
-  themeColor: "#ffffff",
   // iOS PWA meta
   appleWebApp: {
     capable: true,
@@ -34,6 +33,11 @@ export const metadata: Metadata = {
   },
   // Avoid iOS auto-detect phone numbers
   formatDetection: { telephone: false },
+};
+
+// Move themeColor to viewport per Next.js 15 API
+export const viewport: Viewport = {
+  themeColor: "#ffffff",
 };
 
 export default function RootLayout({
