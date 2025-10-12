@@ -27,6 +27,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import RuleIcon from "@mui/icons-material/Rule";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
+import TipsAndUpdatesIcon from "@mui/icons-material/TipsAndUpdates";
 
 // Drawer dynamic to avoid SSR mismatch on mobile
 const DrawerDynamic = dynamic(() => import("@mui/material/Drawer"), {
@@ -42,6 +43,11 @@ const navItems: NavItem[] = [
   { label: "Trang chủ", href: "/", icon: <HomeIcon /> },
   { label: "Từ vựng", href: "/vocabulary", icon: <MenuBookIcon /> },
   { label: "Ngữ pháp", href: "/grammar", icon: <GavelIcon /> },
+  {
+    label: "Ngữ pháp cấp tốc",
+    href: "/grammar/notes",
+    icon: <TipsAndUpdatesIcon />,
+  },
   {
     label: "Động từ bất quy tắc",
     href: "/irregular-verbs",
