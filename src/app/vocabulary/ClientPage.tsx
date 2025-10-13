@@ -375,66 +375,130 @@ export default function VocabularyPage() {
       {!flashMode && (
         <Card variant="outlined" sx={{ mb: 2 }}>
           <CardContent>
+            {/* Search (left) + Actions (right) on md+, stacked on xs */}
             <Stack
               direction={{ xs: "column", md: "row" }}
               spacing={1.5}
               alignItems={{ md: "center" }}
             >
-              {!flashMode && (
-                <TextField
-                  size="small"
-                  label="Tìm kiếm"
-                  placeholder="từ, nghĩa hoặc ví dụ"
-                  value={search}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setSearch(e.target.value)
-                  }
-                  sx={{ minWidth: { xs: "100%", md: 260 } }}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon fontSize="small" />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              )}
+              <TextField
+                size="medium"
+                placeholder="từ, nghĩa hoặc ví dụ"
+                value={search}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setSearch(e.target.value)
+                }
+                fullWidth
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon fontSize="small" />
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{
+                  flex: 1,
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: 2,
+                  },
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "#ccc",
+                  },
+                  "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                    {
+                      borderColor: "#00c793",
+                    },
+                  "& .MuiInputBase-input::placeholder": {
+                    color: "#a0a0a0",
+                    fontStyle: "italic",
+                  },
+                }}
+              />
+
+              {/* Action buttons: Filter | HỌC THẺ | XÁO TRỘN */}
               <Stack
                 direction="row"
-                spacing={1}
-                sx={{ ml: { md: "auto" } }}
+                spacing={{ xs: 1, md: 1.5 }}
                 alignItems="center"
+                sx={{ ml: { md: "auto" } }}
                 flexWrap="nowrap"
               >
-                {!flashMode && (
-                  <Tooltip title="Bộ lọc">
-                    <IconButton
-                      color="primary"
-                      onClick={() => setMobileFilterOpen(true)}
-                      aria-label="Mở bộ lọc"
-                    >
-                      <FilterListIcon />
-                    </IconButton>
-                  </Tooltip>
-                )}
-                <Button
-                  size="small"
-                  variant="outlined"
-                  startIcon={<ShuffleIcon />}
-                  onClick={handleShuffle}
-                >
-                  {flashMode ? "Xáo trộn thẻ" : "Xáo trộn"}
-                </Button>
-                {!flashMode && (
+                <Tooltip title="Bộ lọc">
                   <Button
-                    size="small"
-                    variant="contained"
-                    startIcon={<PlayArrowIcon />}
-                    onClick={startFlashcards}
+                    aria-label="Mở bộ lọc"
+                    variant="outlined"
+                    onClick={() => setMobileFilterOpen(true)}
+                    sx={{
+                      width: 44,
+                      minWidth: 44,
+                      height: 44,
+                      p: 0,
+                      borderRadius: 1.5,
+                      borderColor: "#00c793",
+                      borderWidth: 2,
+                      color: "#00c793",
+                      "&:hover": {
+                        bgcolor: "#f0fafa",
+                        borderColor: "#00a87a",
+                        color: "#00a87a",
+                      },
+                    }}
                   >
-                    Học thẻ
+                    <FilterListIcon fontSize="small" />
                   </Button>
-                )}
+                </Tooltip>
+
+                <Button
+                  variant="contained"
+                  startIcon={<PlayArrowIcon fontSize="small" />}
+                  onClick={startFlashcards}
+                  sx={{
+                    height: 44,
+                    textTransform: "uppercase",
+                    fontWeight: 700,
+                    fontSize: { xs: 12, md: 14 },
+                    px: { xs: 1.25, md: 2 },
+                    whiteSpace: "nowrap",
+                    minWidth: { xs: 0, md: 64 },
+                    borderRadius: 1.5,
+                    bgcolor: "#00a87a",
+                    color: "#fff",
+                    border: "1px solid #00a87a",
+                    boxShadow: "0 4px 8px rgba(0, 168, 122, 0.2)",
+                    "&:hover": {
+                      bgcolor: "#008f6c",
+                      borderColor: "#008f6c",
+                    },
+                  }}
+                >
+                  Học thẻ
+                </Button>
+
+                <Button
+                  variant="outlined"
+                  startIcon={<ShuffleIcon fontSize="small" />}
+                  onClick={handleShuffle}
+                  sx={{
+                    height: 44,
+                    textTransform: "uppercase",
+                    fontWeight: 700,
+                    fontSize: { xs: 12, md: 14 },
+                    px: { xs: 1.25, md: 2 },
+                    whiteSpace: "nowrap",
+                    minWidth: { xs: 0, md: 64 },
+                    borderRadius: 1.5,
+                    borderColor: "#00c793",
+                    color: "#00c793",
+                    borderWidth: 2,
+                    "&:hover": {
+                      bgcolor: "#f0fafa",
+                      borderColor: "#00a87a",
+                      color: "#00a87a",
+                    },
+                  }}
+                >
+                  Xáo trộn
+                </Button>
               </Stack>
             </Stack>
           </CardContent>
@@ -631,7 +695,7 @@ export default function VocabularyPage() {
                   >
                     <Checkbox
                       checked={checked}
-                      onChange={(e) => {
+                      onClick={(e) => {
                         e.stopPropagation();
                         toggleTopic();
                       }}
