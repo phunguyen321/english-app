@@ -156,7 +156,7 @@ export default function RootLayoutClient({
               padding: "20px 0 10px 0",
               textAlign: "center",
               color: "#888",
-              fontSize: 15,
+              fontSize: 12,
               fontStyle: "italic",
               letterSpacing: 1,
               background: "transparent",
