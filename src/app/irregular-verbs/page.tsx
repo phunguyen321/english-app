@@ -14,7 +14,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import AppAPI from "@/lib/api";
 // Mobile-first UI styled to match example/verb.html
 
-type Verb = { base: string; past: string; pp: string; meaning?: string };
+type Verb = {
+  base: string;
+  past: string;
+  pp: string;
+  meaning?: string;
+  phonetic?: string; // IPA phonetic for base form
+};
 
 export default function IrregularVerbsPage() {
   const [q, setQ] = useState("");
@@ -51,7 +57,7 @@ export default function IrregularVerbsPage() {
     const source = data;
     if (!needle) return source;
     return source.filter((v) =>
-      [v.base, v.past, v.pp, v.meaning || ""].some((s) =>
+      [v.base, v.past, v.pp, v.meaning || "", v.phonetic || ""].some((s) =>
         s.toLowerCase().includes(needle)
       )
     );
@@ -149,7 +155,7 @@ export default function IrregularVerbsPage() {
         <TextField
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Tìm kiếm từ gốc / quá khứ..."
+          placeholder="Tìm kiếm từ gốc / quá khứ / IPA..."
           fullWidth
           size="small"
           InputProps={{
@@ -258,7 +264,7 @@ export default function IrregularVerbsPage() {
                 }}
               >
                 <CardContent sx={{ py: 2 }}>
-                  {/* V1 */}
+                  {/* V1 + IPA */}
                   <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
                     <Box
                       sx={{
@@ -277,10 +283,44 @@ export default function IrregularVerbsPage() {
                       V1
                     </Box>
                     <Box
-                      className="verb-word"
-                      sx={{ fontSize: 18, fontWeight: 600, color: "#333" }}
+                      sx={{
+                        display: "flex",
+                        alignItems: "baseline",
+                        gap: 1,
+                        flexWrap: "wrap",
+                      }}
                     >
-                      {renderForms(v.base)}
+                      <Box
+                        className="verb-word"
+                        sx={{ fontSize: 18, fontWeight: 600, color: "#333" }}
+                      >
+                        {renderForms(v.base)}
+                      </Box>
+                      {v.phonetic && (
+                        <Box
+                          component="span"
+                          aria-label="IPA"
+                          sx={{
+                            fontFamily: '"Segoe UI", Roboto, Arial, sans-serif',
+                            fontSize: 14,
+                            color: colors.textMuted,
+                            bgcolor: "#f0f4ff",
+                            border: "1px solid #e0e7ff",
+                            px: 0.75,
+                            py: 0.25,
+                            borderRadius: 999,
+                            lineHeight: 1.6,
+                          }}
+                        >
+                          <Box
+                            component="span"
+                            sx={{ mr: 0.5, color: colors.blue }}
+                          >
+                            🎧
+                          </Box>
+                          {highlight(v.phonetic)}
+                        </Box>
+                      )}
                     </Box>
                   </Box>
 

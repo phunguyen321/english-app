@@ -3,727 +3,1554 @@
     "base": "abide",
     "past": "abode/abided",
     "pp": "abode/abided",
-    "meaning": "lưu trú, lưu lại"
+    "meaning": "lưu trú, lưu lại",
+    "phonetic": "/əˈbaɪd/"
   },
-  { "base": "arise", "past": "arose", "pp": "arisen", "meaning": "phát sinh" },
+  {
+    "base": "arise",
+    "past": "arose",
+    "pp": "arisen",
+    "meaning": "phát sinh",
+    "phonetic": "/əˈraɪz/"
+  },
   {
     "base": "awake",
     "past": "awoke",
     "pp": "awoken",
-    "meaning": "đánh thức, thức"
+    "meaning": "đánh thức, thức",
+    "phonetic": "/əˈweɪk/"
   },
   {
     "base": "be",
     "past": "was/were",
     "pp": "been",
-    "meaning": "thì, là, bị, ở"
+    "meaning": "thì, là, bị, ở",
+    "phonetic": "/biː/"
   },
   {
     "base": "bear",
     "past": "bore",
     "pp": "borne",
-    "meaning": "mang, chịu đựng"
+    "meaning": "mang, chịu đựng",
+    "phonetic": "/beər/"
   },
-  { "base": "become", "past": "became", "pp": "become", "meaning": "trở nên" },
+  {
+    "base": "become",
+    "past": "became",
+    "pp": "become",
+    "meaning": "trở nên",
+    "phonetic": "/bɪˈkʌm/"
+  },
   {
     "base": "befall",
     "past": "befell",
     "pp": "befallen",
-    "meaning": "xảy đến"
+    "meaning": "xảy đến",
+    "phonetic": "/bɪˈfɔːl/"
   },
-  { "base": "begin", "past": "began", "pp": "begun", "meaning": "bắt đầu" },
+  {
+    "base": "begin",
+    "past": "began",
+    "pp": "begun",
+    "meaning": "bắt đầu",
+    "phonetic": "/bɪˈɡɪn/"
+  },
   {
     "base": "behold",
     "past": "beheld",
     "pp": "beheld",
-    "meaning": "ngắm nhìn"
+    "meaning": "ngắm nhìn",
+    "phonetic": "/bɪˈhəʊld/"
   },
-  { "base": "bend", "past": "bent", "pp": "bent", "meaning": "bẻ cong" },
-  { "base": "beset", "past": "beset", "pp": "beset", "meaning": "bao quanh" },
+  {
+    "base": "bend",
+    "past": "bent",
+    "pp": "bent",
+    "meaning": "bẻ cong",
+    "phonetic": "/bend/"
+  },
+  {
+    "base": "beset",
+    "past": "beset",
+    "pp": "beset",
+    "meaning": "bao quanh",
+    "phonetic": "/bɪˈset/"
+  },
   {
     "base": "bespeak",
     "past": "bespoke",
     "pp": "bespoken",
-    "meaning": "chứng tỏ"
+    "meaning": "chứng tỏ",
+    "phonetic": "/bɪˈspiːk/"
   },
-  { "base": "bid (offer)", "past": "bid", "pp": "bid", "meaning": "trả giá" },
-  { "base": "bind", "past": "bound", "pp": "bound", "meaning": "buộc, trói" },
-  { "base": "bleed", "past": "bled", "pp": "bled", "meaning": "chảy máu" },
-  { "base": "blow", "past": "blew", "pp": "blown", "meaning": "thổi" },
-  { "base": "break", "past": "broke", "pp": "broken", "meaning": "đập vỡ" },
-  { "base": "breed", "past": "bred", "pp": "bred", "meaning": "nuôi, dạy dỗ" },
+  {
+    "base": "bid (offer)",
+    "past": "bid",
+    "pp": "bid",
+    "meaning": "trả giá",
+    "phonetic": "/bɪd/"
+  },
+  {
+    "base": "bind",
+    "past": "bound",
+    "pp": "bound",
+    "meaning": "buộc, trói",
+    "phonetic": "/baɪnd/"
+  },
+  {
+    "base": "bleed",
+    "past": "bled",
+    "pp": "bled",
+    "meaning": "chảy máu",
+    "phonetic": "/bliːd/"
+  },
+  {
+    "base": "blow",
+    "past": "blew",
+    "pp": "blown",
+    "meaning": "thổi",
+    "phonetic": "/bləʊ/"
+  },
+  {
+    "base": "break",
+    "past": "broke",
+    "pp": "broken",
+    "meaning": "đập vỡ",
+    "phonetic": "/breɪk/"
+  },
+  {
+    "base": "breed",
+    "past": "bred",
+    "pp": "bred",
+    "meaning": "nuôi, dạy dỗ",
+    "phonetic": "/briːd/"
+  },
   {
     "base": "bring",
     "past": "brought",
     "pp": "brought",
-    "meaning": "mang đến"
+    "meaning": "mang đến",
+    "phonetic": "/brɪŋ/"
   },
   {
     "base": "broadcast",
     "past": "broadcast",
     "pp": "broadcast",
-    "meaning": "phát thanh"
+    "meaning": "phát thanh",
+    "phonetic": "/ˈbrɔːdkɑːst/"
   },
-  { "base": "build", "past": "built", "pp": "built", "meaning": "xây dựng" },
+  {
+    "base": "build",
+    "past": "built",
+    "pp": "built",
+    "meaning": "xây dựng",
+    "phonetic": "/bɪld/"
+  },
   {
     "base": "burn",
     "past": "burnt/burned",
     "pp": "burnt/burned",
-    "meaning": "đốt, cháy"
+    "meaning": "đốt, cháy",
+    "phonetic": "/bɜːn/"
   },
-  { "base": "buy", "past": "bought", "pp": "bought", "meaning": "mua" },
-  { "base": "cast", "past": "cast", "pp": "cast", "meaning": "ném, tung" },
-  { "base": "catch", "past": "caught", "pp": "caught", "meaning": "bắt, chụp" },
+  {
+    "base": "buy",
+    "past": "bought",
+    "pp": "bought",
+    "meaning": "mua",
+    "phonetic": "/baɪ/"
+  },
+  {
+    "base": "cast",
+    "past": "cast",
+    "pp": "cast",
+    "meaning": "ném, tung",
+    "phonetic": "/kɑːst/"
+  },
+  {
+    "base": "catch",
+    "past": "caught",
+    "pp": "caught",
+    "meaning": "bắt, chụp",
+    "phonetic": "/kætʃ/"
+  },
   {
     "base": "chide",
     "past": "chid/chided",
     "pp": "chid/chidden/chided",
-    "meaning": "mắng, chửi"
+    "meaning": "mắng, chửi",
+    "phonetic": "/tʃaɪd/"
   },
-  { "base": "choose", "past": "chose", "pp": "chosen", "meaning": "chọn, lựa" },
+  {
+    "base": "choose",
+    "past": "chose",
+    "pp": "chosen",
+    "meaning": "chọn, lựa",
+    "phonetic": "/tʃuːz/"
+  },
   {
     "base": "cleave (split)",
     "past": "clove/cleft/cleaved",
     "pp": "cloven/cleft/cleaved",
-    "meaning": "chẻ, tách hai"
+    "meaning": "chẻ, tách hai",
+    "phonetic": "/kliːv/"
   },
   {
     "base": "cleave (adhere)",
     "past": "clave",
     "pp": "cleaved",
-    "meaning": "dính chặt"
+    "meaning": "dính chặt",
+    "phonetic": "/kliːv/"
   },
-  { "base": "come", "past": "came", "pp": "come", "meaning": "đến" },
-  { "base": "cost", "past": "cost", "pp": "cost", "meaning": "có giá" },
+  {
+    "base": "come",
+    "past": "came",
+    "pp": "come",
+    "meaning": "đến",
+    "phonetic": "/kʌm/"
+  },
+  {
+    "base": "cost",
+    "past": "cost",
+    "pp": "cost",
+    "meaning": "có giá",
+    "phonetic": "/kɒst/"
+  },
   {
     "base": "crow",
     "past": "crew/crewed",
     "pp": "crowed",
-    "meaning": "gáy (gà)"
+    "meaning": "gáy (gà)",
+    "phonetic": "/krəʊ/"
   },
-  { "base": "cut", "past": "cut", "pp": "cut", "meaning": "cắt, chặt" },
-  { "base": "deal", "past": "dealt", "pp": "dealt", "meaning": "giao thiệp" },
-  { "base": "dig", "past": "dug", "pp": "dug", "meaning": "đào" },
+  {
+    "base": "cut",
+    "past": "cut",
+    "pp": "cut",
+    "meaning": "cắt, chặt",
+    "phonetic": "/kʌt/"
+  },
+  {
+    "base": "deal",
+    "past": "dealt",
+    "pp": "dealt",
+    "meaning": "giao thiệp",
+    "phonetic": "/diːl/"
+  },
+  {
+    "base": "dig",
+    "past": "dug",
+    "pp": "dug",
+    "meaning": "đào",
+    "phonetic": "/dɪɡ/"
+  },
   {
     "base": "dive",
     "past": "dove/dived",
     "pp": "dived",
-    "meaning": "lặn, lao xuống"
+    "meaning": "lặn, lao xuống",
+    "phonetic": "/daɪv/"
   },
-  { "base": "draw", "past": "drew", "pp": "drawn", "meaning": "vẽ, kéo" },
+  {
+    "base": "draw",
+    "past": "drew",
+    "pp": "drawn",
+    "meaning": "vẽ, kéo",
+    "phonetic": "/drɔː/"
+  },
   {
     "base": "dream",
     "past": "dreamt/dreamed",
     "pp": "dreamt/dreamed",
-    "meaning": "mơ thấy"
+    "meaning": "mơ thấy",
+    "phonetic": "/driːm/"
   },
-  { "base": "drink", "past": "drank", "pp": "drunk", "meaning": "uống" },
-  { "base": "drive", "past": "drove", "pp": "driven", "meaning": "lái" },
-  { "base": "dwell", "past": "dwelt", "pp": "dwelt", "meaning": "trú ngụ, ở" },
-  { "base": "eat", "past": "ate", "pp": "eaten", "meaning": "ăn" },
-  { "base": "fall", "past": "fell", "pp": "fallen", "meaning": "ngã, rơi" },
-  { "base": "feed", "past": "fed", "pp": "fed", "meaning": "cho ăn, nuôi" },
-  { "base": "feel", "past": "felt", "pp": "felt", "meaning": "cảm thấy" },
-  { "base": "fight", "past": "fought", "pp": "fought", "meaning": "chiến đấu" },
-  { "base": "find", "past": "found", "pp": "found", "meaning": "tìm thấy" },
-  { "base": "flee", "past": "fled", "pp": "fled", "meaning": "chạy trốn" },
-  { "base": "fling", "past": "flung", "pp": "flung", "meaning": "tung, quăng" },
-  { "base": "fly", "past": "flew", "pp": "flown", "meaning": "bay" },
-  { "base": "forbear", "past": "forbore", "pp": "forborne", "meaning": "nhịn" },
+  {
+    "base": "drink",
+    "past": "drank",
+    "pp": "drunk",
+    "meaning": "uống",
+    "phonetic": "/drɪŋk/"
+  },
+  {
+    "base": "drive",
+    "past": "drove",
+    "pp": "driven",
+    "meaning": "lái",
+    "phonetic": "/draɪv/"
+  },
+  {
+    "base": "dwell",
+    "past": "dwelt",
+    "pp": "dwelt",
+    "meaning": "trú ngụ, ở",
+    "phonetic": "/dwel/"
+  },
+  {
+    "base": "eat",
+    "past": "ate",
+    "pp": "eaten",
+    "meaning": "ăn",
+    "phonetic": "/iːt/"
+  },
+  {
+    "base": "fall",
+    "past": "fell",
+    "pp": "fallen",
+    "meaning": "ngã, rơi",
+    "phonetic": "/fɔːl/"
+  },
+  {
+    "base": "feed",
+    "past": "fed",
+    "pp": "fed",
+    "meaning": "cho ăn, nuôi",
+    "phonetic": "/fiːd/"
+  },
+  {
+    "base": "feel",
+    "past": "felt",
+    "pp": "felt",
+    "meaning": "cảm thấy",
+    "phonetic": "/fiːl/"
+  },
+  {
+    "base": "fight",
+    "past": "fought",
+    "pp": "fought",
+    "meaning": "chiến đấu",
+    "phonetic": "/faɪt/"
+  },
+  {
+    "base": "find",
+    "past": "found",
+    "pp": "found",
+    "meaning": "tìm thấy",
+    "phonetic": "/faɪnd/"
+  },
+  {
+    "base": "flee",
+    "past": "fled",
+    "pp": "fled",
+    "meaning": "chạy trốn",
+    "phonetic": "/fliː/"
+  },
+  {
+    "base": "fling",
+    "past": "flung",
+    "pp": "flung",
+    "meaning": "tung, quăng",
+    "phonetic": "/flɪŋ/"
+  },
+  {
+    "base": "fly",
+    "past": "flew",
+    "pp": "flown",
+    "meaning": "bay",
+    "phonetic": "/flaɪ/"
+  },
+  {
+    "base": "forbear",
+    "past": "forbore",
+    "pp": "forborne",
+    "meaning": "nhịn",
+    "phonetic": "/fɔːˈbeər/"
+  },
   {
     "base": "forbid",
     "past": "forbade/forbad",
     "pp": "forbidden",
-    "meaning": "cấm"
+    "meaning": "cấm",
+    "phonetic": "/fəˈbɪd/"
   },
   {
     "base": "forecast",
     "past": "forecast/forecasted",
     "pp": "forecast/forecasted",
-    "meaning": "tiên đoán"
+    "meaning": "tiên đoán",
+    "phonetic": "/ˈfɔːkɑːst/"
   },
   {
     "base": "foresee",
     "past": "foresaw",
     "pp": "forseen",
-    "meaning": "thấy trước"
+    "meaning": "thấy trước",
+    "phonetic": "/fɔːˈsiː/"
   },
   {
     "base": "foretell",
     "past": "foretold",
     "pp": "foretold",
-    "meaning": "đoán trước"
+    "meaning": "đoán trước",
+    "phonetic": "/fɔːˈtel/"
   },
-  { "base": "forget", "past": "forgot", "pp": "forgotten", "meaning": "quên" },
+  {
+    "base": "forget",
+    "past": "forgot",
+    "pp": "forgotten",
+    "meaning": "quên",
+    "phonetic": "/fəˈɡet/"
+  },
   {
     "base": "forgive",
     "past": "forgave",
     "pp": "forgiven",
-    "meaning": "tha thứ"
+    "meaning": "tha thứ",
+    "phonetic": "/fəˈɡɪv/"
   },
   {
     "base": "forsake",
     "past": "forsook",
     "pp": "forsaken",
-    "meaning": "ruồng bỏ"
+    "meaning": "ruồng bỏ",
+    "phonetic": "/fəˈseɪk/"
   },
   {
     "base": "freeze",
     "past": "froze",
     "pp": "frozen",
-    "meaning": "(làm) đông lại"
+    "meaning": "(làm) đông lại",
+    "phonetic": "/friːz/"
   },
-  { "base": "get", "past": "got", "pp": "got/gotten", "meaning": "có được" },
+  {
+    "base": "get",
+    "past": "got",
+    "pp": "got/gotten",
+    "meaning": "có được",
+    "phonetic": "/ɡet/"
+  },
   {
     "base": "gild",
     "past": "gilt/gilded",
     "pp": "gilt/gilded",
-    "meaning": "mạ vàng"
+    "meaning": "mạ vàng",
+    "phonetic": "/ɡɪld/"
   },
   {
     "base": "gird",
     "past": "girt/girded",
     "pp": "girt/girded",
-    "meaning": "đeo vào"
+    "meaning": "đeo vào",
+    "phonetic": "/ɡɜːd/"
   },
-  { "base": "give", "past": "gave", "pp": "given", "meaning": "cho" },
-  { "base": "go", "past": "went", "pp": "gone", "meaning": "đi" },
+  {
+    "base": "give",
+    "past": "gave",
+    "pp": "given",
+    "meaning": "cho",
+    "phonetic": "/ɡɪv/"
+  },
+  {
+    "base": "go",
+    "past": "went",
+    "pp": "gone",
+    "meaning": "đi",
+    "phonetic": "/ɡəʊ/"
+  },
   {
     "base": "grind",
     "past": "ground",
     "pp": "ground",
-    "meaning": "nghiền, xay"
+    "meaning": "nghiền, xay",
+    "phonetic": "/ɡraɪnd/"
   },
-  { "base": "grow", "past": "grew", "pp": "grown", "meaning": "mọc, trồng" },
-  { "base": "hang", "past": "hung", "pp": "hung", "meaning": "treo, móc" },
-  { "base": "hear", "past": "heard", "pp": "heard", "meaning": "nghe" },
+  {
+    "base": "grow",
+    "past": "grew",
+    "pp": "grown",
+    "meaning": "mọc, trồng",
+    "phonetic": "/ɡrəʊ/"
+  },
+  {
+    "base": "hang",
+    "past": "hung",
+    "pp": "hung",
+    "meaning": "treo, móc",
+    "phonetic": "/hæŋ/"
+  },
+  {
+    "base": "hear",
+    "past": "heard",
+    "pp": "heard",
+    "meaning": "nghe",
+    "phonetic": "/hɪər/"
+  },
   {
     "base": "heave",
     "past": "hove/heaved",
     "pp": "hove/heaved",
-    "meaning": "trục lên"
+    "meaning": "trục lên",
+    "phonetic": "/hiːv/"
   },
-  { "base": "hide", "past": "hid", "pp": "hidden", "meaning": "giấu, nấp" },
-  { "base": "hit", "past": "hit", "pp": "hit", "meaning": "đụng" },
-  { "base": "hurt", "past": "hurt", "pp": "hurt", "meaning": "làm đau" },
-  { "base": "inlay", "past": "inlaid", "pp": "inlaid", "meaning": "cẩn, khảm" },
+  {
+    "base": "hide",
+    "past": "hid",
+    "pp": "hidden",
+    "meaning": "giấu, nấp",
+    "phonetic": "/haɪd/"
+  },
+  {
+    "base": "hit",
+    "past": "hit",
+    "pp": "hit",
+    "meaning": "đụng",
+    "phonetic": "/hɪt/"
+  },
+  {
+    "base": "hurt",
+    "past": "hurt",
+    "pp": "hurt",
+    "meaning": "làm đau",
+    "phonetic": "/hɜːt/"
+  },
+  {
+    "base": "inlay",
+    "past": "inlaid",
+    "pp": "inlaid",
+    "meaning": "cẩn, khảm",
+    "phonetic": "/ˈɪnleɪ/"
+  },
   {
     "base": "input",
     "past": "input",
     "pp": "input",
-    "meaning": "đưa vào (máy tính)"
+    "meaning": "đưa vào (máy tính)",
+    "phonetic": "/ˈɪnpʊt/"
   },
-  { "base": "inset", "past": "inset", "pp": "inset", "meaning": "dát, ghép" },
-  { "base": "keep", "past": "kept", "pp": "kept", "meaning": "giữ" },
+  {
+    "base": "inset",
+    "past": "inset",
+    "pp": "inset",
+    "meaning": "dát, ghép",
+    "phonetic": "/ˈɪnset/"
+  },
+  {
+    "base": "keep",
+    "past": "kept",
+    "pp": "kept",
+    "meaning": "giữ",
+    "phonetic": "/kiːp/"
+  },
   {
     "base": "kneel",
     "past": "knelt/kneeled",
     "pp": "knelt/kneeled",
-    "meaning": "quỳ"
+    "meaning": "quỳ",
+    "phonetic": "/niːl/"
   },
   {
     "base": "knit",
     "past": "knit/knitted",
     "pp": "knit/knitted",
-    "meaning": "đan"
+    "meaning": "đan",
+    "phonetic": "/nɪt/"
   },
-  { "base": "know", "past": "knew", "pp": "known", "meaning": "biết" },
-  { "base": "lay", "past": "laid", "pp": "laid", "meaning": "đặt, để" },
-  { "base": "lead", "past": "led", "pp": "led", "meaning": "dẫn dắt" },
+  {
+    "base": "know",
+    "past": "knew",
+    "pp": "known",
+    "meaning": "biết",
+    "phonetic": "/nəʊ/"
+  },
+  {
+    "base": "lay",
+    "past": "laid",
+    "pp": "laid",
+    "meaning": "đặt, để",
+    "phonetic": "/leɪ/"
+  },
+  {
+    "base": "lead",
+    "past": "led",
+    "pp": "led",
+    "meaning": "dẫn dắt",
+    "phonetic": "/liːd/"
+  },
   {
     "base": "leap",
     "past": "leapt",
     "pp": "leapt",
-    "meaning": "nhảy, nhảy qua"
+    "meaning": "nhảy, nhảy qua",
+    "phonetic": "/liːp/"
   },
   {
     "base": "learn",
     "past": "learnt/learned",
     "pp": "learnt/learned",
-    "meaning": "học"
+    "meaning": "học",
+    "phonetic": "/lɜːn/"
   },
   {
     "base": "leave",
     "past": "left",
     "pp": "left",
-    "meaning": "rời đi, để lại"
+    "meaning": "rời đi, để lại",
+    "phonetic": "/liːv/"
   },
-  { "base": "lend", "past": "lent", "pp": "lent", "meaning": "cho mượn" },
-  { "base": "let", "past": "let", "pp": "let", "meaning": "cho phép, để cho" },
-  { "base": "lie (recline)", "past": "lay", "pp": "lain", "meaning": "nằm" },
+  {
+    "base": "lend",
+    "past": "lent",
+    "pp": "lent",
+    "meaning": "cho mượn",
+    "phonetic": "/lend/"
+  },
+  {
+    "base": "let",
+    "past": "let",
+    "pp": "let",
+    "meaning": "cho phép, để cho",
+    "phonetic": "/let/"
+  },
+  {
+    "base": "lie (recline)",
+    "past": "lay",
+    "pp": "lain",
+    "meaning": "nằm",
+    "phonetic": "/laɪ/"
+  },
   {
     "base": "light",
     "past": "lit/lighted",
     "pp": "lit/lighted",
-    "meaning": "thắp sáng"
+    "meaning": "thắp sáng",
+    "phonetic": "/laɪt/"
   },
-  { "base": "lose", "past": "lost", "pp": "lost", "meaning": "mất" },
-  { "base": "make", "past": "made", "pp": "made", "meaning": "chế tạo" },
-  { "base": "mean", "past": "meant", "pp": "meant", "meaning": "có nghĩa là" },
-  { "base": "meet", "past": "met", "pp": "met", "meaning": "gặp" },
+  {
+    "base": "lose",
+    "past": "lost",
+    "pp": "lost",
+    "meaning": "mất",
+    "phonetic": "/luːz/"
+  },
+  {
+    "base": "make",
+    "past": "made",
+    "pp": "made",
+    "meaning": "chế tạo",
+    "phonetic": "/meɪk/"
+  },
+  {
+    "base": "mean",
+    "past": "meant",
+    "pp": "meant",
+    "meaning": "có nghĩa là",
+    "phonetic": "/miːn/"
+  },
+  {
+    "base": "meet",
+    "past": "met",
+    "pp": "met",
+    "meaning": "gặp",
+    "phonetic": "/miːt/"
+  },
   {
     "base": "mislay",
     "past": "mislaid",
     "pp": "mislaid",
-    "meaning": "để lạc mất"
+    "meaning": "để lạc mất",
+    "phonetic": "/mɪsˈleɪ/"
   },
   {
     "base": "misread",
     "past": "misread",
     "pp": "misread",
-    "meaning": "đọc sai"
+    "meaning": "đọc sai",
+    "phonetic": "/mɪsˈriːd/"
   },
   {
     "base": "misspell",
     "past": "misspelt",
     "pp": "misspelt",
-    "meaning": "viết sai chính tả"
+    "meaning": "viết sai chính tả",
+    "phonetic": "/mɪsˈspel/"
   },
   {
     "base": "mistake",
     "past": "mistook",
     "pp": "mistaken",
-    "meaning": "nhầm lẫn"
+    "meaning": "nhầm lẫn",
+    "phonetic": "/mɪsˈteɪk/"
   },
   {
     "base": "misunderstand",
     "past": "misunderstood",
     "pp": "misunderstood",
-    "meaning": "hiểu lầm"
+    "meaning": "hiểu lầm",
+    "phonetic": "/ˌmɪsʌndəˈstænd/"
   },
-  { "base": "mow", "past": "mowed", "pp": "mown/mowed", "meaning": "cắt cỏ" },
+  {
+    "base": "mow",
+    "past": "mowed",
+    "pp": "mown/mowed",
+    "meaning": "cắt cỏ",
+    "phonetic": "/məʊ/"
+  },
   {
     "base": "outbid",
     "past": "outbid",
     "pp": "outbid",
-    "meaning": "trả hơn giá"
+    "meaning": "trả hơn giá",
+    "phonetic": "/aʊtˈbɪd/"
   },
   {
     "base": "outdo",
     "past": "outdid",
     "pp": "outdone",
-    "meaning": "làm giỏi hơn"
+    "meaning": "làm giỏi hơn",
+    "phonetic": "/aʊtˈduː/"
   },
   {
     "base": "outgrow",
     "past": "outgrew",
     "pp": "outgrown",
-    "meaning": "lớn nhanh hơn"
+    "meaning": "lớn nhanh hơn",
+    "phonetic": "/aʊtˈɡrəʊ/"
   },
   {
     "base": "output",
     "past": "output",
     "pp": "output",
-    "meaning": "cho ra (dữ kiện)"
+    "meaning": "cho ra (dữ kiện)",
+    "phonetic": "/ˈaʊtpʊt/"
   },
   {
     "base": "outrun",
     "past": "outran",
     "pp": "outrun",
-    "meaning": "chạy nhanh hơn"
+    "meaning": "chạy nhanh hơn",
+    "phonetic": "/aʊtˈrʌn/"
   },
   {
     "base": "outsell",
     "past": "outsold",
     "pp": "outsold",
-    "meaning": "bán nhanh hơn"
+    "meaning": "bán nhanh hơn",
+    "phonetic": "/aʊtˈsel/"
   },
   {
     "base": "overcome",
     "past": "overcame",
     "pp": "overcome",
-    "meaning": "khắc phục"
+    "meaning": "khắc phục",
+    "phonetic": "/ˌəʊvəˈkʌm/"
   },
   {
     "base": "overeat",
     "past": "overate",
     "pp": "overeaten",
-    "meaning": "ăn quá nhiều"
+    "meaning": "ăn quá nhiều",
+    "phonetic": "/ˌəʊvərˈiːt/"
   },
   {
     "base": "overfly",
     "past": "overflew",
     "pp": "overflown",
-    "meaning": "bay qua"
+    "meaning": "bay qua",
+    "phonetic": "/ˌəʊvəˈflaɪ/"
   },
   {
     "base": "overhang",
     "past": "overhung",
     "pp": "overhung",
-    "meaning": "nhô lên, treo lơ lửng"
+    "meaning": "nhô lên, treo lơ lửng",
+    "phonetic": "/ˌəʊvəˈhæŋ/"
   },
   {
     "base": "overhear",
     "past": "overheard",
     "pp": "overheard",
-    "meaning": "nghe trộm"
+    "meaning": "nghe trộm",
+    "phonetic": "/ˌəʊvəˈhɪər/"
   },
   {
     "base": "overlay",
     "past": "overlaid",
     "pp": "overlaid",
-    "meaning": "phủ lên"
+    "meaning": "phủ lên",
+    "phonetic": "/ˌəʊvəˈleɪ/"
   },
   {
     "base": "overpay",
     "past": "overpaid",
     "pp": "overpaid",
-    "meaning": "trả quá tiền"
+    "meaning": "trả quá tiền",
+    "phonetic": "/ˌəʊvəˈpeɪ/"
   },
   {
     "base": "overrun",
     "past": "overran",
     "pp": "overrun",
-    "meaning": "tràn ngập"
+    "meaning": "tràn ngập",
+    "phonetic": "/ˌəʊvəˈrʌn/"
   },
   {
     "base": "oversee",
     "past": "oversaw",
     "pp": "overseen",
-    "meaning": "trông nom"
+    "meaning": "trông nom",
+    "phonetic": "/ˌəʊvəˈsiː/"
   },
   {
     "base": "overshoot",
     "past": "overshot",
     "pp": "overshot",
-    "meaning": "đi quá đích"
+    "meaning": "đi quá đích",
+    "phonetic": "/ˌəʊvəˈʃuːt/"
   },
   {
     "base": "oversleep",
     "past": "overslept",
     "pp": "overslept",
-    "meaning": "ngủ quên"
+    "meaning": "ngủ quên",
+    "phonetic": "/ˌəʊvəˈsliːp/"
   },
   {
     "base": "overtake",
     "past": "overtook",
     "pp": "overtaken",
-    "meaning": "đuổi bắt kịp"
+    "meaning": "đuổi bắt kịp",
+    "phonetic": "/ˌəʊvəˈteɪk/"
   },
   {
     "base": "overthrow",
     "past": "overthrew",
     "pp": "overthrown",
-    "meaning": "lật đổ"
+    "meaning": "lật đổ",
+    "phonetic": "/ˌəʊvəˈθrəʊ/"
   },
-  { "base": "pay", "past": "paid", "pp": "paid", "meaning": "trả (tiền)" },
+  {
+    "base": "pay",
+    "past": "paid",
+    "pp": "paid",
+    "meaning": "trả (tiền)",
+    "phonetic": "/peɪ/"
+  },
   {
     "base": "prove",
     "past": "proved",
     "pp": "proven/proved",
-    "meaning": "chứng minh"
+    "meaning": "chứng minh",
+    "phonetic": "/pruːv/"
   },
-  { "base": "put", "past": "put", "pp": "put", "meaning": "đặt, để" },
-  { "base": "read", "past": "read", "pp": "read", "meaning": "đọc" },
+  {
+    "base": "put",
+    "past": "put",
+    "pp": "put",
+    "meaning": "đặt, để",
+    "phonetic": "/pʊt/"
+  },
+  {
+    "base": "read",
+    "past": "read",
+    "pp": "read",
+    "meaning": "đọc",
+    "phonetic": "/riːd/"
+  },
   {
     "base": "rebuild",
     "past": "rebuilt",
     "pp": "rebuilt",
-    "meaning": "xây dựng lại"
+    "meaning": "xây dựng lại",
+    "phonetic": "/ˌriːˈbɪld/"
   },
-  { "base": "redo", "past": "redid", "pp": "redone", "meaning": "làm lại" },
-  { "base": "remake", "past": "remade", "pp": "remade", "meaning": "làm lại" },
-  { "base": "rend", "past": "rent", "pp": "rent", "meaning": "toạc ra, xé" },
-  { "base": "repay", "past": "repaid", "pp": "repaid", "meaning": "hoàn tiền" },
-  { "base": "resell", "past": "resold", "pp": "resold", "meaning": "bán lại" },
+  {
+    "base": "redo",
+    "past": "redid",
+    "pp": "redone",
+    "meaning": "làm lại",
+    "phonetic": "/ˌriːˈduː/"
+  },
+  {
+    "base": "remake",
+    "past": "remade",
+    "pp": "remade",
+    "meaning": "làm lại",
+    "phonetic": "/ˌriːˈmeɪk/"
+  },
+  {
+    "base": "rend",
+    "past": "rent",
+    "pp": "rent",
+    "meaning": "toạc ra, xé",
+    "phonetic": "/rend/"
+  },
+  {
+    "base": "repay",
+    "past": "repaid",
+    "pp": "repaid",
+    "meaning": "hoàn tiền",
+    "phonetic": "/ˌriːˈpeɪ/"
+  },
+  {
+    "base": "resell",
+    "past": "resold",
+    "pp": "resold",
+    "meaning": "bán lại",
+    "phonetic": "/ˌriːˈsel/"
+  },
   {
     "base": "rewrite",
     "past": "rewrote",
     "pp": "rewritten",
-    "meaning": "viết lại"
+    "meaning": "viết lại",
+    "phonetic": "/ˌriːˈraɪt/"
   },
-  { "base": "rid", "past": "rid", "pp": "rid", "meaning": "giải thoát" },
-  { "base": "ride", "past": "rode", "pp": "ridden", "meaning": "cưỡi" },
-  { "base": "ring", "past": "rang", "pp": "rung", "meaning": "rung chuông" },
-  { "base": "rise", "past": "rose", "pp": "risen", "meaning": "đứng dậy, mọc" },
-  { "base": "run", "past": "ran", "pp": "run", "meaning": "chạy" },
-  { "base": "saw", "past": "sawed", "pp": "sawn", "meaning": "cưa" },
-  { "base": "say", "past": "said", "pp": "said", "meaning": "nói" },
-  { "base": "see", "past": "saw", "pp": "seen", "meaning": "thấy" },
-  { "base": "seek", "past": "sought", "pp": "sought", "meaning": "tìm kiếm" },
-  { "base": "sell", "past": "sold", "pp": "sold", "meaning": "bán" },
-  { "base": "send", "past": "sent", "pp": "sent", "meaning": "gửi" },
-  { "base": "sew", "past": "sewed", "pp": "sewn/sewed", "meaning": "may" },
-  { "base": "shake", "past": "shook", "pp": "shaken", "meaning": "lắc" },
+  {
+    "base": "rid",
+    "past": "rid",
+    "pp": "rid",
+    "meaning": "giải thoát",
+    "phonetic": "/rɪd/"
+  },
+  {
+    "base": "ride",
+    "past": "rode",
+    "pp": "ridden",
+    "meaning": "cưỡi",
+    "phonetic": "/raɪd/"
+  },
+  {
+    "base": "ring",
+    "past": "rang",
+    "pp": "rung",
+    "meaning": "rung chuông",
+    "phonetic": "/rɪŋ/"
+  },
+  {
+    "base": "rise",
+    "past": "rose",
+    "pp": "risen",
+    "meaning": "đứng dậy, mọc",
+    "phonetic": "/raɪz/"
+  },
+  {
+    "base": "run",
+    "past": "ran",
+    "pp": "run",
+    "meaning": "chạy",
+    "phonetic": "/rʌn/"
+  },
+  {
+    "base": "saw",
+    "past": "sawed",
+    "pp": "sawn",
+    "meaning": "cưa",
+    "phonetic": "/sɔː/"
+  },
+  {
+    "base": "say",
+    "past": "said",
+    "pp": "said",
+    "meaning": "nói",
+    "phonetic": "/seɪ/"
+  },
+  {
+    "base": "see",
+    "past": "saw",
+    "pp": "seen",
+    "meaning": "thấy",
+    "phonetic": "/siː/"
+  },
+  {
+    "base": "seek",
+    "past": "sought",
+    "pp": "sought",
+    "meaning": "tìm kiếm",
+    "phonetic": "/siːk/"
+  },
+  {
+    "base": "sell",
+    "past": "sold",
+    "pp": "sold",
+    "meaning": "bán",
+    "phonetic": "/sel/"
+  },
+  {
+    "base": "send",
+    "past": "sent",
+    "pp": "sent",
+    "meaning": "gửi",
+    "phonetic": "/send/"
+  },
+  {
+    "base": "sew",
+    "past": "sewed",
+    "pp": "sewn/sewed",
+    "meaning": "may",
+    "phonetic": "/səʊ/"
+  },
+  {
+    "base": "shake",
+    "past": "shook",
+    "pp": "shaken",
+    "meaning": "lắc",
+    "phonetic": "/ʃeɪk/"
+  },
   {
     "base": "shear",
     "past": "sheared",
     "pp": "shorn",
-    "meaning": "xén lông (cừu)"
+    "meaning": "xén lông (cừu)",
+    "phonetic": "/ʃɪər/"
   },
-  { "base": "shed", "past": "shed", "pp": "shed", "meaning": "rơi, rụng" },
-  { "base": "shine", "past": "shone", "pp": "shone", "meaning": "chiếu sáng" },
-  { "base": "shoot", "past": "shot", "pp": "shot", "meaning": "bắn" },
+  {
+    "base": "shed",
+    "past": "shed",
+    "pp": "shed",
+    "meaning": "rơi, rụng",
+    "phonetic": "/ʃed/"
+  },
+  {
+    "base": "shine",
+    "past": "shone",
+    "pp": "shone",
+    "meaning": "chiếu sáng",
+    "phonetic": "/ʃaɪn/"
+  },
+  {
+    "base": "shoot",
+    "past": "shot",
+    "pp": "shot",
+    "meaning": "bắn",
+    "phonetic": "/ʃuːt/"
+  },
   {
     "base": "show",
     "past": "showed",
     "pp": "shown/showed",
-    "meaning": "cho xem"
+    "meaning": "cho xem",
+    "phonetic": "/ʃəʊ/"
   },
-  { "base": "shrink", "past": "shrank", "pp": "shrunk", "meaning": "co rút" },
-  { "base": "shut", "past": "shut", "pp": "shut", "meaning": "đóng lại" },
-  { "base": "sing", "past": "sang", "pp": "sung", "meaning": "ca hát" },
-  { "base": "sink", "past": "sank", "pp": "sunk", "meaning": "chìm" },
-  { "base": "sit", "past": "sat", "pp": "sat", "meaning": "ngồi" },
-  { "base": "slay", "past": "slew", "pp": "slain", "meaning": "sát hại" },
-  { "base": "sleep", "past": "slept", "pp": "slept", "meaning": "ngủ" },
-  { "base": "slide", "past": "slid", "pp": "slid", "meaning": "trượt" },
-  { "base": "sling", "past": "slung", "pp": "slung", "meaning": "ném mạnh" },
-  { "base": "slink", "past": "slunk", "pp": "slunk", "meaning": "lẻn đi" },
-  { "base": "smell", "past": "smelt", "pp": "smelt", "meaning": "ngửi" },
-  { "base": "smite", "past": "smote", "pp": "smitten", "meaning": "đập mạnh" },
-  { "base": "sow", "past": "sowed", "pp": "sown/sewed", "meaning": "gieo" },
-  { "base": "speak", "past": "spoke", "pp": "spoken", "meaning": "nói" },
+  {
+    "base": "shrink",
+    "past": "shrank",
+    "pp": "shrunk",
+    "meaning": "co rút",
+    "phonetic": "/ʃrɪŋk/"
+  },
+  {
+    "base": "shut",
+    "past": "shut",
+    "pp": "shut",
+    "meaning": "đóng lại",
+    "phonetic": "/ʃʌt/"
+  },
+  {
+    "base": "sing",
+    "past": "sang",
+    "pp": "sung",
+    "meaning": "ca hát",
+    "phonetic": "/sɪŋ/"
+  },
+  {
+    "base": "sink",
+    "past": "sank",
+    "pp": "sunk",
+    "meaning": "chìm",
+    "phonetic": "/sɪŋk/"
+  },
+  {
+    "base": "sit",
+    "past": "sat",
+    "pp": "sat",
+    "meaning": "ngồi",
+    "phonetic": "/sɪt/"
+  },
+  {
+    "base": "slay",
+    "past": "slew",
+    "pp": "slain",
+    "meaning": "sát hại",
+    "phonetic": "/sleɪ/"
+  },
+  {
+    "base": "sleep",
+    "past": "slept",
+    "pp": "slept",
+    "meaning": "ngủ",
+    "phonetic": "/sliːp/"
+  },
+  {
+    "base": "slide",
+    "past": "slid",
+    "pp": "slid",
+    "meaning": "trượt",
+    "phonetic": "/slaɪd/"
+  },
+  {
+    "base": "sling",
+    "past": "slung",
+    "pp": "slung",
+    "meaning": "ném mạnh",
+    "phonetic": "/slɪŋ/"
+  },
+  {
+    "base": "slink",
+    "past": "slunk",
+    "pp": "slunk",
+    "meaning": "lẻn đi",
+    "phonetic": "/slɪŋk/"
+  },
+  {
+    "base": "smell",
+    "past": "smelt",
+    "pp": "smelt",
+    "meaning": "ngửi",
+    "phonetic": "/smel/"
+  },
+  {
+    "base": "smite",
+    "past": "smote",
+    "pp": "smitten",
+    "meaning": "đập mạnh",
+    "phonetic": "/smaɪt/"
+  },
+  {
+    "base": "sow",
+    "past": "sowed",
+    "pp": "sown/sewed",
+    "meaning": "gieo",
+    "phonetic": "/səʊ/"
+  },
+  {
+    "base": "speak",
+    "past": "spoke",
+    "pp": "spoken",
+    "meaning": "nói",
+    "phonetic": "/spiːk/"
+  },
   {
     "base": "speed",
     "past": "sped/speeded",
     "pp": "sped/speeded",
-    "meaning": "chạy vụt"
+    "meaning": "chạy vụt",
+    "phonetic": "/spiːd/"
   },
   {
     "base": "spell",
     "past": "spelt/spelled",
     "pp": "spelt/spelled",
-    "meaning": "đánh vần"
+    "meaning": "đánh vần",
+    "phonetic": "/spel/"
   },
-  { "base": "spend", "past": "spent", "pp": "spent", "meaning": "tiêu sài" },
+  {
+    "base": "spend",
+    "past": "spent",
+    "pp": "spent",
+    "meaning": "tiêu sài",
+    "phonetic": "/spend/"
+  },
   {
     "base": "spill",
     "past": "spilt/spilled",
     "pp": "spilt/spilled",
-    "meaning": "tràn, đổ"
+    "meaning": "tràn, đổ",
+    "phonetic": "/spɪl/"
   },
-  { "base": "spin", "past": "spun/span", "pp": "spun", "meaning": "quay sợi" },
-  { "base": "spit", "past": "spat", "pp": "spat", "meaning": "khạc nhổ" },
+  {
+    "base": "spin",
+    "past": "spun/span",
+    "pp": "spun",
+    "meaning": "quay sợi",
+    "phonetic": "/spɪn/"
+  },
+  {
+    "base": "spit",
+    "past": "spat",
+    "pp": "spat",
+    "meaning": "khạc nhổ",
+    "phonetic": "/spɪt/"
+  },
   {
     "base": "spoil",
     "past": "spoilt/spoiled",
     "pp": "spoilt/spoiled",
-    "meaning": "làm hỏng"
+    "meaning": "làm hỏng",
+    "phonetic": "/spɔɪl/"
   },
   {
     "base": "spread",
     "past": "spread",
     "pp": "spread",
-    "meaning": "lan truyền"
+    "meaning": "lan truyền",
+    "phonetic": "/spred/"
   },
-  { "base": "spring", "past": "sprang", "pp": "sprung", "meaning": "nhảy" },
-  { "base": "stand", "past": "stood", "pp": "stood", "meaning": "đứng" },
+  {
+    "base": "spring",
+    "past": "sprang",
+    "pp": "sprung",
+    "meaning": "nhảy",
+    "phonetic": "/sprɪŋ/"
+  },
+  {
+    "base": "stand",
+    "past": "stood",
+    "pp": "stood",
+    "meaning": "đứng",
+    "phonetic": "/stænd/"
+  },
   {
     "base": "stave",
     "past": "stove/staved",
     "pp": "stove/staved",
-    "meaning": "đâm thủng"
+    "meaning": "đâm thủng",
+    "phonetic": "/steɪv/"
   },
-  { "base": "steal", "past": "stole", "pp": "stolen", "meaning": "đánh cắp" },
+  {
+    "base": "steal",
+    "past": "stole",
+    "pp": "stolen",
+    "meaning": "đánh cắp",
+    "phonetic": "/stiːl/"
+  },
   {
     "base": "stick",
     "past": "stuck",
     "pp": "stuck",
-    "meaning": "ghim vào, đính"
+    "meaning": "ghim vào, đính",
+    "phonetic": "/stɪk/"
   },
   {
     "base": "sting",
     "past": "stung",
     "pp": "stung",
-    "meaning": "châm, chích, đốt"
+    "meaning": "châm, chích, đốt",
+    "phonetic": "/stɪŋ/"
   },
   {
     "base": "stink",
     "past": "stunk/stank",
     "pp": "stunk",
-    "meaning": "bốc mùi hôi"
+    "meaning": "bốc mùi hôi",
+    "phonetic": "/stɪŋk/"
   },
   {
     "base": "strew",
     "past": "strewed",
     "pp": "strewn/strewed",
-    "meaning": "rắc, rải"
+    "meaning": "rắc, rải",
+    "phonetic": "/struː/"
   },
   {
     "base": "stride",
     "past": "strode",
     "pp": "stridden",
-    "meaning": "bước sải"
+    "meaning": "bước sải",
+    "phonetic": "/straɪd/"
   },
-  { "base": "strike", "past": "struck", "pp": "struck", "meaning": "đánh đập" },
+  {
+    "base": "strike",
+    "past": "struck",
+    "pp": "struck",
+    "meaning": "đánh đập",
+    "phonetic": "/straɪk/"
+  },
   {
     "base": "string",
     "past": "strung",
     "pp": "strung",
-    "meaning": "gắn dây vào"
+    "meaning": "gắn dây vào",
+    "phonetic": "/strɪŋ/"
   },
-  { "base": "strive", "past": "strove", "pp": "striven", "meaning": "cố sức" },
-  { "base": "swear", "past": "swore", "pp": "sworn", "meaning": "tuyên thệ" },
-  { "base": "sweep", "past": "swept", "pp": "swept", "meaning": "quét" },
+  {
+    "base": "strive",
+    "past": "strove",
+    "pp": "striven",
+    "meaning": "cố sức",
+    "phonetic": "/straɪv/"
+  },
+  {
+    "base": "swear",
+    "past": "swore",
+    "pp": "sworn",
+    "meaning": "tuyên thệ",
+    "phonetic": "/sweər/"
+  },
+  {
+    "base": "sweep",
+    "past": "swept",
+    "pp": "swept",
+    "meaning": "quét",
+    "phonetic": "/swiːp/"
+  },
   {
     "base": "swell",
     "past": "swelled",
     "pp": "swollen/swelled",
-    "meaning": "phồng, sưng"
+    "meaning": "phồng, sưng",
+    "phonetic": "/swel/"
   },
-  { "base": "swim", "past": "swam", "pp": "swum", "meaning": "bơi" },
-  { "base": "swing", "past": "swung", "pp": "swung", "meaning": "đong đưa" },
-  { "base": "take", "past": "took", "pp": "taken", "meaning": "cầm, lấy" },
-  { "base": "teach", "past": "taught", "pp": "taught", "meaning": "dạy" },
-  { "base": "tear", "past": "tore", "pp": "torn", "meaning": "xé; rách" },
-  { "base": "tell", "past": "told", "pp": "told", "meaning": "kể; bảo" },
+  {
+    "base": "swim",
+    "past": "swam",
+    "pp": "swum",
+    "meaning": "bơi",
+    "phonetic": "/swɪm/"
+  },
+  {
+    "base": "swing",
+    "past": "swung",
+    "pp": "swung",
+    "meaning": "đong đưa",
+    "phonetic": "/swɪŋ/"
+  },
+  {
+    "base": "take",
+    "past": "took",
+    "pp": "taken",
+    "meaning": "cầm, lấy",
+    "phonetic": "/teɪk/"
+  },
+  {
+    "base": "teach",
+    "past": "taught",
+    "pp": "taught",
+    "meaning": "dạy",
+    "phonetic": "/tiːtʃ/"
+  },
+  {
+    "base": "tear",
+    "past": "tore",
+    "pp": "torn",
+    "meaning": "xé; rách",
+    "phonetic": "/teər/"
+  },
+  {
+    "base": "tell",
+    "past": "told",
+    "pp": "told",
+    "meaning": "kể; bảo",
+    "phonetic": "/tel/"
+  },
   {
     "base": "think",
     "past": "thought",
     "pp": "thought",
-    "meaning": "suy nghĩ"
+    "meaning": "suy nghĩ",
+    "phonetic": "/θɪŋk/"
   },
-  { "base": "throw", "past": "threw", "pp": "thrown", "meaning": "ném" },
+  {
+    "base": "throw",
+    "past": "threw",
+    "pp": "thrown",
+    "meaning": "ném",
+    "phonetic": "/θrəʊ/"
+  },
   {
     "base": "thrust",
     "past": "thrust",
     "pp": "thrust",
-    "meaning": "thọc; nhấn"
+    "meaning": "thọc; nhấn",
+    "phonetic": "/θrʌst/"
   },
   {
     "base": "tread",
     "past": "trod",
     "pp": "trodden/trod",
-    "meaning": "giẫm; đạp"
+    "meaning": "giẫm; đạp",
+    "phonetic": "/tred/"
   },
   {
     "base": "unbend",
     "past": "unbent",
     "pp": "unbent",
-    "meaning": "làm thẳng lại"
+    "meaning": "làm thẳng lại",
+    "phonetic": "/ʌnˈbend/"
   },
   {
     "base": "undercut",
     "past": "undercut",
     "pp": "undercut",
-    "meaning": "ra giá rẻ hơn"
+    "meaning": "ra giá rẻ hơn",
+    "phonetic": "/ˌʌndəˈkʌt/"
   },
   {
     "base": "undergo",
     "past": "underwent",
     "pp": "undergone",
-    "meaning": "kinh qua"
+    "meaning": "kinh qua",
+    "phonetic": "/ˌʌndəˈɡəʊ/"
   },
   {
     "base": "underlie",
     "past": "underlay",
     "pp": "underlain",
-    "meaning": "nằm dưới"
+    "meaning": "nằm dưới",
+    "phonetic": "/ˌʌndəˈlaɪ/"
   },
   {
     "base": "underpay",
     "past": "underpaid",
     "pp": "underpaid",
-    "meaning": "trả lương thấp"
+    "meaning": "trả lương thấp",
+    "phonetic": "/ˌʌndəˈpeɪ/"
   },
   {
     "base": "undersell",
     "past": "undersold",
     "pp": "undersold",
-    "meaning": "bán rẻ hơn"
+    "meaning": "bán rẻ hơn",
+    "phonetic": "/ˌʌndəˈsel/"
   },
   {
     "base": "understand",
     "past": "understood",
     "pp": "understood",
-    "meaning": "hiểu"
+    "meaning": "hiểu",
+    "phonetic": "/ˌʌndəˈstænd/"
   },
   {
     "base": "undertake",
     "past": "undertook",
     "pp": "undertaken",
-    "meaning": "đảm nhận"
+    "meaning": "đảm nhận",
+    "phonetic": "/ˌʌndəˈteɪk/"
   },
   {
     "base": "underwrite",
     "past": "underwrote",
     "pp": "underwritten",
-    "meaning": "bảo hiểm"
+    "meaning": "bảo hiểm",
+    "phonetic": "/ˌʌndəˈraɪt/"
   },
-  { "base": "undo", "past": "undid", "pp": "undone", "meaning": "tháo ra" },
+  {
+    "base": "undo",
+    "past": "undid",
+    "pp": "undone",
+    "meaning": "tháo ra",
+    "phonetic": "/ʌnˈduː/"
+  },
   {
     "base": "unfreeze",
     "past": "unfroze",
     "pp": "unfrozen",
-    "meaning": "làm tan đông"
+    "meaning": "làm tan đông",
+    "phonetic": "/ʌnˈfriːz/"
   },
   {
     "base": "unwind",
     "past": "unwound",
     "pp": "unwound",
-    "meaning": "tháo ra"
+    "meaning": "tháo ra",
+    "phonetic": "/ʌnˈwaɪnd/"
   },
-  { "base": "uphold", "past": "upheld", "pp": "upheld", "meaning": "ủng hộ" },
+  {
+    "base": "uphold",
+    "past": "upheld",
+    "pp": "upheld",
+    "meaning": "ủng hộ",
+    "phonetic": "/ʌpˈhəʊld/"
+  },
   {
     "base": "upset",
     "past": "upset",
     "pp": "upset",
-    "meaning": "đánh đổ; lật đổ"
+    "meaning": "đánh đổ; lật đổ",
+    "phonetic": "/ʌpˈset/"
   },
   {
     "base": "wake",
     "past": "woke/waked",
     "pp": "woken/waked",
-    "meaning": "thức giấc"
+    "meaning": "thức giấc",
+    "phonetic": "/weɪk/"
   },
   {
     "base": "waylay",
     "past": "waylaid",
     "pp": "waylaid",
-    "meaning": "mai phục"
+    "meaning": "mai phục",
+    "phonetic": "/weɪˈleɪ/"
   },
-  { "base": "wear", "past": "wore", "pp": "worn", "meaning": "mặc" },
+  {
+    "base": "wear",
+    "past": "wore",
+    "pp": "worn",
+    "meaning": "mặc",
+    "phonetic": "/weər/"
+  },
   {
     "base": "weave",
     "past": "wove/weaved",
     "pp": "woven/weaved",
-    "meaning": "dệt"
+    "meaning": "dệt",
+    "phonetic": "/wiːv/"
   },
   {
     "base": "wed",
     "past": "wed/wedded",
     "pp": "wed/wedded",
-    "meaning": "kết hôn"
+    "meaning": "kết hôn",
+    "phonetic": "/wed/"
   },
-  { "base": "weep", "past": "wept", "pp": "wept", "meaning": "khóc" },
+  {
+    "base": "weep",
+    "past": "wept",
+    "pp": "wept",
+    "meaning": "khóc",
+    "phonetic": "/wiːp/"
+  },
   {
     "base": "wet",
     "past": "wet/wetted",
     "pp": "wet/wetted",
-    "meaning": "làm ướt"
+    "meaning": "làm ướt",
+    "phonetic": "/wet/"
   },
-  { "base": "win", "past": "won", "pp": "won", "meaning": "thắng" },
-  { "base": "wind", "past": "wound", "pp": "wound", "meaning": "quấn" },
+  {
+    "base": "win",
+    "past": "won",
+    "pp": "won",
+    "meaning": "thắng",
+    "phonetic": "/wɪn/"
+  },
+  {
+    "base": "wind",
+    "past": "wound",
+    "pp": "wound",
+    "meaning": "quấn",
+    "phonetic": "/waɪnd/"
+  },
   {
     "base": "withdraw",
     "past": "withdrew",
     "pp": "withdrawn",
-    "meaning": "rút lui"
+    "meaning": "rút lui",
+    "phonetic": "/wɪðˈdrɔː/"
   },
   {
     "base": "withhold",
     "past": "withheld",
     "pp": "withheld",
-    "meaning": "từ khước"
+    "meaning": "từ khước",
+    "phonetic": "/wɪðˈhəʊld/"
   },
   {
     "base": "withstand",
     "past": "withstood",
     "pp": "withstood",
-    "meaning": "cầm cự"
+    "meaning": "cầm cự",
+    "phonetic": "/wɪðˈstænd/"
   },
   {
     "base": "work",
     "past": "worked",
     "pp": "worked",
-    "meaning": "rèn (sắt), nhào nặn đất"
+    "meaning": "rèn (sắt), nhào nặn đất",
+    "phonetic": "/wɜːk/"
   },
   {
     "base": "wring",
     "past": "wrung",
     "pp": "wrung",
-    "meaning": "vặn, siết chặt"
+    "meaning": "vặn, siết chặt",
+    "phonetic": "/rɪŋ/"
   },
-  { "base": "write", "past": "wrote", "pp": "written", "meaning": "viết" }
+  {
+    "base": "write",
+    "past": "wrote",
+    "pp": "written",
+    "meaning": "viết",
+    "phonetic": "/raɪt/"
+  }
 ]

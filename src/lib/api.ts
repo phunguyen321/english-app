@@ -22,7 +22,13 @@ export const AppAPI = {
   },
   getIrregularVerbs: async () => {
     const res = await api.get<
-      Array<{ base: string; past: string; pp: string; meaning?: string }>
+      Array<{
+        base: string;
+        past: string;
+        pp: string;
+        meaning?: string;
+        phonetic?: string;
+      }>
     >("/mock/irregular-verbs.json");
     return res.data;
   },
