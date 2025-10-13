@@ -51,6 +51,10 @@ import ShuffleIcon from "@mui/icons-material/Shuffle";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import VolumeUpOutlinedIcon from "@mui/icons-material/VolumeUpOutlined";
+import ViewListIcon from "@mui/icons-material/ViewList";
+import CheckIcon from "@mui/icons-material/Check";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import FlashcardView from "./FlashcardView";
 
 export default function VocabularyPage() {
@@ -497,58 +501,100 @@ export default function VocabularyPage() {
           anchor="right"
           open={mobileFilterOpen}
           onClose={() => setMobileFilterOpen(false)}
-          PaperProps={{ sx: { width: "80vw", maxWidth: 320 } }}
+          PaperProps={{
+            sx: {
+              width: "80vw",
+              maxWidth: 320,
+              borderTopLeftRadius: 12,
+              borderBottomLeftRadius: 12,
+            },
+          }}
         >
           <Box sx={{ p: 2 }} role="presentation">
-            <Typography variant="h6" gutterBottom>
+            {/* Title */}
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 700,
+                mb: 2,
+                pb: 1.5,
+                borderBottom: "1px solid",
+                borderColor: "divider",
+              }}
+            >
               Bộ lọc
             </Typography>
-            <Divider sx={{ mb: 1 }} />
 
             {/* Range filter */}
-            <Typography variant="subtitle2" gutterBottom>
-              Khoảng từ
+            <Typography
+              sx={{
+                fontSize: 13,
+                fontWeight: 600,
+                textTransform: "uppercase",
+                letterSpacing: 0.4,
+                color: "text.secondary",
+                mb: 1,
+              }}
+            >
+              Phạm vi từ vựng
             </Typography>
-            <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
+            <Stack
+              direction="row"
+              alignItems="center"
+              spacing={1}
+              sx={{ mb: 2 }}
+            >
               <TextField
                 size="small"
                 type="number"
-                label="Học từ"
                 value={start}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setStart(Number(e.target.value))
+                  setStart(Number(e.target.value) || 1)
                 }
-                sx={{ width: 120 }}
-                inputProps={{ min: 1 }}
+                placeholder="1"
+                inputProps={{ min: 1, style: { textAlign: "center" } }}
+                sx={{ flex: 1 }}
               />
+              <Typography variant="body2" color="text.secondary">
+                đến
+              </Typography>
               <TextField
                 size="small"
                 type="number"
-                label="đến"
                 value={end ?? ""}
-                placeholder="cuối danh sách"
+                placeholder="Tổng số từ"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   const v = e.target.value;
                   if (v === "") setEnd(null);
                   else setEnd(Number(v));
                 }}
-                sx={{ width: 120 }}
-                inputProps={{ min: 1 }}
+                inputProps={{ min: 1, style: { textAlign: "center" } }}
+                sx={{ flex: 1 }}
               />
             </Stack>
 
-            <Typography variant="subtitle2" gutterBottom>
+            {/* Topics */}
+            <Typography
+              sx={{
+                fontSize: 13,
+                fontWeight: 600,
+                textTransform: "uppercase",
+                letterSpacing: 0.4,
+                color: "text.secondary",
+                mb: 1,
+              }}
+            >
               Chủ đề
             </Typography>
-            <List
-              dense
+            <Box
               sx={{
-                maxHeight: 300,
+                maxHeight: 240,
                 overflowY: "auto",
+                pr: 1,
+                mb: 1,
                 border: "1px solid",
                 borderColor: "divider",
-                borderRadius: 1,
-                mb: 1,
+                borderRadius: 1.5,
               }}
             >
               {topics.map((t) => {
@@ -561,64 +607,107 @@ export default function VocabularyPage() {
                 const checked = selectedTopics.includes(t.id);
                 const pctKnown =
                   st.total > 0 ? Math.round((st.known / st.total) * 100) : 0;
+                const toggleTopic = () =>
+                  setSelectedTopics((prev) =>
+                    prev.includes(t.id)
+                      ? prev.filter((x) => x !== t.id)
+                      : [...prev, t.id]
+                  );
                 return (
-                  <ListItemButton
+                  <Box
                     key={t.id}
-                    dense
-                    selected={checked}
-                    onClick={() =>
-                      setSelectedTopics((prev) =>
-                        prev.includes(t.id)
-                          ? prev.filter((x) => x !== t.id)
-                          : [...prev, t.id]
-                      )
-                    }
+                    onClick={toggleTopic}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1.5,
+                      py: 1,
+                      px: 1.25,
+                      cursor: "pointer",
+                      "&:hover": {
+                        backgroundColor: (t) => t.palette.action.hover,
+                      },
+                    }}
                   >
                     <Checkbox
-                      edge="start"
-                      size="small"
-                      tabIndex={-1}
                       checked={checked}
+                      onChange={(e) => {
+                        e.stopPropagation();
+                        toggleTopic();
+                      }}
+                      disableRipple
+                      icon={<CheckBoxOutlineBlankIcon />}
+                      checkedIcon={<CheckBoxIcon color="primary" />}
                     />
-                    <ListItemText
-                      disableTypography
-                      primary={
-                        <Typography variant="body2" component="span">
-                          {t.name}
+
+                    <Box sx={{ flexGrow: 1, minWidth: 0 }}>
+                      <Typography
+                        sx={{ fontWeight: 600 }}
+                        variant="body2"
+                        noWrap
+                      >
+                        {t.name}
+                      </Typography>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 1,
+                          mt: 0.5,
+                        }}
+                      >
+                        <Typography
+                          variant="caption"
+                          color="text.secondary"
+                          sx={{ whiteSpace: "nowrap" }}
+                        >
+                          {st.total} từ • {pctKnown}% đã thuộc
                         </Typography>
-                      }
-                      secondary={
-                        <Box sx={{ mt: 0.25 }}>
-                          <Typography variant="caption" color="text.secondary">
-                            {st.total} từ • {pctKnown}% đã thuộc
-                          </Typography>
+                        <Box sx={{ flexGrow: 1 }}>
                           <LinearProgress
                             variant="determinate"
                             value={pctKnown}
-                            sx={{ height: 4, borderRadius: 999, mt: 0.5 }}
+                            sx={{ height: 5, borderRadius: 2.5 }}
                           />
                         </Box>
-                      }
-                    />
-                  </ListItemButton>
+                      </Box>
+                    </Box>
+                  </Box>
                 );
               })}
-            </List>
-            <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
+            </Box>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{ mb: 2 }}
+              justifyContent="flex-end"
+            >
               <Button
                 size="small"
                 onClick={() => setSelectedTopics(topics.map((t) => t.id))}
+                sx={{ fontWeight: 700 }}
               >
-                Tất cả
+                TẤT CẢ
               </Button>
-              <Button size="small" onClick={() => setSelectedTopics([])}>
-                Xóa
+              <Button
+                size="small"
+                onClick={() => setSelectedTopics([])}
+                sx={{ fontWeight: 700 }}
+              >
+                XÓA
               </Button>
             </Stack>
 
-            <Divider sx={{ my: 1 }} />
-            {/* Level filter */}
-            <Typography variant="subtitle2" gutterBottom>
+            <Typography
+              sx={{
+                fontSize: 13,
+                fontWeight: 600,
+                textTransform: "uppercase",
+                letterSpacing: 0.4,
+                color: "text.secondary",
+                mb: 1,
+              }}
+            >
               Cấp độ (CEFR)
             </Typography>
             <ToggleButtonGroup
@@ -626,6 +715,27 @@ export default function VocabularyPage() {
               value={filterLevels}
               onChange={(_, vals: string[]) => setFilterLevels(vals || [])}
               aria-label="level-filter"
+              sx={{
+                flexWrap: "wrap",
+                gap: 1,
+                mb: 2,
+                border: 0,
+                "& .MuiToggleButton-root": {
+                  border: "1px solid",
+                  borderColor: "divider",
+                  borderRadius: 1.5,
+                  px: 1.25,
+                  py: 0.5,
+                  textTransform: "uppercase",
+                  fontWeight: 600,
+                },
+                "& .MuiToggleButton-root.Mui-selected": {
+                  bgcolor: "primary.main",
+                  color: "#fff",
+                  borderColor: "primary.main",
+                  "&:hover": { bgcolor: "primary.main" },
+                },
+              }}
             >
               {(["A1", "A2", "B1", "B2", "C1", "C2"] as const).map((lv) => (
                 <ToggleButton key={lv} value={lv} aria-label={lv}>
@@ -633,22 +743,17 @@ export default function VocabularyPage() {
                 </ToggleButton>
               ))}
             </ToggleButtonGroup>
-            <Stack direction="row" spacing={1} sx={{ mt: 1, mb: 2 }}>
-              <Button
-                size="small"
-                onClick={() =>
-                  setFilterLevels(["A1", "A2", "B1", "B2", "C1", "C2"])
-                }
-              >
-                Tất cả
-              </Button>
-              <Button size="small" onClick={() => setFilterLevels([])}>
-                Xóa
-              </Button>
-            </Stack>
 
-            <Divider sx={{ my: 1 }} />
-            <Typography variant="subtitle2" gutterBottom>
+            <Typography
+              sx={{
+                fontSize: 13,
+                fontWeight: 600,
+                textTransform: "uppercase",
+                letterSpacing: 0.4,
+                color: "text.secondary",
+                mb: 1,
+              }}
+            >
               Trạng thái học
             </Typography>
             <ToggleButtonGroup
@@ -656,60 +761,103 @@ export default function VocabularyPage() {
               value={knowledgeFilter}
               exclusive
               onChange={(_, val) => val && setKnowledgeFilter(val)}
+              sx={{
+                width: "100%",
+                border: "1px solid",
+                borderColor: "divider",
+                borderRadius: 1.5,
+                overflow: "hidden",
+                mb: 2,
+                "& .MuiToggleButton-root": {
+                  flex: 1,
+                  border: 0,
+                  py: 1,
+                  fontWeight: 600,
+                  color: "text.secondary",
+                },
+                "& .MuiToggleButton-root.Mui-selected": {
+                  bgcolor: "primary.main",
+                  color: "#fff",
+                  "&:hover": { bgcolor: "primary.main" },
+                },
+              }}
             >
-              <ToggleButton value="all">Tất cả</ToggleButton>
-              <ToggleButton value="unknown">Chưa thuộc</ToggleButton>
-              <ToggleButton value="learning">Chưa chắc</ToggleButton>
-              <ToggleButton value="known">Đã thuộc</ToggleButton>
+              <ToggleButton value="all">TẤT CẢ</ToggleButton>
+              <ToggleButton value="unknown">CHƯA THUỘC</ToggleButton>
+              <ToggleButton value="learning">CHƯA CHẮC</ToggleButton>
+              <ToggleButton value="known">ĐÃ THUỘC</ToggleButton>
             </ToggleButtonGroup>
 
-            <Divider sx={{ my: 1 }} />
-            {/* Display options */}
-            <Stack spacing={1} sx={{ mb: 1 }}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={showExamples}
-                    onChange={(e) => setShowExamples(e.target.checked)}
-                  />
-                }
-                label={
-                  <Stack direction="row" spacing={0.5} alignItems="center">
-                    <VisibilityIcon fontSize="small" />
-                    <span>Hiện ví dụ</span>
-                  </Stack>
-                }
-              />
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={compact}
-                    onChange={(e) => setCompact(e.target.checked)}
-                  />
-                }
-                label="Danh sách gọn"
-              />
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={shuffleTopicMix}
-                    onChange={(e) => setShuffleTopicMix(e.target.checked)}
-                  />
-                }
-                label="Xáo trộn chủ đề"
-              />
-            </Stack>
+            {/* Toggle options */}
+            <Box
+              sx={{
+                pt: 1.5,
+                mt: 1,
+                borderTop: "1px solid",
+                borderColor: "divider",
+              }}
+            >
+              <Stack spacing={1.25} sx={{ mb: 1.5 }}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={showExamples}
+                      onChange={(e) => setShowExamples(e.target.checked)}
+                    />
+                  }
+                  label={
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <VisibilityIcon fontSize="small" color="primary" />
+                      <Typography>Hiện ví dụ</Typography>
+                    </Stack>
+                  }
+                />
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={compact}
+                      onChange={(e) => setCompact(e.target.checked)}
+                    />
+                  }
+                  label={
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <ViewListIcon fontSize="small" color="primary" />
+                      <Typography>Danh sách gọn</Typography>
+                    </Stack>
+                  }
+                />
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={shuffleTopicMix}
+                      onChange={(e) => setShuffleTopicMix(e.target.checked)}
+                    />
+                  }
+                  label={
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <ShuffleIcon fontSize="small" color="primary" />
+                      <Typography>Xáo trộn chủ đề</Typography>
+                    </Stack>
+                  }
+                />
+              </Stack>
+            </Box>
 
-            <Divider sx={{ my: 1 }} />
-            <Stack direction="row" spacing={1}>
-              <Button
-                variant="outlined"
-                onClick={() => setMobileFilterOpen(false)}
-              >
-                Đóng
-              </Button>
+            {/* Footer */}
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                mt: 2,
+                pt: 1.5,
+                borderTop: "1px solid",
+                borderColor: "divider",
+              }}
+            >
               <Tooltip title="Reset mọi lọc">
                 <Button
+                  variant="outlined"
+                  color="inherit"
                   onClick={() => {
                     setSelectedTopics([]);
                     setFilterLevels([]);
@@ -717,12 +865,20 @@ export default function VocabularyPage() {
                     setShowExamples(true);
                     setCompact(false);
                     setShuffleTopicMix(false);
+                    setStart(1);
+                    setEnd(null);
                   }}
                 >
-                  Reset lọc
+                  RESET LỌC
                 </Button>
               </Tooltip>
-            </Stack>
+              <Button
+                variant="contained"
+                onClick={() => setMobileFilterOpen(false)}
+              >
+                ÁP DỤNG
+              </Button>
+            </Box>
           </Box>
         </Drawer>
       )}
