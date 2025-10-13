@@ -617,6 +617,37 @@ export default function VocabularyPage() {
             </Stack>
 
             <Divider sx={{ my: 1 }} />
+            {/* Level filter */}
+            <Typography variant="subtitle2" gutterBottom>
+              Cấp độ (CEFR)
+            </Typography>
+            <ToggleButtonGroup
+              size="small"
+              value={filterLevels}
+              onChange={(_, vals: string[]) => setFilterLevels(vals || [])}
+              aria-label="level-filter"
+            >
+              {(["A1", "A2", "B1", "B2", "C1", "C2"] as const).map((lv) => (
+                <ToggleButton key={lv} value={lv} aria-label={lv}>
+                  {lv}
+                </ToggleButton>
+              ))}
+            </ToggleButtonGroup>
+            <Stack direction="row" spacing={1} sx={{ mt: 1, mb: 2 }}>
+              <Button
+                size="small"
+                onClick={() =>
+                  setFilterLevels(["A1", "A2", "B1", "B2", "C1", "C2"])
+                }
+              >
+                Tất cả
+              </Button>
+              <Button size="small" onClick={() => setFilterLevels([])}>
+                Xóa
+              </Button>
+            </Stack>
+
+            <Divider sx={{ my: 1 }} />
             <Typography variant="subtitle2" gutterBottom>
               Trạng thái học
             </Typography>

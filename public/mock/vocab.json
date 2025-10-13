@@ -3,7 +3,8 @@
     { "id": "home", "name": "Ngôi nhà", "level": "A1" },
     { "id": "bedroom", "name": "Phòng ngủ", "level": "A1" },
     { "id": "livingroom", "name": "Phòng khách", "level": "A1" },
-    { "id": "kitchen", "name": "Phòng bếp", "level": "A1" }
+    { "id": "kitchen", "name": "Phòng bếp", "level": "A1" },
+    { "id": "emotion", "name": "Cảm xúc", "level": "A1" }
   ],
   "entries": [
     {
@@ -2325,6 +2326,531 @@
         {
           "en": "She carried the cups and plates on a large tray.",
           "vi": "Cô ấy mang những cái tách và đĩa trên một cái mâm lớn."
+        }
+      ]
+    },
+    {
+      "id": "f01",
+      "word": "Happy",
+      "phonetic": "/ˈhæpi/",
+      "pos": "adj",
+      "meaningVi": "Vui vẻ, hạnh phúc",
+      "topicId": "emotion",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "She looks happy today.",
+          "vi": "Cô ấy trông vui vẻ hôm nay."
+        }
+      ]
+    },
+    {
+      "id": "f02",
+      "word": "Joy",
+      "phonetic": "/dʒɔɪ/",
+      "pos": "n",
+      "meaningVi": "Niềm vui, sự vui mừng",
+      "topicId": "emotion",
+      "level": "B1",
+      "examples": [
+        {
+          "en": "The children shouted with joy.",
+          "vi": "Những đứa trẻ la lên vì sung sướng."
+        }
+      ]
+    },
+    {
+      "id": "f03",
+      "word": "Joyful",
+      "phonetic": "/ˈdʒɔɪfl/",
+      "pos": "adj",
+      "meaningVi": "Hân hoan, đầy niềm vui",
+      "topicId": "emotion",
+      "level": "B2",
+      "examples": [
+        {
+          "en": "It was a joyful occasion.",
+          "vi": "Đó là một dịp hân hoan."
+        }
+      ]
+    },
+    {
+      "id": "f04",
+      "word": "Excited",
+      "phonetic": "/ɪkˈsaɪtɪd/",
+      "pos": "adj",
+      "meaningVi": "Hào hứng, phấn khởi",
+      "topicId": "emotion",
+      "level": "A2",
+      "examples": [
+        {
+          "en": "We are excited about the trip.",
+          "vi": "Chúng tôi rất hào hứng về chuyến đi."
+        }
+      ]
+    },
+    {
+      "id": "f05",
+      "word": "Thrilled",
+      "phonetic": "/θrɪld/",
+      "pos": "adj",
+      "meaningVi": "Cực kỳ phấn khích, sướng rơn",
+      "topicId": "emotion",
+      "level": "B2",
+      "examples": [
+        {
+          "en": "I was absolutely thrilled to win.",
+          "vi": "Tôi cực kỳ phấn khích khi chiến thắng."
+        }
+      ]
+    },
+    {
+      "id": "f06",
+      "word": "Delighted",
+      "phonetic": "/dɪˈlaɪtɪd/",
+      "pos": "adj",
+      "meaningVi": "Rất hài lòng, vui mừng",
+      "topicId": "emotion",
+      "level": "B1",
+      "examples": [
+        {
+          "en": "She was delighted with the results.",
+          "vi": "Cô ấy rất vui mừng với kết quả."
+        }
+      ]
+    },
+    {
+      "id": "f07",
+      "word": "Content",
+      "phonetic": "/kənˈtent/",
+      "pos": "adj",
+      "meaningVi": "Hài lòng, mãn nguyện",
+      "topicId": "emotion",
+      "level": "B2",
+      "examples": [
+        {
+          "en": "He seemed content with his life.",
+          "vi": "Anh ấy có vẻ hài lòng với cuộc sống của mình."
+        }
+      ]
+    },
+    {
+      "id": "f08",
+      "word": "Pleased",
+      "phonetic": "/pliːzd/",
+      "pos": "adj",
+      "meaningVi": "Hài lòng, vừa ý",
+      "topicId": "emotion",
+      "level": "A2",
+      "examples": [
+        {
+          "en": "I'm pleased to meet you.",
+          "vi": "Tôi rất vui được gặp bạn."
+        }
+      ]
+    },
+    {
+      "id": "f09",
+      "word": "Optimistic",
+      "phonetic": "/ˌɒptɪˈmɪstɪk/",
+      "pos": "adj",
+      "meaningVi": "Lạc quan",
+      "topicId": "emotion",
+      "level": "B2",
+      "examples": [
+        {
+          "en": "He is optimistic about the future.",
+          "vi": "Anh ấy lạc quan về tương lai."
+        }
+      ]
+    },
+    {
+      "id": "f10",
+      "word": "Hopeful",
+      "phonetic": "/ˈhəʊpfl/",
+      "pos": "adj",
+      "meaningVi": "Đầy hy vọng",
+      "topicId": "emotion",
+      "level": "B1",
+      "examples": [
+        {
+          "en": "We remain hopeful of a peaceful solution.",
+          "vi": "Chúng tôi vẫn giữ hy vọng về một giải pháp hòa bình."
+        }
+      ]
+    },
+    {
+      "id": "f11",
+      "word": "Satisfied",
+      "phonetic": "/ˈsætɪsfaɪd/",
+      "pos": "adj",
+      "meaningVi": "Thỏa mãn",
+      "topicId": "emotion",
+      "level": "B1",
+      "examples": [
+        {
+          "en": "She was satisfied with her progress.",
+          "vi": "Cô ấy đã thỏa mãn với sự tiến bộ của mình."
+        }
+      ]
+    },
+    {
+      "id": "f12",
+      "word": "Eager",
+      "phonetic": "/ˈiːɡə(r)/",
+      "pos": "adj",
+      "meaningVi": "Háo hức, thiết tha",
+      "topicId": "emotion",
+      "level": "B2",
+      "examples": [
+        {
+          "en": "They are eager to learn new skills.",
+          "vi": "Họ háo hức học hỏi các kỹ năng mới."
+        }
+      ]
+    },
+    {
+      "id": "f13",
+      "word": "Sad",
+      "phonetic": "/sæd/",
+      "pos": "adj",
+      "meaningVi": "Buồn bã",
+      "topicId": "emotion",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "He felt very sad after the news.",
+          "vi": "Anh ấy cảm thấy rất buồn sau tin tức đó."
+        }
+      ]
+    },
+    {
+      "id": "f14",
+      "word": "Grief",
+      "phonetic": "/ɡriːf/",
+      "pos": "n",
+      "meaningVi": "Nỗi đau buồn, sự thương tiếc",
+      "topicId": "emotion",
+      "level": "C1",
+      "examples": [
+        {
+          "en": "She was overwhelmed by grief.",
+          "vi": "Cô ấy bị nỗi đau buồn lấn át."
+        }
+      ]
+    },
+    {
+      "id": "f15",
+      "word": "Miserable",
+      "phonetic": "/ˈmɪzrəbl/",
+      "pos": "adj",
+      "meaningVi": "Khổ sở, đáng thương",
+      "topicId": "emotion",
+      "level": "B1",
+      "examples": [
+        {
+          "en": "I felt miserable after the flu.",
+          "vi": "Tôi cảm thấy khổ sở sau khi bị cúm."
+        }
+      ]
+    },
+    {
+      "id": "f16",
+      "word": "Depressed",
+      "phonetic": "/dɪˈprest/",
+      "pos": "adj",
+      "meaningVi": "Trầm cảm, tuyệt vọng",
+      "topicId": "emotion",
+      "level": "B2",
+      "examples": [
+        {
+          "en": "She has been feeling depressed lately.",
+          "vi": "Gần đây cô ấy cảm thấy trầm cảm."
+        }
+      ]
+    },
+    {
+      "id": "f17",
+      "word": "Lonely",
+      "phonetic": "/ˈləʊnli/",
+      "pos": "adj",
+      "meaningVi": "Cô đơn",
+      "topicId": "emotion",
+      "level": "A2",
+      "examples": [
+        {
+          "en": "He feels lonely in the big city.",
+          "vi": "Anh ấy cảm thấy cô đơn trong thành phố lớn."
+        }
+      ]
+    },
+    {
+      "id": "f18",
+      "word": "Gloomy",
+      "phonetic": "/ˈɡluːmi/",
+      "pos": "adj",
+      "meaningVi": "U sầu, ảm đạm",
+      "topicId": "emotion",
+      "level": "C1",
+      "examples": [
+        {
+          "en": "The news made everyone feel gloomy.",
+          "vi": "Tin tức khiến mọi người cảm thấy u sầu."
+        }
+      ]
+    },
+    {
+      "id": "f19",
+      "word": "Disappointed",
+      "phonetic": "/ˌdɪsəˈpɔɪntɪd/",
+      "pos": "adj",
+      "meaningVi": "Thất vọng",
+      "topicId": "emotion",
+      "level": "A2",
+      "examples": [
+        {
+          "en": "I was disappointed with the meal.",
+          "vi": "Tôi đã thất vọng với bữa ăn."
+        }
+      ]
+    },
+    {
+      "id": "f20",
+      "word": "Frustrated",
+      "phonetic": "/frʌˈstreɪtɪd/",
+      "pos": "adj",
+      "meaningVi": "Bực bội, thất vọng",
+      "topicId": "emotion",
+      "level": "B1",
+      "examples": [
+        {
+          "en": "I feel frustrated with my lack of progress.",
+          "vi": "Tôi cảm thấy bực bội vì sự thiếu tiến bộ của mình."
+        }
+      ]
+    },
+    {
+      "id": "f21",
+      "word": "Upset",
+      "phonetic": "/ʌpˈset/",
+      "pos": "adj",
+      "meaningVi": "Buồn bã, khó chịu (vì chuyện gì đó)",
+      "topicId": "emotion",
+      "level": "A2",
+      "examples": [
+        {
+          "en": "He was upset about the argument.",
+          "vi": "Anh ấy khó chịu về cuộc tranh cãi."
+        }
+      ]
+    },
+    {
+      "id": "f22",
+      "word": "Worried",
+      "phonetic": "/ˈwʌrid/",
+      "pos": "adj",
+      "meaningVi": "Lo lắng",
+      "topicId": "emotion",
+      "level": "A2",
+      "examples": [
+        {
+          "en": "Don't worry, everything will be fine.",
+          "vi": "Đừng lo lắng, mọi thứ sẽ ổn thôi."
+        }
+      ]
+    },
+    {
+      "id": "f23",
+      "word": "Anxious",
+      "phonetic": "/ˈæŋkʃəs/",
+      "pos": "adj",
+      "meaningVi": "Lo lắng tột độ, bồn chồn",
+      "topicId": "emotion",
+      "level": "B2",
+      "examples": [
+        {
+          "en": "The long delay made the passengers anxious.",
+          "vi": "Sự chậm trễ kéo dài khiến hành khách bồn chồn."
+        }
+      ]
+    },
+    {
+      "id": "f24",
+      "word": "Nervous",
+      "phonetic": "/ˈnɜːvəs/",
+      "pos": "adj",
+      "meaningVi": "Lo lắng, bồn chồn (thường trước sự kiện)",
+      "topicId": "emotion",
+      "level": "A2",
+      "examples": [
+        {
+          "en": "She felt nervous before the exam.",
+          "vi": "Cô ấy cảm thấy lo lắng trước kỳ thi."
+        }
+      ]
+    },
+    {
+      "id": "f25",
+      "word": "Scared",
+      "phonetic": "/skeəd/",
+      "pos": "adj",
+      "meaningVi": "Sợ hãi",
+      "topicId": "emotion",
+      "level": "A2",
+      "examples": [
+        {
+          "en": "The child was scared of the dark.",
+          "vi": "Đứa trẻ sợ bóng tối."
+        }
+      ]
+    },
+    {
+      "id": "f26",
+      "word": "Terrified",
+      "phonetic": "/ˈterɪfaɪd/",
+      "pos": "adj",
+      "meaningVi": "Cực kỳ sợ hãi, khiếp sợ",
+      "topicId": "emotion",
+      "level": "B1",
+      "examples": [
+        {
+          "en": "I am terrified of spiders.",
+          "vi": "Tôi cực kỳ sợ nhện."
+        }
+      ]
+    },
+    {
+      "id": "f27",
+      "word": "Dread",
+      "phonetic": "/dred/",
+      "pos": "n",
+      "meaningVi": "Sự kinh sợ, lo sợ (về tương lai)",
+      "topicId": "emotion",
+      "level": "C1",
+      "examples": [
+        {
+          "en": "He felt a sense of dread as he opened the letter.",
+          "vi": "Anh ấy cảm thấy kinh sợ khi mở lá thư."
+        }
+      ]
+    },
+    {
+      "id": "f28",
+      "word": "Angry",
+      "phonetic": "/ˈæŋɡri/",
+      "pos": "adj",
+      "meaningVi": "Tức giận",
+      "topicId": "emotion",
+      "level": "A1",
+      "examples": [
+        {
+          "en": "She was angry at her brother.",
+          "vi": "Cô ấy tức giận với anh trai mình."
+        }
+      ]
+    },
+    {
+      "id": "f29",
+      "word": "Anger",
+      "phonetic": "/ˈæŋɡə(r)/",
+      "pos": "n",
+      "meaningVi": "Cơn giận",
+      "topicId": "emotion",
+      "level": "B1",
+      "examples": [
+        {
+          "en": "He couldn't control his anger.",
+          "vi": "Anh ấy không thể kiểm soát cơn giận của mình."
+        }
+      ]
+    },
+    {
+      "id": "f30",
+      "word": "Annoyed",
+      "phonetic": "/əˈnɔɪd/",
+      "pos": "adj",
+      "meaningVi": "Khó chịu, bực mình",
+      "topicId": "emotion",
+      "level": "A2",
+      "examples": [
+        {
+          "en": "I was annoyed by the constant noise.",
+          "vi": "Tôi bị khó chịu bởi tiếng ồn liên tục."
+        }
+      ]
+    },
+    {
+      "id": "f31",
+      "word": "Irritated",
+      "phonetic": "/ˈɪrɪteɪtɪd/",
+      "pos": "adj",
+      "meaningVi": "Bị kích thích, bực bội nhẹ",
+      "topicId": "emotion",
+      "level": "B1",
+      "examples": [
+        {
+          "en": "He was irritated by their constant interruptions.",
+          "vi": "Anh ấy bị bực bội vì những lần gián đoạn liên tục của họ."
+        }
+      ]
+    },
+    {
+      "id": "f32",
+      "word": "Furious",
+      "phonetic": "/ˈfjʊəriəs/",
+      "pos": "adj",
+      "meaningVi": "Giận dữ điên cuồng, thịnh nộ",
+      "topicId": "emotion",
+      "level": "B2",
+      "examples": [
+        {
+          "en": "She was furious when she heard the news.",
+          "vi": "Cô ấy giận dữ điên cuồng khi nghe tin."
+        }
+      ]
+    },
+    {
+      "id": "f33",
+      "word": "Rage",
+      "phonetic": "/reɪdʒ/",
+      "pos": "n",
+      "meaningVi": "Cơn thịnh nộ, giận dữ dữ dội",
+      "topicId": "emotion",
+      "level": "C1",
+      "examples": [
+        {
+          "en": "He flew into a rage.",
+          "vi": "Anh ấy nổi cơn thịnh nộ."
+        }
+      ]
+    },
+    {
+      "id": "f34",
+      "word": "Outraged",
+      "phonetic": "/ˈaʊtreɪdʒd/",
+      "pos": "adj",
+      "meaningVi": "Phẫn nộ, căm phẫn",
+      "topicId": "emotion",
+      "level": "C1",
+      "examples": [
+        {
+          "en": "The public was outraged by the scandal.",
+          "vi": "Công chúng phẫn nộ trước vụ bê bối."
+        }
+      ]
+    },
+    {
+      "id": "f35",
+      "word": "Resentful",
+      "phonetic": "/rɪˈzentfl/",
+      "pos": "adj",
+      "meaningVi": "Bực bội, oán giận (vì bị đối xử bất công)",
+      "topicId": "emotion",
+      "level": "C2",
+      "examples": [
+        {
+          "en": "She felt resentful of her sister's success.",
+          "vi": "Cô ấy cảm thấy oán giận với thành công của em gái mình."
         }
       ]
     }
