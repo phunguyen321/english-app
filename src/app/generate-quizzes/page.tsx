@@ -23,6 +23,15 @@ import {
   Card,
   CardActionArea,
   CardContent,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Autocomplete,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import PsychologyAltIcon from "@mui/icons-material/PsychologyAlt";
@@ -30,6 +39,9 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import GavelIcon from "@mui/icons-material/Gavel";
 import SortIcon from "@mui/icons-material/Sort";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import SchoolIcon from "@mui/icons-material/School";
+import SpeedIcon from "@mui/icons-material/Speed";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import AppAPI from "@/lib/api";
 import type { AnyQuizQuestion } from "@/types/quiz";
 import { alpha } from "@mui/material/styles";
@@ -58,6 +70,49 @@ export default function GenerateQuizzesPage() {
     "grammar-mcq": 1,
     "sentence-order": 1,
   });
+
+  // NEW: Difficulty & CEFR Level states
+  const [difficulty, setDifficulty] = useState<string>("mixed");
+  const [cefrLevel, setCefrLevel] = useState<string>("auto");
+  const [grammarFocus, setGrammarFocus] = useState<string[]>([]);
+  const [showSummary, setShowSummary] = useState(false);
+
+  const DIFFICULTY_OPTIONS = [
+    { value: "mixed", label: "Hỗn hợp (Đề xuất)" },
+    { value: "easy", label: "Dễ" },
+    { value: "medium", label: "Trung bình" },
+    { value: "hard", label: "Khó" },
+  ];
+
+  const CEFR_LEVELS = [
+    { value: "auto", label: "Tự động (từ yêu cầu)" },
+    { value: "A1", label: "A1 - Beginner" },
+    { value: "A2", label: "A2 - Elementary" },
+    { value: "B1", label: "B1 - Intermediate" },
+    { value: "B2", label: "B2 - Upper-Intermediate" },
+    { value: "C1", label: "C1 - Advanced" },
+    { value: "C2", label: "C2 - Proficiency" },
+  ];
+
+  const GRAMMAR_TOPICS = [
+    "Present Simple",
+    "Present Continuous",
+    "Past Simple",
+    "Past Continuous",
+    "Present Perfect",
+    "Past Perfect",
+    "Future Simple",
+    "Modal Verbs",
+    "Conditionals",
+    "Passive Voice",
+    "Reported Speech",
+    "Relative Clauses",
+    "Comparatives & Superlatives",
+    "Gerunds & Infinitives",
+    "Articles (a/an/the)",
+    "Prepositions",
+    "Phrasal Verbs",
+  ];
 
   const parsedCount = useMemo(() => {
     const v = parseInt(countInput, 10);
@@ -124,9 +179,27 @@ export default function GenerateQuizzesPage() {
     setError(null);
     setLoading(true);
     setRawPreview("");
+    setShowSummary(false);
     try {
+      // Build enhanced requirements with difficulty, CEFR, and grammar focus
+      let enhancedRequirements = requirements;
+
+      if (cefrLevel && cefrLevel !== "auto") {
+        enhancedRequirements = `[CEFR Level: ${cefrLevel}] ${enhancedRequirements}`;
+      }
+
+      if (difficulty && difficulty !== "mixed") {
+        enhancedRequirements = `[Difficulty: ${difficulty}] ${enhancedRequirements}`;
+      }
+
+      if (grammarFocus.length > 0 && allowedTypes.includes("grammar-mcq")) {
+        enhancedRequirements = `[Grammar Focus: ${grammarFocus.join(
+          ", "
+        )}] ${enhancedRequirements}`;
+      }
+
       const json = await AppAPI.generateQuiz({
-        requirements,
+        requirements: enhancedRequirements,
         count: parsedCount,
         mixTypes,
         allowedTypes,
@@ -251,6 +324,130 @@ export default function GenerateQuizzesPage() {
                 </Stack>
               </Box>
             </Box>
+
+            {/* Difficulty Level Section */}
+            <Box>
+              <Typography
+                gutterBottom
+                fontWeight={600}
+                sx={{ display: "flex", alignItems: "center", gap: 1 }}
+              >
+                <SpeedIcon fontSize="small" color="primary" />
+                Độ khó
+              </Typography>
+              <FormControl fullWidth size="small">
+                <Select
+                  value={difficulty}
+                  onChange={(e) => setDifficulty(e.target.value)}
+                  disabled={loading}
+                  sx={{
+                    borderRadius: 2,
+                    bgcolor: (t) => alpha(t.palette.info.main, 0.04),
+                  }}
+                >
+                  {DIFFICULTY_OPTIONS.map((opt) => (
+                    <MenuItem key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ display: "block", mt: 0.5 }}
+              >
+                Chọn "Hỗn hợp" để có sự đa dạng trong bộ câu hỏi
+              </Typography>
+            </Box>
+
+            {/* CEFR Level Section */}
+            <Box>
+              <Typography
+                gutterBottom
+                fontWeight={600}
+                sx={{ display: "flex", alignItems: "center", gap: 1 }}
+              >
+                <SchoolIcon fontSize="small" color="primary" />
+                Trình độ CEFR
+              </Typography>
+              <FormControl fullWidth size="small">
+                <Select
+                  value={cefrLevel}
+                  onChange={(e) => setCefrLevel(e.target.value)}
+                  disabled={loading}
+                  sx={{
+                    borderRadius: 2,
+                    bgcolor: (t) => alpha(t.palette.success.main, 0.04),
+                  }}
+                >
+                  {CEFR_LEVELS.map((level) => (
+                    <MenuItem key={level.value} value={level.value}>
+                      {level.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ display: "block", mt: 0.5 }}
+              >
+                Chọn "Tự động" để AI xác định dựa trên yêu cầu của bạn
+              </Typography>
+            </Box>
+
+            {/* Grammar Focus Section - Only show when grammar is selected */}
+            {allowedTypes.includes("grammar-mcq") && (
+              <Box>
+                <Typography
+                  gutterBottom
+                  fontWeight={600}
+                  sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                >
+                  <GavelIcon fontSize="small" color="primary" />
+                  Tập trung Ngữ pháp (Tùy chọn)
+                </Typography>
+                <Autocomplete
+                  multiple
+                  options={GRAMMAR_TOPICS}
+                  value={grammarFocus}
+                  onChange={(_, newValue) => setGrammarFocus(newValue)}
+                  disabled={loading}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      placeholder="Chọn cấu trúc ngữ pháp..."
+                      size="small"
+                    />
+                  )}
+                  renderTags={(value, getTagProps) =>
+                    value.map((option, index) => (
+                      <Chip
+                        label={option}
+                        size="small"
+                        {...getTagProps({ index })}
+                        key={option}
+                        sx={{ borderRadius: 1 }}
+                      />
+                    ))
+                  }
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: 2,
+                      bgcolor: (t) => alpha(t.palette.warning.main, 0.04),
+                    },
+                  }}
+                />
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ display: "block", mt: 0.5 }}
+                >
+                  Để trống nếu muốn AI tự chọn dựa trên yêu cầu
+                </Typography>
+              </Box>
+            )}
 
             {/* Types with pill-style toggles */}
             <Box>
@@ -573,6 +770,164 @@ export default function GenerateQuizzesPage() {
             {/* Actions */}
             <Divider />
             {error && <Alert severity="error">{error}</Alert>}
+
+            {/* Validation Summary Dialog */}
+            <Dialog
+              open={showSummary}
+              onClose={() => setShowSummary(false)}
+              maxWidth="sm"
+              fullWidth
+            >
+              <DialogTitle
+                sx={{ display: "flex", alignItems: "center", gap: 1, pb: 1 }}
+              >
+                <CheckCircleIcon color="primary" />
+                Xác nhận cấu hình
+              </DialogTitle>
+              <DialogContent>
+                <Stack spacing={2} sx={{ pt: 1 }}>
+                  <Box>
+                    <Typography
+                      variant="subtitle2"
+                      fontWeight={700}
+                      color="primary"
+                      gutterBottom
+                    >
+                      📝 Yêu cầu / Chủ đề:
+                    </Typography>
+                    <Paper
+                      variant="outlined"
+                      sx={{ p: 1.5, bgcolor: "grey.50" }}
+                    >
+                      <Typography variant="body2">
+                        {requirements || "(Chưa nhập)"}
+                      </Typography>
+                    </Paper>
+                  </Box>
+
+                  <Divider />
+
+                  <Stack direction="row" spacing={2}>
+                    <Box flex={1}>
+                      <Typography variant="caption" color="text.secondary">
+                        Số câu hỏi
+                      </Typography>
+                      <Typography variant="h6" fontWeight={700}>
+                        {parsedCount}
+                      </Typography>
+                    </Box>
+                    <Box flex={1}>
+                      <Typography variant="caption" color="text.secondary">
+                        Độ khó
+                      </Typography>
+                      <Typography variant="h6" fontWeight={700}>
+                        {
+                          DIFFICULTY_OPTIONS.find((d) => d.value === difficulty)
+                            ?.label
+                        }
+                      </Typography>
+                    </Box>
+                    <Box flex={1}>
+                      <Typography variant="caption" color="text.secondary">
+                        Trình độ
+                      </Typography>
+                      <Typography variant="h6" fontWeight={700}>
+                        {cefrLevel === "auto" ? "Tự động" : cefrLevel}
+                      </Typography>
+                    </Box>
+                  </Stack>
+
+                  <Divider />
+
+                  <Box>
+                    <Typography
+                      variant="subtitle2"
+                      fontWeight={700}
+                      color="primary"
+                      gutterBottom
+                    >
+                      📊 Loại câu hỏi & Tỉ lệ:
+                    </Typography>
+                    <Stack spacing={1}>
+                      {allowedTypes.map((t) => (
+                        <Box
+                          key={t}
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Chip
+                            label={TYPE_LABELS[t]}
+                            size="small"
+                            color="primary"
+                            variant="outlined"
+                          />
+                          <Typography variant="body2" fontWeight={600}>
+                            {normalizedRatios[t] ?? 0}% (~
+                            {predictedCounts[t] || 0} câu)
+                          </Typography>
+                        </Box>
+                      ))}
+                    </Stack>
+                  </Box>
+
+                  {grammarFocus.length > 0 && (
+                    <>
+                      <Divider />
+                      <Box>
+                        <Typography
+                          variant="subtitle2"
+                          fontWeight={700}
+                          color="primary"
+                          gutterBottom
+                        >
+                          🎯 Tập trung Ngữ pháp:
+                        </Typography>
+                        <Box
+                          sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
+                        >
+                          {grammarFocus.map((topic) => (
+                            <Chip
+                              key={topic}
+                              label={topic}
+                              size="small"
+                              color="warning"
+                            />
+                          ))}
+                        </Box>
+                      </Box>
+                    </>
+                  )}
+
+                  <Alert severity="info" sx={{ mt: 2 }}>
+                    <Typography variant="body2">
+                      Nhấn <strong>XÁC NHẬN</strong> để bắt đầu tạo câu hỏi. Quá
+                      trình có thể mất 10-30 giây tùy số lượng.
+                    </Typography>
+                  </Alert>
+                </Stack>
+              </DialogContent>
+              <DialogActions sx={{ px: 3, pb: 2 }}>
+                <Button
+                  onClick={() => setShowSummary(false)}
+                  disabled={loading}
+                >
+                  Hủy
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={handleGenerate}
+                  disabled={loading}
+                  startIcon={loading ? null : <PsychologyAltIcon />}
+                  sx={{ minWidth: 140 }}
+                >
+                  {loading ? "Đang tạo..." : "✨ XÁC NHẬN"}
+                </Button>
+              </DialogActions>
+            </Dialog>
+
             <Stack
               direction={{ xs: "column-reverse", sm: "row" }}
               spacing={2}
@@ -583,7 +938,12 @@ export default function GenerateQuizzesPage() {
                 variant="text"
                 color="error"
                 disabled={loading || !requirements}
-                onClick={() => setRequirements("")}
+                onClick={() => {
+                  setRequirements("");
+                  setDifficulty("mixed");
+                  setCefrLevel("auto");
+                  setGrammarFocus([]);
+                }}
                 sx={{
                   alignSelf: { xs: "center", sm: "flex-start" },
                   fontSize: { xs: "0.8rem", sm: "0.875rem" },
@@ -591,13 +951,13 @@ export default function GenerateQuizzesPage() {
                   "&:hover": { textDecoration: "underline" },
                 }}
               >
-                🗑️ XÓA YÊU CẦU
+                🗑️ ĐẶT LẠI TẤT CẢ
               </Button>
               <Button
                 variant="contained"
-                onClick={handleGenerate}
+                onClick={() => setShowSummary(true)}
                 disabled={loading || !requirements.trim() || !isCountValid}
-                startIcon={<PsychologyAltIcon />}
+                startIcon={<CheckCircleIcon />}
                 sx={{
                   borderRadius: 50,
                   px: { xs: 2.25, sm: 3 },
@@ -609,7 +969,7 @@ export default function GenerateQuizzesPage() {
                   "&:hover": { transform: "scale(1.02)" },
                 }}
               >
-                {loading ? "Đang tạo..." : "✨ SINH CÂU HỎI"}
+                ✨ XEM TÓM TẮT & TẠO
               </Button>
             </Stack>
 
@@ -669,6 +1029,42 @@ export default function GenerateQuizzesPage() {
             nguồn: <strong>AI</strong> (có thể reset để quay lại bộ tình trạng
             ban đầu).
           </Typography>
+        </Box>
+
+        {/* Green info box for new features */}
+        <Box
+          sx={{
+            mt: 2,
+            p: 1.5,
+            display: "flex",
+            alignItems: "flex-start",
+            borderRadius: 2,
+            bgcolor: "#dcfce7",
+            border: "1px solid #86efac",
+            color: "#166534",
+            gap: 1,
+          }}
+        >
+          <Box sx={{ fontSize: 18, lineHeight: 1 }}>✨</Box>
+          <Box>
+            <Typography
+              variant="body2"
+              fontWeight={700}
+              sx={{ fontSize: { xs: ".9rem", sm: "1rem" }, mb: 0.5 }}
+            >
+              Tính năng mới:
+            </Typography>
+            <Typography
+              variant="caption"
+              component="div"
+              sx={{ fontSize: { xs: ".85rem", sm: ".9rem" } }}
+            >
+              • <strong>Độ khó</strong>: Điều chỉnh mức độ câu hỏi
+              <br />• <strong>Trình độ CEFR</strong>: Phù hợp với level học viên
+              <br />• <strong>Tập trung Ngữ pháp</strong>: Chọn cấu trúc cụ thể
+              <br />• <strong>Xem tóm tắt</strong>: Kiểm tra trước khi tạo
+            </Typography>
+          </Box>
         </Box>
       </Container>
     </Box>
