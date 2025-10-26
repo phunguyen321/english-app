@@ -37,9 +37,6 @@ import {
   ToggleButton,
   Tooltip,
   Divider,
-  List,
-  ListItemButton,
-  ListItemText,
   Checkbox,
   Drawer,
   IconButton,
@@ -52,7 +49,6 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import VolumeUpOutlinedIcon from "@mui/icons-material/VolumeUpOutlined";
 import ViewListIcon from "@mui/icons-material/ViewList";
-import CheckIcon from "@mui/icons-material/Check";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import FlashcardView from "./FlashcardView";

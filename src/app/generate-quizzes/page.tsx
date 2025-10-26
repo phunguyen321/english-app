@@ -26,12 +26,17 @@ import {
   Select,
   MenuItem,
   FormControl,
-  InputLabel,
   Autocomplete,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemButton,
+  ListItemIcon,
 } from "@mui/material";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import PsychologyAltIcon from "@mui/icons-material/PsychologyAlt";
@@ -42,6 +47,11 @@ import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import SchoolIcon from "@mui/icons-material/School";
 import SpeedIcon from "@mui/icons-material/Speed";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import TopicIcon from "@mui/icons-material/Topic";
+import SaveIcon from "@mui/icons-material/Save";
+import FolderOpenIcon from "@mui/icons-material/FolderOpen";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import DeleteIcon from "@mui/icons-material/Delete";
 import AppAPI from "@/lib/api";
 import type { AnyQuizQuestion } from "@/types/quiz";
 import { alpha } from "@mui/material/styles";
@@ -76,6 +86,50 @@ export default function GenerateQuizzesPage() {
   const [cefrLevel, setCefrLevel] = useState<string>("auto");
   const [grammarFocus, setGrammarFocus] = useState<string[]>([]);
   const [showSummary, setShowSummary] = useState(false);
+
+  // NEW: Topic/Theme selector
+  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+
+  // NEW: Template management
+  const [showTemplateDialog, setShowTemplateDialog] = useState(false);
+  const [templateName, setTemplateName] = useState("");
+  const [savedTemplates, setSavedTemplates] = useState<
+    Array<{
+      name: string;
+      config: {
+        requirements: string;
+        count: string;
+        difficulty: string;
+        cefrLevel: string;
+        allowedTypes: string[];
+        typeRatios: Record<string, number>;
+        grammarFocus: string[];
+        selectedTopics: string[];
+      };
+    }>
+  >([]);
+  const [showLoadTemplateDialog, setShowLoadTemplateDialog] = useState(false);
+
+  // NEW: Prompt preview
+  const [showPromptPreview, setShowPromptPreview] = useState(false);
+
+  const TOPICS = [
+    "Daily Life",
+    "Travel & Tourism",
+    "Business & Work",
+    "Education & Learning",
+    "Technology & Internet",
+    "Health & Fitness",
+    "Food & Cooking",
+    "Shopping & Fashion",
+    "Entertainment & Hobbies",
+    "Family & Relationships",
+    "Environment & Nature",
+    "Sports & Games",
+    "Culture & Traditions",
+    "Science & Innovation",
+    "News & Current Events",
+  ];
 
   const DIFFICULTY_OPTIONS = [
     { value: "mixed", label: "Hỗn hợp (Đề xuất)" },
@@ -113,6 +167,27 @@ export default function GenerateQuizzesPage() {
     "Prepositions",
     "Phrasal Verbs",
   ];
+
+  // Load templates from localStorage on mount
+  React.useEffect(() => {
+    try {
+      const saved = localStorage.getItem("quiz-templates");
+      if (saved) {
+        setSavedTemplates(JSON.parse(saved));
+      }
+    } catch (err) {
+      console.error("Failed to load templates", err);
+    }
+  }, []);
+
+  // Save templates to localStorage whenever they change
+  React.useEffect(() => {
+    try {
+      localStorage.setItem("quiz-templates", JSON.stringify(savedTemplates));
+    } catch (err) {
+      console.error("Failed to save templates", err);
+    }
+  }, [savedTemplates]);
 
   const parsedCount = useMemo(() => {
     const v = parseInt(countInput, 10);
@@ -171,6 +246,70 @@ export default function GenerateQuizzesPage() {
     return vals.every((v) => Math.abs(v - vals[0]) < 0.0001);
   }, [allowedTypes, typeRatios]);
 
+  // Template management functions
+  const handleSaveTemplate = () => {
+    if (!templateName.trim()) {
+      setError("Nhập tên template trước khi lưu.");
+      return;
+    }
+    const newTemplate = {
+      name: templateName.trim(),
+      config: {
+        requirements,
+        count: countInput,
+        difficulty,
+        cefrLevel,
+        allowedTypes,
+        typeRatios,
+        grammarFocus,
+        selectedTopics,
+      },
+    };
+    setSavedTemplates((prev) => [...prev, newTemplate]);
+    setTemplateName("");
+    setShowTemplateDialog(false);
+    setError(null);
+  };
+
+  const handleLoadTemplate = (template: (typeof savedTemplates)[0]) => {
+    setRequirements(template.config.requirements);
+    setCountInput(template.config.count);
+    setDifficulty(template.config.difficulty);
+    setCefrLevel(template.config.cefrLevel);
+    setAllowedTypes(template.config.allowedTypes);
+    setTypeRatios(template.config.typeRatios);
+    setGrammarFocus(template.config.grammarFocus);
+    setSelectedTopics(template.config.selectedTopics);
+    setShowLoadTemplateDialog(false);
+  };
+
+  const handleDeleteTemplate = (index: number) => {
+    setSavedTemplates((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // Build enhanced prompt
+  const buildEnhancedPrompt = () => {
+    let enhanced = requirements;
+
+    if (selectedTopics.length > 0) {
+      enhanced = `[Topics: ${selectedTopics.join(", ")}] ${enhanced}`;
+    }
+
+    if (cefrLevel && cefrLevel !== "auto") {
+      enhanced = `[CEFR Level: ${cefrLevel}] ${enhanced}`;
+    }
+
+    if (difficulty && difficulty !== "mixed") {
+      enhanced = `[Difficulty: ${difficulty}] ${enhanced}`;
+    }
+
+    if (grammarFocus.length > 0 && allowedTypes.includes("grammar-mcq")) {
+      enhanced = `[Grammar Focus: ${grammarFocus.join(", ")}] ${enhanced}`;
+    }
+
+    return enhanced;
+  };
+
   const handleGenerate = async () => {
     if (!requirements.trim()) {
       setError("Nhập yêu cầu / chủ đề trước.");
@@ -181,22 +320,7 @@ export default function GenerateQuizzesPage() {
     setRawPreview("");
     setShowSummary(false);
     try {
-      // Build enhanced requirements with difficulty, CEFR, and grammar focus
-      let enhancedRequirements = requirements;
-
-      if (cefrLevel && cefrLevel !== "auto") {
-        enhancedRequirements = `[CEFR Level: ${cefrLevel}] ${enhancedRequirements}`;
-      }
-
-      if (difficulty && difficulty !== "mixed") {
-        enhancedRequirements = `[Difficulty: ${difficulty}] ${enhancedRequirements}`;
-      }
-
-      if (grammarFocus.length > 0 && allowedTypes.includes("grammar-mcq")) {
-        enhancedRequirements = `[Grammar Focus: ${grammarFocus.join(
-          ", "
-        )}] ${enhancedRequirements}`;
-      }
+      const enhancedRequirements = buildEnhancedPrompt();
 
       const json = await AppAPI.generateQuiz({
         requirements: enhancedRequirements,
@@ -245,13 +369,62 @@ export default function GenerateQuizzesPage() {
               gap: 1,
               alignItems: "center",
               typography: { xs: "h5", sm: "h4" },
+              justifyContent: "space-between",
             }}
           >
-            <AutoAwesomeIcon
-              color="primary"
-              sx={{ fontSize: { xs: 24, sm: 28 } }}
-            />
-            Tạo bài tập bằng AI
+            <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+              <AutoAwesomeIcon
+                color="primary"
+                sx={{ fontSize: { xs: 24, sm: 28 } }}
+              />
+              Tạo bài tập bằng AI
+            </Box>
+            <Stack direction="row" spacing={1}>
+              <IconButton
+                size="small"
+                color="primary"
+                onClick={() => setShowLoadTemplateDialog(true)}
+                title="Tải template"
+                sx={{
+                  bgcolor: (t) => alpha(t.palette.primary.main, 0.1),
+                  "&:hover": {
+                    bgcolor: (t) => alpha(t.palette.primary.main, 0.2),
+                  },
+                }}
+              >
+                <FolderOpenIcon fontSize="small" />
+              </IconButton>
+              <IconButton
+                size="small"
+                color="success"
+                onClick={() => setShowTemplateDialog(true)}
+                title="Lưu template"
+                disabled={!requirements.trim()}
+                sx={{
+                  bgcolor: (t) => alpha(t.palette.success.main, 0.1),
+                  "&:hover": {
+                    bgcolor: (t) => alpha(t.palette.success.main, 0.2),
+                  },
+                }}
+              >
+                <SaveIcon fontSize="small" />
+              </IconButton>
+              <IconButton
+                size="small"
+                color="info"
+                onClick={() => setShowPromptPreview(true)}
+                title="Xem prompt"
+                disabled={!requirements.trim()}
+                sx={{
+                  bgcolor: (t) => alpha(t.palette.info.main, 0.1),
+                  "&:hover": {
+                    bgcolor: (t) => alpha(t.palette.info.main, 0.2),
+                  },
+                }}
+              >
+                <VisibilityIcon fontSize="small" />
+              </IconButton>
+            </Stack>
           </Typography>
           <Typography
             color="text.secondary"
@@ -272,6 +445,89 @@ export default function GenerateQuizzesPage() {
               disabled={loading}
               fullWidth
             />
+
+            {/* Preset Templates Quick Actions */}
+            <Box>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                fontWeight={600}
+                gutterBottom
+                sx={{ display: "block" }}
+              >
+                ⚡ Template nhanh:
+              </Typography>
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{ flexWrap: "wrap", gap: 1 }}
+              >
+                <Chip
+                  label="🎯 Luyện tập nhanh"
+                  size="small"
+                  clickable
+                  onClick={() => {
+                    setRequirements(
+                      "Tạo bài tập luyện tập tổng hợp cho người học tiếng Anh"
+                    );
+                    setCountInput("10");
+                    setDifficulty("mixed");
+                    setCefrLevel("auto");
+                    setAllowedTypes([
+                      "vocab-mcq",
+                      "grammar-mcq",
+                      "sentence-order",
+                    ]);
+                  }}
+                  sx={{ bgcolor: (t) => alpha(t.palette.primary.main, 0.1) }}
+                />
+                <Chip
+                  label="📚 Ôn thi"
+                  size="small"
+                  clickable
+                  onClick={() => {
+                    setRequirements("Tạo bài tập ôn thi cho kỳ thi quan trọng");
+                    setCountInput("20");
+                    setDifficulty("medium");
+                    setCefrLevel("B1");
+                    setAllowedTypes(["vocab-mcq", "grammar-mcq"]);
+                  }}
+                  sx={{ bgcolor: (t) => alpha(t.palette.warning.main, 0.1) }}
+                />
+                <Chip
+                  label="👶 Trẻ em/Cơ bản"
+                  size="small"
+                  clickable
+                  onClick={() => {
+                    setRequirements(
+                      "Tạo bài tập đơn giản, thân thiện cho trẻ em mới học tiếng Anh"
+                    );
+                    setCountInput("8");
+                    setDifficulty("easy");
+                    setCefrLevel("A1");
+                    setAllowedTypes(["vocab-mcq", "sentence-order"]);
+                    setSelectedTopics(["Daily Life", "Family & Relationships"]);
+                  }}
+                  sx={{ bgcolor: (t) => alpha(t.palette.success.main, 0.1) }}
+                />
+                <Chip
+                  label="💼 Business English"
+                  size="small"
+                  clickable
+                  onClick={() => {
+                    setRequirements(
+                      "Tạo bài tập tiếng Anh thương mại cho môi trường công sở"
+                    );
+                    setCountInput("15");
+                    setDifficulty("medium");
+                    setCefrLevel("B2");
+                    setAllowedTypes(["vocab-mcq", "grammar-mcq"]);
+                    setSelectedTopics(["Business & Work"]);
+                  }}
+                  sx={{ bgcolor: (t) => alpha(t.palette.info.main, 0.1) }}
+                />
+              </Stack>
+            </Box>
 
             {/* Count section styled like a card */}
             <Box>
@@ -357,7 +613,7 @@ export default function GenerateQuizzesPage() {
                 color="text.secondary"
                 sx={{ display: "block", mt: 0.5 }}
               >
-                Chọn "Hỗn hợp" để có sự đa dạng trong bộ câu hỏi
+                Chọn &quot;Hỗn hợp&quot; để có sự đa dạng trong bộ câu hỏi
               </Typography>
             </Box>
 
@@ -393,7 +649,58 @@ export default function GenerateQuizzesPage() {
                 color="text.secondary"
                 sx={{ display: "block", mt: 0.5 }}
               >
-                Chọn "Tự động" để AI xác định dựa trên yêu cầu của bạn
+                Chọn &quot;Tự động&quot; để AI xác định dựa trên yêu cầu của bạn
+              </Typography>
+            </Box>
+
+            {/* Topic/Theme Selector Section */}
+            <Box>
+              <Typography
+                gutterBottom
+                fontWeight={600}
+                sx={{ display: "flex", alignItems: "center", gap: 1 }}
+              >
+                <TopicIcon fontSize="small" color="primary" />
+                Chủ đề / Theme (Tùy chọn)
+              </Typography>
+              <Autocomplete
+                multiple
+                options={TOPICS}
+                value={selectedTopics}
+                onChange={(_, newValue) => setSelectedTopics(newValue)}
+                disabled={loading}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    placeholder="Chọn chủ đề cho bài tập..."
+                    size="small"
+                  />
+                )}
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
+                    <Chip
+                      label={option}
+                      size="small"
+                      {...getTagProps({ index })}
+                      key={option}
+                      sx={{ borderRadius: 1 }}
+                      color="secondary"
+                    />
+                  ))
+                }
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: 2,
+                    bgcolor: (t) => alpha(t.palette.secondary.main, 0.04),
+                  },
+                }}
+              />
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ display: "block", mt: 0.5 }}
+              >
+                Chọn 1 hoặc nhiều chủ đề để làm ngữ cảnh cho câu hỏi
               </Typography>
             </Box>
 
@@ -873,6 +1180,34 @@ export default function GenerateQuizzesPage() {
                     </Stack>
                   </Box>
 
+                  {selectedTopics.length > 0 && (
+                    <>
+                      <Divider />
+                      <Box>
+                        <Typography
+                          variant="subtitle2"
+                          fontWeight={700}
+                          color="primary"
+                          gutterBottom
+                        >
+                          📚 Chủ đề:
+                        </Typography>
+                        <Box
+                          sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
+                        >
+                          {selectedTopics.map((topic) => (
+                            <Chip
+                              key={topic}
+                              label={topic}
+                              size="small"
+                              color="secondary"
+                            />
+                          ))}
+                        </Box>
+                      </Box>
+                    </>
+                  )}
+
                   {grammarFocus.length > 0 && (
                     <>
                       <Divider />
@@ -928,6 +1263,194 @@ export default function GenerateQuizzesPage() {
               </DialogActions>
             </Dialog>
 
+            {/* Save Template Dialog */}
+            <Dialog
+              open={showTemplateDialog}
+              onClose={() => setShowTemplateDialog(false)}
+              maxWidth="xs"
+              fullWidth
+            >
+              <DialogTitle
+                sx={{ display: "flex", alignItems: "center", gap: 1 }}
+              >
+                <SaveIcon color="success" />
+                Lưu Template
+              </DialogTitle>
+              <DialogContent>
+                <TextField
+                  autoFocus
+                  label="Tên Template"
+                  fullWidth
+                  value={templateName}
+                  onChange={(e) => setTemplateName(e.target.value)}
+                  placeholder="Ví dụ: Luyện Grammar A2"
+                  sx={{ mt: 2 }}
+                />
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ display: "block", mt: 1 }}
+                >
+                  Template sẽ lưu tất cả cấu hình hiện tại để sử dụng lại sau.
+                </Typography>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setShowTemplateDialog(false)}>
+                  Hủy
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={handleSaveTemplate}
+                  disabled={!templateName.trim()}
+                  startIcon={<SaveIcon />}
+                >
+                  Lưu
+                </Button>
+              </DialogActions>
+            </Dialog>
+
+            {/* Load Template Dialog */}
+            <Dialog
+              open={showLoadTemplateDialog}
+              onClose={() => setShowLoadTemplateDialog(false)}
+              maxWidth="sm"
+              fullWidth
+            >
+              <DialogTitle
+                sx={{ display: "flex", alignItems: "center", gap: 1 }}
+              >
+                <FolderOpenIcon color="primary" />
+                Templates đã lưu ({savedTemplates.length})
+              </DialogTitle>
+              <DialogContent>
+                {savedTemplates.length === 0 ? (
+                  <Alert severity="info">
+                    Chưa có template nào. Hãy cấu hình và lưu template đầu tiên!
+                  </Alert>
+                ) : (
+                  <List>
+                    {savedTemplates.map((template, index) => (
+                      <ListItem
+                        key={index}
+                        disablePadding
+                        secondaryAction={
+                          <IconButton
+                            edge="end"
+                            onClick={() => handleDeleteTemplate(index)}
+                            color="error"
+                            size="small"
+                          >
+                            <DeleteIcon fontSize="small" />
+                          </IconButton>
+                        }
+                      >
+                        <ListItemButton
+                          onClick={() => handleLoadTemplate(template)}
+                        >
+                          <ListItemIcon>
+                            <FolderOpenIcon color="primary" />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary={template.name}
+                            secondary={`${template.config.count} câu • ${
+                              DIFFICULTY_OPTIONS.find(
+                                (d) => d.value === template.config.difficulty
+                              )?.label
+                            } • ${
+                              template.config.cefrLevel === "auto"
+                                ? "Auto"
+                                : template.config.cefrLevel
+                            }`}
+                          />
+                        </ListItemButton>
+                      </ListItem>
+                    ))}
+                  </List>
+                )}
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setShowLoadTemplateDialog(false)}>
+                  Đóng
+                </Button>
+              </DialogActions>
+            </Dialog>
+
+            {/* Prompt Preview Dialog */}
+            <Dialog
+              open={showPromptPreview}
+              onClose={() => setShowPromptPreview(false)}
+              maxWidth="md"
+              fullWidth
+            >
+              <DialogTitle
+                sx={{ display: "flex", alignItems: "center", gap: 1 }}
+              >
+                <VisibilityIcon color="info" />
+                Preview Prompt gửi đến AI
+              </DialogTitle>
+              <DialogContent>
+                <Alert severity="info" sx={{ mb: 2 }}>
+                  Đây là prompt đã được xử lý sẽ gửi đến AI. Kiểm tra để đảm bảo
+                  chính xác.
+                </Alert>
+                <Paper
+                  variant="outlined"
+                  sx={{
+                    p: 2,
+                    bgcolor: "grey.50",
+                    borderRadius: 2,
+                    fontFamily: "monospace",
+                    fontSize: 13,
+                    whiteSpace: "pre-wrap",
+                    wordBreak: "break-word",
+                  }}
+                >
+                  {buildEnhancedPrompt()}
+                </Paper>
+                <Box sx={{ mt: 2 }}>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    fontWeight={600}
+                  >
+                    Chi tiết cấu hình:
+                  </Typography>
+                  <Stack spacing={0.5} sx={{ mt: 1 }}>
+                    <Typography variant="caption">
+                      • Số câu hỏi: {parsedCount}
+                    </Typography>
+                    <Typography variant="caption">
+                      • Loại:{" "}
+                      {allowedTypes.map((t) => TYPE_LABELS[t]).join(", ")}
+                    </Typography>
+                    <Typography variant="caption">
+                      • Trộn ngẫu nhiên: {mixTypes ? "Có" : "Không"}
+                    </Typography>
+                    {selectedTopics.length > 0 && (
+                      <Typography variant="caption">
+                        • Chủ đề: {selectedTopics.join(", ")}
+                      </Typography>
+                    )}
+                  </Stack>
+                </Box>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setShowPromptPreview(false)}>
+                  Đóng
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    setShowPromptPreview(false);
+                    setShowSummary(true);
+                  }}
+                  startIcon={<CheckCircleIcon />}
+                >
+                  OK, Tiếp tục tạo
+                </Button>
+              </DialogActions>
+            </Dialog>
+
             <Stack
               direction={{ xs: "column-reverse", sm: "row" }}
               spacing={2}
@@ -943,6 +1466,14 @@ export default function GenerateQuizzesPage() {
                   setDifficulty("mixed");
                   setCefrLevel("auto");
                   setGrammarFocus([]);
+                  setSelectedTopics([]);
+                  setCountInput("8");
+                  setAllowedTypes([
+                    "vocab-mcq",
+                    "grammar-mcq",
+                    "sentence-order",
+                  ]);
+                  resetRatios();
                 }}
                 sx={{
                   alignSelf: { xs: "center", sm: "flex-start" },
@@ -1052,17 +1583,26 @@ export default function GenerateQuizzesPage() {
               fontWeight={700}
               sx={{ fontSize: { xs: ".9rem", sm: "1rem" }, mb: 0.5 }}
             >
-              Tính năng mới:
+              Tính năng nổi bật:
             </Typography>
             <Typography
               variant="caption"
               component="div"
               sx={{ fontSize: { xs: ".85rem", sm: ".9rem" } }}
             >
-              • <strong>Độ khó</strong>: Điều chỉnh mức độ câu hỏi
-              <br />• <strong>Trình độ CEFR</strong>: Phù hợp với level học viên
+              <strong>Ưu tiên CAO:</strong>
+              <br />• <strong>Độ khó & Trình độ CEFR</strong>: Tùy chỉnh chính
+              xác
               <br />• <strong>Tập trung Ngữ pháp</strong>: Chọn cấu trúc cụ thể
               <br />• <strong>Xem tóm tắt</strong>: Kiểm tra trước khi tạo
+              <br />
+              <br />
+              <strong>Ưu tiên TRUNG BÌNH:</strong>
+              <br />• <strong>🏷️ Chủ đề/Theme</strong>: Chọn ngữ cảnh cho bài
+              tập
+              <br />• <strong>💾 Lưu/Tải Template</strong>: Tái sử dụng cấu hình
+              <br />• <strong>👁️ Preview Prompt</strong>: Xem prompt gửi AI
+              <br />• <strong>⚡ Template nhanh</strong>: 4 preset có sẵn
             </Typography>
           </Box>
         </Box>
